@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-public class DijkstraUtil
+public class GraphUtil
 {
 	public static Set<String>[] toSetArray(String[][] nestedArray)
 	{
