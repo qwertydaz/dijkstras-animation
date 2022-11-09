@@ -2,6 +2,8 @@ package src.main.java;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 import static src.main.java.GraphUtil.edgeExists;
@@ -10,74 +12,89 @@ import static src.main.java.GraphUtil.toSetArray;
 
 public class Graph
 {
-	String[] vertices;
 	Set<String>[] edges;
 	Set<String>[][] weights;
+	Map<String, Integer> remainingVertices;
+	Map<String, Integer> treeVertices;
+	int vertexCount;
 
-	public Graph(String[] vertices, Set<String>[] edges, Set<String>[][] weights)
+	public Graph(Set<String>[] edges, Set<String>[][] weights, Map<String, Integer> remainingVertices, Map<String, Integer> treeVertices)
 	{
-		this.vertices = vertices;
 		this.edges = edges;
 		this.weights = weights;
+		this.remainingVertices = remainingVertices;
+		this.treeVertices = treeVertices;
+		this.vertexCount = remainingVertices.size();
 	}
 
 	// Dijkstra's Algorithm
-	public int[] findShortestPaths(String node)
+	public Map<String, Integer> findShortestPaths(String node)
 	{
-		int[] lValues = new int[vertices.length];
-		ArrayList<String> treeVertices = new ArrayList<>();
-
 		// first pass of L values
-		for (int i = 0; i < vertices.length; i++)
+		for (String vertex : remainingVertices.keySet())
 		{
-			if (vertices[i].equals(node))
+			if (vertex.equals(node))
 			{
-				lValues[i] = 0;
+				remainingVertices.replace(vertex, 0);
 			}
-			else if (edgeExists(new String[]{node, vertices[i]}, edges))
+			else if (edgeExists(new String[]{node, vertex}, edges))
 			{
-				lValues[i] = retrieveWeight(new String[]{node, vertices[i]}, weights);
+				int weight = retrieveWeight(new String[]{node, vertex}, weights);
+				remainingVertices.replace(vertex, weight);
 			}
 			else
 			{
 				// this is to be representative of infinity
-				lValues[i] = -1;
+				remainingVertices.replace(vertex, -1);
 			}
 		}
 
-		treeVertices.add(node);
+		addVertexToTreeVertices(node);
 
 		// next passes of L values
-		while (treeVertices.size() != vertices.length)
+		while (treeVertices.size() != vertexCount)
 		{
 			// TODO: finish translating pseudocode
 		}
 
-		return lValues;
+		return treeVertices;
 	}
 
 	private ArrayList<String> addVertexToTv(ArrayList<String> treeVertices, String[] vertices, int[] lValues)
 	{
 		// TODO: cycle through the vertices by smallest L value
+
+		for (int i = 0; i < vertices.length; i++)
+		{
+
+		}
+
+		return treeVertices;
 	}
 
-	private boolean isVertexInTv(int index, ArrayList<String> treeVertices)
+	private void addVertexToTreeVertices(String node)
 	{
-		String vertex = vertices[index];
-
-		return treeVertices.contains(vertex);
+		treeVertices.replace(node, remainingVertices.get(node));
+		remainingVertices.remove(node);
 	}
 
-	private int indexOfSmallestNumber(int[] intArray, ArrayList<String> treeVertices)
+	// check if a vertex's final weight has been added to treeVertices
+	private boolean isNodeInTreeVertices(String node, Map<String, Integer> treeVertices)
+	{
+		return treeVertices.get(node) != null;
+	}
+
+	// TODO: needs reworked to work with new HashMaps
+	private int indexOfSmallestNumber(int[] lValues, ArrayList<String> treeVertices)
 	{
 		int index = -1;
 		int smallestNum = Integer.MAX_VALUE;
 
-		for (int i = 0; i < intArray.length; i++)
+		for (int i = 0; i < lValues.length; i++)
 		{
-			if (intArray[i] > 0 && intArray[i] < smallestNum)
+			if (lValues[i] > 0 && lValues[i] < smallestNum)
 			{
-				smallestNum = intArray[i];
+				smallestNum = lValues[i];
 				index = i;
 			}
 		}
@@ -97,7 +114,6 @@ public class Graph
 
 		// test input
 		String node = "A";
-		String[] vertices = new String[]{"A", "B", "C", "D", "E"};
 		Set<String>[] edges = toSetArray(new String[][]{{"A", "E"}, {"E", "C"}, {"E", "D"}, {"C", "D"}, {"B", "C"}});
 		Set<String>[][] weights = toSetArray(new String[][][]{
 				{{"A", "E"}, {"2"}},
@@ -106,13 +122,20 @@ public class Graph
 				{{"C", "D"}, {"3"}},
 				{{"B", "C"}, {"4"}}
 		});
+		HashMap<String, Integer> remainingVertices = new HashMap<>();
+		remainingVertices.put("A", null);
+		remainingVertices.put("B", null);
+		remainingVertices.put("C", null);
+		remainingVertices.put("D", null);
+		remainingVertices.put("E", null);
+		HashMap<String, Integer> treeVertices = new HashMap<>(remainingVertices);
 
-		Graph graph = new Graph(vertices, edges, weights);
+		Graph graph = new Graph(edges, weights, remainingVertices, treeVertices);
 
 		// shortest paths from node
-		int[] lValues = graph.findShortestPaths(node);
+		HashMap<String, Integer> shortestPaths = (HashMap<String, Integer>) graph.findShortestPaths(node);
 
 		// test output
-		System.out.println(Arrays.toString(lValues));
+		System.out.println(shortestPaths.toString());
 	}
 }
