@@ -6,6 +6,11 @@ import java.util.Set;
 
 public class GraphUtil
 {
+	private GraphUtil()
+	{
+		throw new IllegalStateException("Utility Class");
+	}
+
 	public static Set<String>[] toSetArray(String[][] nestedArray)
 	{
 		Set<String>[] setArray = new Set[nestedArray.length];
@@ -61,6 +66,7 @@ public class GraphUtil
 			}
 		}
 
+		// -1 also represents infinity. This may need adjusted
 		// returns -1 if targetEdge is not contained in the set of weights
 		return -1;
 	}
