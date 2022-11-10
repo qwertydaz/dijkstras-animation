@@ -31,6 +31,22 @@ public class Graph
 	// Dijkstra's Algorithm
 	public Map<String, Integer> findShortestPaths(String startingVertex)
 	{
+		// derive the first set of L values and move the starting vertex to treeVertices
+		findInitialLValues(startingVertex);
+
+		// next passes of L values
+		while (treeVertices.size() != vertexCount)
+		{
+			String nextVertex = findVertexWithSmallestLValue();
+
+			updateLValues(nextVertex);
+		}
+
+		return treeVertices;
+	}
+
+	private void findInitialLValues(String startingVertex)
+	{
 		// first pass of L values
 		for (String vertex : remainingVertices.keySet())
 		{
@@ -51,22 +67,24 @@ public class Graph
 		}
 
 		addVertexToTreeVertices(startingVertex);
-
-		// next passes of L values
-		while (treeVertices.size() != vertexCount)
-		{
-
-		}
-
-		return treeVertices;
 	}
 
-	// might be a redundant method
-	private void addVertexToTv(String vertex)
+	private void updateLValues(String nextVertex)
 	{
-		// TODO: cycle through the vertices by smallest L value
+		for (Map.Entry<String, Integer> verticesAndLValues : remainingVertices.entrySet())
+		{
+			String[] potentialEdge = new String[]{nextVertex, verticesAndLValues.getKey()};
+			int potentialNewLValue = remainingVertices.get(nextVertex) + retrieveWeight(potentialEdge, weights);
 
-		treeVertices.replace(vertex, 1);
+			// if the edge exists and the weight of its path is smaller
+			if (edgeExists(potentialEdge, edges) && verticesAndLValues.getValue() > potentialNewLValue)
+			{
+				// L value is updated to be the smaller path
+				remainingVertices.replace(verticesAndLValues.getKey(), potentialNewLValue);
+			}
+		}
+
+		addVertexToTreeVertices(nextVertex);
 	}
 
 	private void addVertexToTreeVertices(String vertex)
@@ -75,20 +93,14 @@ public class Graph
 		remainingVertices.remove(vertex);
 	}
 
-	// check if a vertex's final weight has been added to treeVertices
-	private boolean isVertexInTreeVertices(String vertex)
-	{
-		return treeVertices.get(vertex) != null;
-	}
-
-	private Map<String, Integer> findVertexWithSmallestLValue()
+	private String findVertexWithSmallestLValue()
 	{
 		int smallestLValue = Integer.MAX_VALUE;
 
 		String vertex = "";
 		int lValue;
 
-		Map<String, Integer> targetVertexAndLValue = new HashMap<>();
+		//Map<String, Integer> targetVertexAndLValue = new HashMap<>();
 
 		for (Map.Entry<String, Integer> verticesAndLValues : remainingVertices.entrySet())
 		{
@@ -104,9 +116,9 @@ public class Graph
 			}
 		}
 
-		targetVertexAndLValue.put(vertex, smallestLValue);
+		//targetVertexAndLValue.put(vertex, smallestLValue);
 
-		return targetVertexAndLValue;
+		return vertex;
 	}
 
 	public static void main(String[] args)
