@@ -2,7 +2,9 @@ package src.main.java.gui;
 
 import src.main.java.controller.Controller;
 import src.main.java.gui.edge.EdgeFormPanel;
+import src.main.java.gui.edge.EdgeTableModel;
 import src.main.java.gui.node.NodeFormPanel;
+import src.main.java.gui.node.NodeTableModel;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -17,11 +19,13 @@ public class MainFrame extends JFrame
 {
 	private static final String CONNECTION_ERROR_MESSAGE = "Database Connection Error";
 	private final Controller controller;
-	private final TablePanel tablePanel;
+	private final TablePanel nodeTablePanel;
+	private final TablePanel edgeTablePanel;
 	private final NodeFormPanel nodeFormPanel;
 	private final EdgeFormPanel edgeFormPanel;
 	private final GraphPanel graphPanel;
-	private final JTabbedPane tabPane;
+	private final JTabbedPane formTabPane;
+	private final JTabbedPane tableTabPane;
 
 	public MainFrame()
 	{
@@ -31,24 +35,37 @@ public class MainFrame extends JFrame
 		controller = new Controller();
 
 		// Views
-		tablePanel = new TablePanel();
+		nodeTablePanel = new TablePanel<>(new NodeTableModel());
+		edgeTablePanel = new TablePanel<>(new EdgeTableModel());
 		nodeFormPanel = new NodeFormPanel();
 		edgeFormPanel = new EdgeFormPanel();
 		graphPanel = new GraphPanel();
-		tabPane = new JTabbedPane();
+		formTabPane = new JTabbedPane();
+		tableTabPane = new JTabbedPane();
 
-		tabPane.addTab("Node", nodeFormPanel);
-		tabPane.addTab("Edge", edgeFormPanel);
+		formTabPane.addTab("Node", nodeFormPanel);
+		formTabPane.addTab("Edge", edgeFormPanel);
+
+		tableTabPane.addTab("Node", nodeTablePanel);
+		tableTabPane.addTab("Edge", edgeTablePanel);
 
 		// Listeners
+		nodeTablePanel.setData(controller.getNodes());
+		nodeTablePanel.setTableListener(controller::removeNode);
+
+		edgeTablePanel.setData(controller.getEdges());
+		edgeTablePanel.setTableListener(controller::removeEdge);
+
 		nodeFormPanel.setNodeFormListener(event ->
 		{
 			controller.addNode(event);
+			nodeTablePanel.refresh();
 		});
 
 		edgeFormPanel.setEdgeFormListener(event ->
 		{
 			controller.addEdge(event);
+			edgeTablePanel.refresh();
 		});
 
 		addWindowListener(new WindowAdapter()
@@ -62,9 +79,9 @@ public class MainFrame extends JFrame
 		});
 
 		// Set Main Frame
-		add(tabPane, BorderLayout.WEST);
+		add(formTabPane, BorderLayout.WEST);
 		add(graphPanel, BorderLayout.CENTER);
-		add(tablePanel, BorderLayout.EAST);
+		add(tableTabPane, BorderLayout.EAST);
 
 		setMinimumSize(new Dimension(1000, 400));
 		setSize(1500, 500);

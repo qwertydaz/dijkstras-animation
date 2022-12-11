@@ -17,10 +17,9 @@ public class TablePanel<V> extends JPanel
 	private final TableModel<V> tableModel;
 	private TableListener tableListener;
 
-	public TablePanel(TableModel<V> tableModel, TableListener tableListener)
+	public TablePanel(TableModel<V> tableModel)
 	{
 		this.tableModel = tableModel;
-		this.tableListener = tableListener;
 
 		table = new JTable(tableModel);
 		popup = new JPopupMenu();
@@ -70,7 +69,7 @@ public class TablePanel<V> extends JPanel
 		tableModel.fireTableDataChanged();
 	}
 
-	public void setPersonTableListener(TableListener listener)
+	public void setTableListener(TableListener listener)
 	{
 		this.tableListener = listener;
 	}

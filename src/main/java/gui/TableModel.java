@@ -3,13 +3,16 @@ package src.main.java.gui;
 import javax.swing.table.AbstractTableModel;
 import java.util.List;
 
-public class TableModel<V> extends AbstractTableModel
+public abstract class TableModel<V> extends AbstractTableModel
 {
 	private List<V> db;
 
-	public TableModel()
+	private final String[] columnNames = {};
+
+	@Override
+	public String getColumnName(int column)
 	{
-		// Empty Constructor
+		return columnNames[column];
 	}
 
 	public void setData(List<V> db)
@@ -20,13 +23,13 @@ public class TableModel<V> extends AbstractTableModel
 	@Override
 	public int getRowCount()
 	{
-		return 0;
+		return db.size();
 	}
 
 	@Override
 	public int getColumnCount()
 	{
-		return 0;
+		return columnNames.length;
 	}
 
 	@Override

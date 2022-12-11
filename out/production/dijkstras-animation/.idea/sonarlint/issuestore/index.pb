@@ -1,8 +1,4 @@
 
-Q
-!src/main/java/gui/TablePanel.java,3\2\3235250ffd7e9cc4cd0808ae1353c55a33655bae
-Q
-!src/main/java/gui/GraphPanel.java,7\4\7439902ea79ec9cc43699351829cfeb17f0481f0
 X
 (src/main/java/controller/controller.java,2\1\21b6790389e44a952f2bf63380370b851a247952
 :
