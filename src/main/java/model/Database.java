@@ -263,7 +263,7 @@ public class Database
 		weight = results.getInt("weight");
 	}
 
-	private Node findNode(String searchName) throws NodeNotFoundException
+	public Node findNode(String searchName) throws NodeNotFoundException
 	{
 		for (Node node : nodes)
 		{
@@ -274,6 +274,19 @@ public class Database
 		}
 
 		throw new NodeNotFoundException();
+	}
+
+	public boolean isNodePresent(String searchName)
+	{
+		for (Node node : nodes)
+		{
+			if (node.getName().equals(searchName))
+			{
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	public void addNode(Node node)

@@ -83,15 +83,12 @@ public class Controller
 
 	private Node findNode(String searchName) throws NodeNotFoundException
 	{
-		for (Node node : db.getNodes())
-		{
-			if (node.getName().equals(searchName))
-			{
-				return node;
-			}
-		}
+		return db.findNode(searchName);
+	}
 
-		throw new NodeNotFoundException();
+	public boolean isNodePresent(String searchName)
+	{
+		return db.isNodePresent(searchName);
 	}
 
 	public void connect() throws SQLException

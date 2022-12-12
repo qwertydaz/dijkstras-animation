@@ -17,12 +17,12 @@ import java.awt.Insets;
 import java.awt.event.KeyEvent;
 import java.util.List;
 
-import src.main.java.controller.Controller;
 import src.main.java.model.dijkstra.Node;
 
 public class EdgeFormPanel extends JPanel
 {
-	private final DefaultComboBoxModel<String> nodeModel;
+	private DefaultComboBoxModel<String> node1Model;
+	private DefaultComboBoxModel<String> node2Model;
 	private final JLabel node1Label;
 	private final JComboBox<String> node1Combo;
 	private final JLabel node2Label;
@@ -32,7 +32,7 @@ public class EdgeFormPanel extends JPanel
 	private final SpinnerNumberModel spinnerModel;
 	private final JButton addButton;
 
-	private final Controller controller;
+	private List<Node> nodes;
 	private EdgeFormListener edgeFormListener;
 
 	private final Insets rightInset;
@@ -45,21 +45,16 @@ public class EdgeFormPanel extends JPanel
 		setPreferredSize(dim);
 		setMinimumSize(dim);
 
-		controller = new Controller();
-
 		rightInset = new Insets(0, 0, 0, 5);
 		noInset = new Insets(0, 0, 0, 0);
 
-		nodeModel = generateNodeModel();
+		node1Model = new DefaultComboBoxModel<>();
+		node2Model = new DefaultComboBoxModel<>();
 
 		// Node 1
 		node1Label = new JLabel("Node1 Name: ");
 		node1Combo = new JComboBox<>();
-		node1Combo.setModel(nodeModel);
-		if (nodeModel.getSize() != 0)
-		{
-			node1Combo.setSelectedIndex(0);
-		}
+		node1Combo.setModel(node1Model);
 
 		node1Label.setDisplayedMnemonic(KeyEvent.VK_1);
 		node1Label.setLabelFor(node1Combo);
@@ -67,11 +62,7 @@ public class EdgeFormPanel extends JPanel
 		// Node 2
 		node2Label = new JLabel("Node2 Name: ");
 		node2Combo = new JComboBox<>();
-		node2Combo.setModel(nodeModel);
-		if (nodeModel.getSize() != 0)
-		{
-			node2Combo.setSelectedIndex(0);
-		}
+		node2Combo.setModel(node2Model);
 
 		node2Label.setDisplayedMnemonic(KeyEvent.VK_2);
 		node2Label.setLabelFor(node2Combo);
@@ -114,7 +105,6 @@ public class EdgeFormPanel extends JPanel
 
 	public DefaultComboBoxModel<String> generateNodeModel()
 	{
-		List<Node> nodes = controller.getNodes();
 		DefaultComboBoxModel<String> newNodeModel = new DefaultComboBoxModel<>();
 
 		for (Node node : nodes)
@@ -202,5 +192,30 @@ public class EdgeFormPanel extends JPanel
 	public void setEdgeFormListener(EdgeFormListener listener)
 	{
 		this.edgeFormListener = listener;
+	}
+
+	public void setNodes(List<Node> nodes)
+	{
+		this.nodes = nodes;
+	}
+
+	public void refresh()
+	{
+		node1Model = generateNodeModel();
+		node2Model = generateNodeModel();
+
+		// Node 1
+		node1Combo.setModel(node1Model);
+		if (node1Model.getSize() != 0)
+		{
+			node1Combo.setSelectedIndex(0);
+		}
+
+		// Node 2
+		node2Combo.setModel(node2Model);
+		if (node2Model.getSize() != 0)
+		{
+			node2Combo.setSelectedIndex(0);
+		}
 	}
 }

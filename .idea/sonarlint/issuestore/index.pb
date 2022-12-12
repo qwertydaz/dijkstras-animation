@@ -16,8 +16,6 @@ S
 ,src/main/java/gui/edge/EdgeFormListener.java,9\e\9ee34bd0d08f973c7f117c14af84033f158346c4
 Y
 )src/main/java/gui/edge/EdgeFormEvent.java,f\8\f8f83e790027444c57894d1a582011b22a475153
-Y
-)src/main/java/gui/edge/EdgeFormPanel.java,a\a\aae151f2259520e019f78c48593d695097f1501d
 ]
 -src/main/java/gui/edge/EdgeTableListener.java,0\c\0cb6e6c87de039d03e1a17d8ad2848019a4b8493
 Y
@@ -34,8 +32,6 @@ V
 &src/main/java/gui/ToolbarListener.java,c\6\c689a43d4bc1a32dd2cbd8f07183143762efd932
 Y
 )src/main/java/gui/node/NodeFormPanel.java,a\2\a27aa18de07eab566947d96e84de79e3c0d15cfc
-Q
-!src/main/java/gui/GraphPanel.java,7\4\7439902ea79ec9cc43699351829cfeb17f0481f0
 Z
 *src/main/java/model/dijkstra/Dijkstra.java,c\b\cb58a077a36d61f9c467f7c2a352428ccee2b00a
 N

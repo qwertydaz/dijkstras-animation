@@ -18,7 +18,8 @@ import java.sql.SQLException;
 
 public class MainFrame extends JFrame
 {
-	private static final String CONNECTION_ERROR_MESSAGE = "Database Connection Error";
+	private static final String CONNECTION_ERROR_MESSAGE = "Error: Database Connection";
+	private static final String FORM_ERROR_MESSAGE = "Error: Invalid Form Entry";
 	private final Controller controller;
 	private final Toolbar toolbar;
 	private final NodeTablePanel nodeTablePanel;
@@ -47,6 +48,7 @@ public class MainFrame extends JFrame
 		tableTabPane = new JTabbedPane();
 
 		formTabPane.addTab("Node Form", nodeFormPanel);
+		edgeFormPanel.setNodes(controller.getNodes());
 		formTabPane.addTab("Edge Form", edgeFormPanel);
 
 		tableTabPane.addTab("Node Database", nodeTablePanel);
@@ -61,14 +63,48 @@ public class MainFrame extends JFrame
 
 		nodeFormPanel.setNodeFormListener(event ->
 		{
-			controller.addNode(event);
-			nodeTablePanel.refresh();
+			String nodeName = event.getName();
+
+			if (!nodeName.isEmpty())
+			{
+				if (controller.isNodePresent(nodeName))
+				{
+					controller.addNode(event);
+					nodeTablePanel.refresh();
+				}
+				else
+				{
+					JOptionPane.showMessageDialog(MainFrame.this, "All nodes must have a unique name.",
+							FORM_ERROR_MESSAGE, JOptionPane.ERROR_MESSAGE);
+				}
+			}
+			else
+			{
+				JOptionPane.showMessageDialog(MainFrame.this, "All nodes must have a name.",
+						FORM_ERROR_MESSAGE, JOptionPane.ERROR_MESSAGE);
+			}
 		});
 
+
+		// TODO:
+		//  - Ensure 2 nodes can only have a single edge
+		//  - Add the ability to edit existing nodes and edges
+		//  - Flesh out GraphPanel:
+		//      - Finish and incorporate GraphCreator using database node and edge data
+		//  - Add more validation
+		//  - Create unit tests / GitLab CI Pipeline (?)
 		edgeFormPanel.setEdgeFormListener(event ->
 		{
-			controller.addEdge(event);
-			edgeTablePanel.refresh();
+			if (!event.getNode1Name().equals(event.getNode2Name()))
+			{
+				controller.addEdge(event);
+				edgeTablePanel.refresh();
+			}
+			else
+			{
+				JOptionPane.showMessageDialog(MainFrame.this, "An edge cannot point to the same node.",
+						FORM_ERROR_MESSAGE, JOptionPane.ERROR_MESSAGE);
+			}
 		});
 
 		toolbar.setToolbarListener(new ToolbarListener()
@@ -110,6 +146,9 @@ public class MainFrame extends JFrame
 				{
 					controller.loadEdges();
 					edgeTablePanel.refresh();
+
+					edgeFormPanel.setNodes(controller.getNodes());
+					edgeFormPanel.refresh();
 				}
 				catch (SQLException e)
 				{
