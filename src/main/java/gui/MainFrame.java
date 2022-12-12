@@ -8,17 +8,20 @@ import src.main.java.gui.node.NodeTableModel;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.WindowConstants;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.sql.SQLException;
 
 public class MainFrame extends JFrame
 {
 	private static final String CONNECTION_ERROR_MESSAGE = "Database Connection Error";
 	private final Controller controller;
+	private final Toolbar toolbar;
 	private final TablePanel nodeTablePanel;
 	private final TablePanel edgeTablePanel;
 	private final NodeFormPanel nodeFormPanel;
@@ -35,6 +38,7 @@ public class MainFrame extends JFrame
 		controller = new Controller();
 
 		// Views
+		toolbar = new Toolbar();
 		nodeTablePanel = new TablePanel<>(new NodeTableModel());
 		edgeTablePanel = new TablePanel<>(new EdgeTableModel());
 		nodeFormPanel = new NodeFormPanel();
@@ -43,11 +47,11 @@ public class MainFrame extends JFrame
 		formTabPane = new JTabbedPane();
 		tableTabPane = new JTabbedPane();
 
-		formTabPane.addTab("Node", nodeFormPanel);
-		formTabPane.addTab("Edge", edgeFormPanel);
+		formTabPane.addTab("Node Form", nodeFormPanel);
+		formTabPane.addTab("Edge Form", edgeFormPanel);
 
-		tableTabPane.addTab("Node", nodeTablePanel);
-		tableTabPane.addTab("Edge", edgeTablePanel);
+		tableTabPane.addTab("Node Database", nodeTablePanel);
+		tableTabPane.addTab("Edge Database", edgeTablePanel);
 
 		// Listeners
 		nodeTablePanel.setData(controller.getNodes());
@@ -68,6 +72,54 @@ public class MainFrame extends JFrame
 			edgeTablePanel.refresh();
 		});
 
+		toolbar.setToolbarListener(new ToolbarListener()
+		{
+			@Override
+			public void saveEventOccurred()
+			{
+				connect();
+
+				try
+				{
+					controller.saveNodes();
+					controller.saveEdges();
+				}
+				catch (SQLException e)
+				{
+					JOptionPane.showMessageDialog(MainFrame.this, "Unable to save to database.",
+							CONNECTION_ERROR_MESSAGE, JOptionPane.ERROR_MESSAGE);
+				}
+			}
+
+			@Override
+			public void refreshEventOccurred()
+			{
+				connect();
+
+				try
+				{
+					controller.loadNodes();
+					nodeTablePanel.refresh();
+				}
+				catch (SQLException e)
+				{
+					JOptionPane.showMessageDialog(MainFrame.this, "Unable to load nodes from database.",
+							CONNECTION_ERROR_MESSAGE, JOptionPane.ERROR_MESSAGE);
+				}
+
+				try
+				{
+					controller.loadEdges();
+					edgeTablePanel.refresh();
+				}
+				catch (SQLException e)
+				{
+					JOptionPane.showMessageDialog(MainFrame.this, "Unable to load edges from database.",
+							CONNECTION_ERROR_MESSAGE, JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
+
 		addWindowListener(new WindowAdapter()
 		{
 			@Override
@@ -82,6 +134,7 @@ public class MainFrame extends JFrame
 		add(formTabPane, BorderLayout.WEST);
 		add(graphPanel, BorderLayout.CENTER);
 		add(tableTabPane, BorderLayout.EAST);
+		add(toolbar, BorderLayout.NORTH);
 
 		setMinimumSize(new Dimension(1000, 400));
 		setSize(1500, 500);
@@ -97,7 +150,7 @@ public class MainFrame extends JFrame
 		{
 			controller.connect();
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
 			JOptionPane.showMessageDialog(MainFrame.this, "Cannot connect to database.",
 					CONNECTION_ERROR_MESSAGE, JOptionPane.ERROR_MESSAGE);

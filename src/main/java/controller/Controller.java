@@ -94,7 +94,7 @@ public class Controller
 		throw new NodeNotFoundException();
 	}
 
-	public void connect() throws Exception
+	public void connect() throws SQLException
 	{
 		db.connect();
 	}

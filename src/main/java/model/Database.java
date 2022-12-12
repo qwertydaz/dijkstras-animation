@@ -19,7 +19,7 @@ import java.util.List;
 
 public class Database
 {
-	private Connection conn;
+	private Connection conn = null;
 	private int col;
 
 	// Node data
@@ -57,22 +57,26 @@ public class Database
 		return new String[0];
 	}
 
-	public void connect() throws Exception
+	public void connect() throws SQLException
 	{
 		if (conn != null) return;
 
-		// No longer required to load the JDBC Driver using Class.forName()
-		try
-		{
-			Class.forName("com.mysql.jdbc.Driver");
-		}
-		catch (ClassNotFoundException e)
-		{
-			throw new Exception("Driver not found");
-		}
-
 		String[] databaseDetails = getDatabaseDetails();
-		conn = DriverManager.getConnection(databaseDetails[0], databaseDetails[1], databaseDetails[2]);
+
+		String url = databaseDetails[0];
+		String user = databaseDetails[1];
+		String password = databaseDetails[2];
+
+//		try
+//		{
+//			Class.forName("com.mysql.cj.jdbc.Driver");
+//		}
+//		catch (ClassNotFoundException e)
+//		{
+//			throw new ClassNotFoundException("Driver not found");
+//		}
+
+		conn = DriverManager.getConnection(url, user, password);
 	}
 
 	public void disconnect()
@@ -85,16 +89,16 @@ public class Database
 			}
 			catch (SQLException e)
 			{
-				System.out.println("Cannot close connection");
+				System.err.println("Cannot close connection");
 			}
 		}
 	}
 
 	public void saveNodes() throws SQLException
 	{
-		String checkSql = "SELECT count(*) AS COUNT FROM nodes WHERE id=?";
-		String insertSql = "INSERT INTO nodes (id, name) VALUES (?, ?)";
-		String updateSql = "UPDATE nodes SET name=? WHERE id=?";
+		String checkSql = "SELECT count(*) AS COUNT FROM nodes WHERE nodeId=?";
+		String insertSql = "INSERT INTO nodes (nodeId, name) VALUES (?, ?)";
+		String updateSql = "UPDATE nodes SET name=? WHERE nodeId=?";
 
 		try (
 				PreparedStatement checkStatement = conn.prepareStatement(checkSql);
@@ -141,9 +145,9 @@ public class Database
 
 	public void saveEdges() throws SQLException
 	{
-		String checkSql = "SELECT count(*) AS COUNT FROM edges WHERE id=?";
-		String insertSql = "INSERT INTO edges (id, node1Name, node2Name, weight) VALUES (?, ?, ?, ?)";
-		String updateSql = "UPDATE edges SET node1Name=?, node2Name=?, weight=? WHERE id=?";
+		String checkSql = "SELECT count(*) AS COUNT FROM edges WHERE edgeId=?";
+		String insertSql = "INSERT INTO edges (edgeId, node1Name, node2Name, weight) VALUES (?, ?, ?, ?)";
+		String updateSql = "UPDATE edges SET node1Name=?, node2Name=?, weight=? WHERE edgeId=?";
 
 		try (
 				PreparedStatement checkStatement = conn.prepareStatement(checkSql);
@@ -198,7 +202,7 @@ public class Database
 	{
 		nodes.clear();
 
-		String sql = "SELECT id, name FROM nodes ORDER BY id";
+		String sql = "SELECT nodeId, name FROM ORDER BY nodeId";
 
 		try (
 				Statement selectStatement = conn.createStatement();
@@ -220,7 +224,7 @@ public class Database
 	{
 		nodes.clear();
 
-		String sql = "SELECT id, node1Name, node2Name, weight FROM edges ORDER BY id";
+		String sql = "SELECT edgeId, node1Name, node2Name, weight FROM edges ORDER BY edgeId";
 
 		try (
 				Statement selectStatement = conn.createStatement();
