@@ -202,7 +202,7 @@ public class Database
 	{
 		nodes.clear();
 
-		String sql = "SELECT nodeId, name FROM ORDER BY nodeId";
+		String sql = "SELECT nodeId, name FROM nodes ORDER BY nodeId";
 
 		try (
 				Statement selectStatement = conn.createStatement();
@@ -222,7 +222,7 @@ public class Database
 
 	public void loadEdges() throws SQLException
 	{
-		nodes.clear();
+		edges.clear();
 
 		String sql = "SELECT edgeId, node1Name, node2Name, weight FROM edges ORDER BY edgeId";
 

@@ -2,13 +2,12 @@ package src.main.java.gui;
 
 import src.main.java.controller.Controller;
 import src.main.java.gui.edge.EdgeFormPanel;
-import src.main.java.gui.edge.EdgeTableModel;
+import src.main.java.gui.edge.EdgeTablePanel;
 import src.main.java.gui.node.NodeFormPanel;
-import src.main.java.gui.node.NodeTableModel;
+import src.main.java.gui.node.NodeTablePanel;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.WindowConstants;
 import java.awt.BorderLayout;
@@ -22,8 +21,8 @@ public class MainFrame extends JFrame
 	private static final String CONNECTION_ERROR_MESSAGE = "Database Connection Error";
 	private final Controller controller;
 	private final Toolbar toolbar;
-	private final TablePanel nodeTablePanel;
-	private final TablePanel edgeTablePanel;
+	private final NodeTablePanel nodeTablePanel;
+	private final EdgeTablePanel edgeTablePanel;
 	private final NodeFormPanel nodeFormPanel;
 	private final EdgeFormPanel edgeFormPanel;
 	private final GraphPanel graphPanel;
@@ -39,8 +38,8 @@ public class MainFrame extends JFrame
 
 		// Views
 		toolbar = new Toolbar();
-		nodeTablePanel = new TablePanel<>(new NodeTableModel());
-		edgeTablePanel = new TablePanel<>(new EdgeTableModel());
+		nodeTablePanel = new NodeTablePanel();
+		edgeTablePanel = new EdgeTablePanel();
 		nodeFormPanel = new NodeFormPanel();
 		edgeFormPanel = new EdgeFormPanel();
 		graphPanel = new GraphPanel();
@@ -55,10 +54,10 @@ public class MainFrame extends JFrame
 
 		// Listeners
 		nodeTablePanel.setData(controller.getNodes());
-		nodeTablePanel.setTableListener(controller::removeNode);
+		nodeTablePanel.setNodeTableListener(controller::removeNode);
 
 		edgeTablePanel.setData(controller.getEdges());
-		edgeTablePanel.setTableListener(controller::removeEdge);
+		edgeTablePanel.setEdgeTableListener(controller::removeEdge);
 
 		nodeFormPanel.setNodeFormListener(event ->
 		{
