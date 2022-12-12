@@ -67,7 +67,7 @@ public class MainFrame extends JFrame
 
 			if (!nodeName.isEmpty())
 			{
-				if (controller.isNodePresent(nodeName))
+				if (!controller.isNodePresent(nodeName))
 				{
 					controller.addNode(event);
 					nodeTablePanel.refresh();
@@ -92,7 +92,9 @@ public class MainFrame extends JFrame
 		//  - Flesh out GraphPanel:
 		//      - Finish and incorporate GraphCreator using database node and edge data
 		//  - Add more validation
+		//  - Update NodeName ComboBoxes when adding a node
 		//  - Create unit tests / GitLab CI Pipeline (?)
+		//  - Ensure max num of nodes is 10
 		edgeFormPanel.setEdgeFormListener(event ->
 		{
 			if (!event.getNode1Name().equals(event.getNode2Name()))

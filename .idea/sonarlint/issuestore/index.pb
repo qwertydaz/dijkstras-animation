@@ -6,12 +6,6 @@ X
 .gitignore,a\5\a5cc2925ca8258af241be7e5b0381edf30266302
 b
 2src/main/java/exception/NodeNotFoundException.java,4\2\426bd756c16f3431aae739b0771f1d02f5ab6558
-V
-&src/main/java/model/dijkstra/Node.java,f\3\f38c2619de3868a6958f952ef9516b8a125287e6
-V
-&src/main/java/model/dijkstra/Edge.java,b\4\b49ea1017d418101fa95187ad6a92e0e21927d40
-S
-#src/main/java/gui/GraphCreator.java,3\a\3a3c1037accf124dbfe72496b7c3665e6143d8fa
 \
 ,src/main/java/gui/edge/EdgeFormListener.java,9\e\9ee34bd0d08f973c7f117c14af84033f158346c4
 Y
@@ -32,7 +26,5 @@ V
 &src/main/java/gui/ToolbarListener.java,c\6\c689a43d4bc1a32dd2cbd8f07183143762efd932
 Y
 )src/main/java/gui/node/NodeFormPanel.java,a\2\a27aa18de07eab566947d96e84de79e3c0d15cfc
-Z
-*src/main/java/model/dijkstra/Dijkstra.java,c\b\cb58a077a36d61f9c467f7c2a352428ccee2b00a
 N
 src/main/java/gui/Toolbar.java,7\4\74cbc83bd2b40373ecab9fa380b965b718a99b54

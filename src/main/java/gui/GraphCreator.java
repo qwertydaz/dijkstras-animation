@@ -89,6 +89,10 @@ public class GraphCreator extends JPanel
 
 	private static final int EDGE_WEIGHT_FONT_SIZE = 12;
 
+	// TODO: add auto-spacing and positioning:
+	//  - Edges do not overlap and only touch their 2 nodes
+	//  - Nodes are fairly evenly positioned
+	//      - Max num of nodes is 10 so positioning can be predictable
 	public static void main(String[] args)
 	{
 		Node a = new Node(100, 100, "A");
