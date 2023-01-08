@@ -177,7 +177,7 @@ public class MainFrame extends JFrame
 		add(toolbar, BorderLayout.NORTH);
 
 		setMinimumSize(new Dimension(1000, 400));
-		setSize(1500, 500);
+		setSize(1200, 600);
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		setVisible(true);
 		Dimension size = getToolkit().getScreenSize();

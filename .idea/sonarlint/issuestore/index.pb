@@ -28,3 +28,23 @@ Y
 )src/main/java/gui/node/NodeFormPanel.java,a\2\a27aa18de07eab566947d96e84de79e3c0d15cfc
 N
 src/main/java/gui/Toolbar.java,7\4\74cbc83bd2b40373ecab9fa380b965b718a99b54
+Z
+*src/main/java/gui/edge/EdgeTablePanel.java,8\2\827220cab26f1171f7e69bdb7dee208aaef6d6eb
+Z
+*src/main/java/gui/node/NodeTablePanel.java,3\1\3150f074b797a75119c9c2c2d4b9d617c3ceb714
+Z
+*src/main/java/gui/node/NodeTableModel.java,9\f\9fcbe0a3f30a510aa606387bca3c5b16df230e1e
+Z
+*src/main/java/gui/edge/EdgeTableModel.java,1\c\1c0f56bdd08989c8b87914c5d9996a1d1b12d98f
+V
+&src/main/java/model/dijkstra/Edge.java,b\4\b49ea1017d418101fa95187ad6a92e0e21927d40
+V
+&src/main/java/model/dijkstra/Node.java,f\3\f38c2619de3868a6958f952ef9516b8a125287e6
+Y
+)src/main/java/gui/edge/EdgeFormPanel.java,a\a\aae151f2259520e019f78c48593d695097f1501d
+X
+(src/main/java/controller/Controller.java,0\5\05fd466bff28423ca702e1a116df355b44712db1
+Q
+!src/main/java/model/Database.java,a\d\ad18c1566664dd9d871b6ce6329c25009d53a6a4
+Z
+*src/main/java/model/dijkstra/Dijkstra.java,c\b\cb58a077a36d61f9c467f7c2a352428ccee2b00a
