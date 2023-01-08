@@ -1,13 +1,13 @@
 package src.main.java.gui;
 
 import javafx.application.Application;
-import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.effect.Glow;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.input.MouseButton;
-import javafx.scene.shape.Line;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
 public class GraphViewer extends Application
@@ -20,54 +20,49 @@ public class GraphViewer extends Application
 	@Override
 	public void start(Stage primaryStage)
 	{
-		Line line = new Line();
+		StackPane root = new StackPane();
 
-		line.setStartX(0);
-		line.setStartY(0);
-		line.setEndX(100);
-		line.setEndY(200);
+		Circle circle = new Circle(100, 100, 50, Color.LIGHTBLUE);
 
-		Group root = new Group();
-		root.getChildren().add(line);
+		ContextMenu contextMenu = new ContextMenu();
 
-		// Creating an image
-		Image img = new Image("https://media.geeksforgeeks.org/wp-content/uploads/20210224040124/JSBinCollaborativeJavaScriptDebugging6.png");
+		// Menu options
+		MenuItem menuItem1 = new MenuItem("Add Node");
+		MenuItem menuItem2 = new MenuItem("Add Edge");
 
-		// Setting the image view
-		ImageView imgView = new ImageView(img);
+		// Listeners
 
-		// Setting the position of the image
-		imgView.setX(100);
-		imgView.setY(100);
+		// Left click
+		root.setOnMouseClicked(mouseEvent -> contextMenu.hide());
 
-		// Setting the fit height and width of the image view
-		imgView.setFitHeight(200);
-		imgView.setFitWidth(400);
+		// Right click
+		root.setOnContextMenuRequested(event ->
+		{
+			// Determine the type of the node that was right-clicked
+			Object source = event.getPickResult().getIntersectedNode();
+			contextMenu.getItems().clear();
 
-		// Setting the preserve ratio of the image view
-		imgView.setPreserveRatio(true);
+			if (source instanceof Circle)
+			{
+				// Show only the second menu option if the user right-clicked on a Circle
+				contextMenu.getItems().add(menuItem2);
+			}
+			else
+			{
+				// Show only the first menu option if the user right-clicked on a node other than a Circle
+				contextMenu.getItems().add(menuItem1);
+			}
 
-		Glow glow = new Glow();
+			contextMenu.show(root, event.getScreenX(), event.getScreenY());
+		});
 
-		// Setting the level property
-		glow.setLevel(0.9);
-
-		imgView.setEffect(glow);
-
-		root.getChildren().add(imgView);
+		// Stage setup
+		root.getChildren().add(circle);
 
 		Scene scene = new Scene(root, 800, 600);
 
 		primaryStage.setTitle("Graph Viewer");
 		primaryStage.setScene(scene);
 		primaryStage.show();
-
-		scene.setOnMouseClicked(mouseEvent ->
-		{
-			if (mouseEvent.getButton() == MouseButton.SECONDARY)
-			{
-
-			}
-		});
 	}
 }
