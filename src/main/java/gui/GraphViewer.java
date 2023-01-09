@@ -3,13 +3,18 @@ package src.main.java.gui;
 import javafx.application.Application;
 import javafx.geometry.Point2D;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SeparatorMenuItem;
+import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -18,7 +23,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class GraphViewer extends Application
 {
-	Pane root;
+	Pane graphPane;
 
 	ContextMenu contextMenu;
 	SeparatorMenuItem separator;
@@ -27,8 +32,13 @@ public class GraphViewer extends Application
 	MenuItem addEdgeMenuItem;
 	MenuItem removeEdgeMenuItem;
 
+	TextField inputBox;
+	Scene popupScene;
+	Stage popupStage;
+
 	List<Circle> nodes;
 	List<Line> edges;
+	List<Text> nodeLabels;
 
 	List<Circle> selectedNodes;
 	Line selectedEdge;
@@ -37,6 +47,8 @@ public class GraphViewer extends Application
 	Color unselectedNodeColour = Color.LIGHTBLUE;
 	Color selectedEdgeColour = Color.RED;
 	Color unselectedEdgeColour = Color.GRAY;
+
+	Alert errorDialog;
 
 	Object source;
 
@@ -50,13 +62,19 @@ public class GraphViewer extends Application
 	{
 		nodes = new ArrayList<>();
 		edges = new ArrayList<>();
+		nodeLabels = new ArrayList<>();
 		selectedNodes = new ArrayList<>();
+		errorDialog = new Alert(Alert.AlertType.ERROR);
+		inputBox = new TextField();
+		popupScene = new Scene(inputBox, 300, 50);
+		popupStage = new Stage();
+		popupStage.setScene(popupScene);
 
 		setupContextMenu();
 
-		setupRoot();
+		setupGraphPane();
 
-		Scene scene = new Scene(root, 800, 600);
+		Scene scene = new Scene(graphPane, 800, 600);
 
 		primaryStage.setTitle("Graph Viewer");
 		primaryStage.setScene(scene);
@@ -89,13 +107,13 @@ public class GraphViewer extends Application
 		removeEdgeMenuItem.setOnAction(actionEvent -> removeEdge((Line) actionEvent.getSource()));
 	}
 
-	// Handles events in the window ("root")
-	private void setupRoot()
+	// Handles events in the graph pane
+	private void setupGraphPane()
 	{
-		root = new Pane();
+		graphPane = new Pane();
 
 		// Left click
-		root.setOnMouseClicked(mouseEvent ->
+		graphPane.setOnMouseClicked(mouseEvent ->
 		{
 			contextMenu.hide();
 
@@ -111,10 +129,12 @@ public class GraphViewer extends Application
 					clearSelectedEdge();
 				}
 			}
+
+			handleDoubleClick(mouseEvent);
 		});
 
 		// Right click
-		root.setOnContextMenuRequested(event ->
+		graphPane.setOnContextMenuRequested(event ->
 		{
 			// Determine what was right-clicked
 			source = event.getPickResult().getIntersectedNode();
@@ -141,33 +161,58 @@ public class GraphViewer extends Application
 				contextMenu.getItems().add(addNodeMenuItem);
 			}
 
-			contextMenu.show(root, event.getScreenX(), event.getScreenY());
+			contextMenu.show(graphPane, event.getScreenX(), event.getScreenY());
 		});
+	}
+
+	private void handleDoubleClick(MouseEvent mouseEvent)
+	{
+		if (mouseEvent.getClickCount() == 2)
+		{
+			if (source instanceof Circle)
+			{
+				selectNode((Circle) source);
+			}
+			else if (source instanceof Text)
+			{
+				popupStage.setTitle("Edit Label");
+				popupStage.show();
+
+				inputBox.setOnAction(event ->
+				{
+					((Text) source).setText(inputBox.getText());
+					popupStage.close();
+				});
+			}
+		}
 	}
 
 	private void addNode()
 	{
-		Circle node = new Circle(50);
+		Circle node = new Circle(graphPane.getWidth()/2, graphPane.getHeight()/2, 50);
 		node.setFill(unselectedNodeColour);
+
+		Text label = new Text("Node");
+		label.setFont(Font.font(24));
+
+		label.xProperty().bind(node.centerXProperty().subtract(node.getRadius()/2));
+		label.yProperty().bind(node.centerYProperty().add(node.getRadius()/8));
 
 		setupNodeListeners(node);
 
-		root.getChildren().add(node);
+		graphPane.getChildren().add(label);
+		graphPane.getChildren().add(node);
 		nodes.add(node);
+		nodeLabels.add(label);
+
+		label.toFront();
 	}
 
 	private void setupNodeListeners(Circle node)
 	{
-		node.setOnMouseClicked(event ->
-		{
-			if (event.getClickCount() == 2)
-			{
-				// The circle has been double-clicked
-				selectNode(node);
-			}
-		});
-
 		setupDraggableNode(node);
+
+		// Setup more event listeners for node...
 	}
 	
 	private void setupDraggableNode(Circle node)
@@ -189,6 +234,7 @@ public class GraphViewer extends Application
 			}
 
 			node.toFront();
+			displayNodeLabels();
 		});
 
 		node.setOnMouseDragged(mouseEvent ->
@@ -221,7 +267,7 @@ public class GraphViewer extends Application
 	// TODO:
 	private void removeNode(Circle node)
 	{
-		root.getChildren().remove(node);
+		graphPane.getChildren().remove(node);
 		nodes.remove(node);
 	}
 
@@ -231,7 +277,6 @@ public class GraphViewer extends Application
 		edge.setStrokeWidth(3);
 		edge.setStroke(unselectedEdgeColour);
 
-		edges.add(edge);
 		setupEdgeListeners(edge);
 
 		Circle node1 = selectedNodes.get(0);
@@ -242,9 +287,22 @@ public class GraphViewer extends Application
 		edge.endXProperty().bind(node2.centerXProperty());
 		edge.endYProperty().bind(node2.centerYProperty());
 
-		root.getChildren().add(edge);
+		Text label = new Text("0");
+		label.setFont(Font.font(24));
+
+		// Bind the position of the label to the midpoint of the line
+		label.xProperty().bind(edge.startXProperty().add(edge.endXProperty()).divide(2));
+		label.yProperty().bind(edge.startYProperty().add(edge.endYProperty()).divide(2));
+
+		graphPane.getChildren().add(label);
+		graphPane.getChildren().add(edge);
+
+		edges.add(edge);
+
+		label.toFront();
 		node1.toFront();
 		node2.toFront();
+		displayNodeLabels();
 	}
 
 	private void setupEdgeListeners(Line edge)
@@ -262,7 +320,7 @@ public class GraphViewer extends Application
 	// TODO:
 	private void removeEdge(Line edge)
 	{
-		root.getChildren().remove(edge);
+		graphPane.getChildren().remove(edge);
 		edges.remove(edge);
 	}
 
@@ -305,5 +363,21 @@ public class GraphViewer extends Application
 	{
 		selectedEdge.setStroke(unselectedEdgeColour);
 		selectedEdge = null;
+	}
+
+	private void displayNodeLabels()
+	{
+		for (Text label: nodeLabels)
+		{
+			label.toFront();
+		}
+	}
+
+	private void displayErrorMessage(String header, String message)
+	{
+		errorDialog.setTitle("Error");
+		errorDialog.setHeaderText(header);
+		errorDialog.setContentText(message);
+		errorDialog.showAndWait();
 	}
 }
