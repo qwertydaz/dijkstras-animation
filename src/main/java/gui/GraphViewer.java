@@ -1,11 +1,12 @@
 package src.main.java.gui;
 
 import javafx.application.Application;
+import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SeparatorMenuItem;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
@@ -17,7 +18,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class GraphViewer extends Application
 {
-	StackPane root;
+	Pane root;
 
 	ContextMenu contextMenu;
 	SeparatorMenuItem separator;
@@ -29,13 +30,13 @@ public class GraphViewer extends Application
 	List<Circle> nodes;
 	List<Line> edges;
 
-	List<Circle> selectedNodes = new ArrayList<>();
+	List<Circle> selectedNodes;
 	Line selectedEdge;
 
 	Color selectedNodeColour = Color.RED;
 	Color unselectedNodeColour = Color.LIGHTBLUE;
 	Color selectedEdgeColour = Color.RED;
-	Color unselectedEdgeColour = Color.BLACK;
+	Color unselectedEdgeColour = Color.GRAY;
 
 	Object source;
 
@@ -49,6 +50,7 @@ public class GraphViewer extends Application
 	{
 		nodes = new ArrayList<>();
 		edges = new ArrayList<>();
+		selectedNodes = new ArrayList<>();
 
 		setupContextMenu();
 
@@ -72,6 +74,7 @@ public class GraphViewer extends Application
 		addNodeMenuItem = new MenuItem("Add Node");
 		addNodeMenuItem.setOnAction(actionEvent -> addNode());
 
+		// TODO:
 		// Menu option 2
 		removeNodeMenuItem = new MenuItem("Remove Node");
 		removeNodeMenuItem.setOnAction(actionEvent -> removeNode((Circle) actionEvent.getSource()));
@@ -80,6 +83,7 @@ public class GraphViewer extends Application
 		addEdgeMenuItem = new MenuItem("Add Edge");
 		addEdgeMenuItem.setOnAction(actionEvent -> addEdge());
 
+		// TODO:
 		// Menu option 4
 		removeEdgeMenuItem = new MenuItem("Remove Edge");
 		removeEdgeMenuItem.setOnAction(actionEvent -> removeEdge((Line) actionEvent.getSource()));
@@ -88,7 +92,7 @@ public class GraphViewer extends Application
 	// Handles events in the window ("root")
 	private void setupRoot()
 	{
-		root = new StackPane();
+		root = new Pane();
 
 		// Left click
 		root.setOnMouseClicked(mouseEvent ->
@@ -120,8 +124,12 @@ public class GraphViewer extends Application
 			{
 				// Show only the second menu option if the user right-clicked on a node
 				contextMenu.getItems().add(removeNodeMenuItem);
-				contextMenu.getItems().add(separator);
-				contextMenu.getItems().add(addEdgeMenuItem);
+
+				if (selectedNodes.size() == 2)
+				{
+					contextMenu.getItems().add(separator);
+					contextMenu.getItems().add(addEdgeMenuItem);
+				}
 			}
 			else if (source instanceof Line)
 			{
@@ -139,11 +147,17 @@ public class GraphViewer extends Application
 
 	private void addNode()
 	{
-		System.out.println("Add Node");
+		Circle node = new Circle(50);
+		node.setFill(unselectedNodeColour);
 
-		Circle node = new Circle(100, 100, 50, unselectedNodeColour);
+		setupNodeListeners(node);
 
-		// Event listeners
+		root.getChildren().add(node);
+		nodes.add(node);
+	}
+
+	private void setupNodeListeners(Circle node)
+	{
 		node.setOnMouseClicked(event ->
 		{
 			if (event.getClickCount() == 2)
@@ -153,18 +167,17 @@ public class GraphViewer extends Application
 			}
 		});
 
-		// Tracks position of node when being dragged
-		AtomicReference<Double> orgSceneX = new AtomicReference<>((double) 0);
-		AtomicReference<Double> orgSceneY = new AtomicReference<>((double) 0);
-		AtomicReference<Double> orgTranslateX = new AtomicReference<>((double) 0);
-		AtomicReference<Double> orgTranslateY = new AtomicReference<>((double) 0);
+		setupDraggableNode(node);
+	}
+	
+	private void setupDraggableNode(Circle node)
+	{
+		AtomicReference<Point2D> mouseLocation = new AtomicReference<>();
 
-		node.setOnMousePressed(event ->
+		node.setOnMousePressed(mouseEvent ->
 		{
-			orgSceneX.set(event.getSceneX());
-			orgSceneY.set(event.getSceneY());
-			orgTranslateX.set(((Circle) (event.getSource())).getTranslateX());
-			orgTranslateY.set(((Circle) (event.getSource())).getTranslateY());
+			// Record the current mouse position
+			mouseLocation.set(new Point2D(mouseEvent.getSceneX(), mouseEvent.getSceneY()));
 
 			if (selectedNodes.contains(node))
 			{
@@ -178,18 +191,21 @@ public class GraphViewer extends Application
 			node.toFront();
 		});
 
-		node.setOnMouseDragged(event ->
+		node.setOnMouseDragged(mouseEvent ->
 		{
-			double offsetX = event.getSceneX() - orgSceneX.get();
-			double offsetY = event.getSceneY() - orgSceneY.get();
-			double newTranslateX = orgTranslateX.get() + offsetX;
-			double newTranslateY = orgTranslateY.get() + offsetY;
+			// Calculate the distance the mouse was dragged
+			double deltaX = mouseEvent.getSceneX() - mouseLocation.get().getX();
+			double deltaY = mouseEvent.getSceneY() - mouseLocation.get().getY();
 
-			((Circle)(event.getSource())).setTranslateX(newTranslateX);
-			((Circle)(event.getSource())).setTranslateY(newTranslateY);
+			// Move the node by the drag distance
+			node.setCenterX(node.getCenterX() + deltaX);
+			node.setCenterY(node.getCenterY() + deltaY);
+
+			// Update the current mouse position
+			mouseLocation.set(new Point2D(mouseEvent.getSceneX(), mouseEvent.getSceneY()));
 		});
 
-		node.setOnMouseReleased(event ->
+		node.setOnMouseReleased(mouseEvent ->
 		{
 			if (selectedNodes.contains(node))
 			{
@@ -200,11 +216,9 @@ public class GraphViewer extends Application
 				node.setFill(unselectedNodeColour);
 			}
 		});
-
-		root.getChildren().add(node);
-		nodes.add(node);
 	}
 
+	// TODO:
 	private void removeNode(Circle node)
 	{
 		root.getChildren().remove(node);
@@ -213,12 +227,28 @@ public class GraphViewer extends Application
 
 	private void addEdge()
 	{
-		System.out.println("Add Edge");
+		Line edge = new Line();
+		edge.setStrokeWidth(3);
+		edge.setStroke(unselectedEdgeColour);
 
-		Line edge = new Line(0, 0, 100, 200);
-		edge.setFill(unselectedEdgeColour);
+		edges.add(edge);
+		setupEdgeListeners(edge);
 
-		// Event listeners
+		Circle node1 = selectedNodes.get(0);
+		Circle node2 = selectedNodes.get(1);
+
+		edge.startXProperty().bind(node1.centerXProperty());
+		edge.startYProperty().bind(node1.centerYProperty());
+		edge.endXProperty().bind(node2.centerXProperty());
+		edge.endYProperty().bind(node2.centerYProperty());
+
+		root.getChildren().add(edge);
+		node1.toFront();
+		node2.toFront();
+	}
+
+	private void setupEdgeListeners(Line edge)
+	{
 		edge.setOnMouseClicked(event ->
 		{
 			if (event.getClickCount() == 2)
@@ -227,11 +257,9 @@ public class GraphViewer extends Application
 				selectEdge(edge);
 			}
 		});
-
-		root.getChildren().add(edge);
-		edges.add(edge);
 	}
 
+	// TODO:
 	private void removeEdge(Line edge)
 	{
 		root.getChildren().remove(edge);
@@ -268,14 +296,14 @@ public class GraphViewer extends Application
 	// Selects an edge by changing colour and adding to variable
 	private void selectEdge(Line edge)
 	{
-		edge.setFill(selectedEdgeColour);
+		edge.setStroke(selectedEdgeColour);
 		selectedEdge = edge;
 	}
 
 	// Deselects edge by changing colour and emptying variable
 	private void clearSelectedEdge()
 	{
-		selectedEdge.setFill(unselectedEdgeColour);
+		selectedEdge.setStroke(unselectedEdgeColour);
 		selectedEdge = null;
 	}
 }
