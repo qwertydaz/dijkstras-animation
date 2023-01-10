@@ -4,12 +4,14 @@ import src.main.java.model.dijkstra.Edge;
 import src.main.java.model.dijkstra.Node;
 import src.main.java.exception.WeightNotFoundException;
 
+import java.util.List;
+
 public abstract class Graph
 {
-	Node[] nodes;
-	Edge[] edges;
+	List<Node> nodes;
+	List<Edge> edges;
 
-	protected Graph(Node[] nodes, Edge[] edges)
+	protected Graph(List<Node> nodes, List<Edge> edges)
 	{
 		this.nodes = nodes;
 		this.edges = edges;
@@ -41,12 +43,12 @@ public abstract class Graph
 		throw new WeightNotFoundException();
 	}
 
-	public Node[] getNodes()
+	public List<Node> getNodes()
 	{
 		return nodes;
 	}
 
-	public Edge[] getEdges()
+	public List<Edge> getEdges()
 	{
 		return edges;
 	}

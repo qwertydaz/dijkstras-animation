@@ -1,6 +1,7 @@
 package src.main.java.model.dijkstra;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -9,7 +10,7 @@ public class NodeMap implements Map<Node, Integer>
 {
 	private final Map<Node, Integer> nodesAndLValues;
 
-	public NodeMap(Node[] nodes)
+	public NodeMap(List<Node> nodes)
 	{
 		this.nodesAndLValues = new TreeMap<>();
 

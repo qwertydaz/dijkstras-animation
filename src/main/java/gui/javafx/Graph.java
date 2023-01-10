@@ -7,6 +7,11 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -70,7 +75,18 @@ public class Graph
 
 		// Menu option 1
 		addNodeMenuItem = new MenuItem("Add Node");
-		addNodeMenuItem.setOnAction(actionEvent -> addNode());
+		addNodeMenuItem.setOnAction(actionEvent ->
+		{
+			if (nodes.size() < 10)
+			{
+				addNode();
+			}
+			else
+			{
+				Util.displayErrorMessage("MAX LIMIT Reached",
+						"You can only have up to 10 nodes.");
+			}
+		});
 
 		// TODO:
 		// Menu option 2
@@ -91,6 +107,9 @@ public class Graph
 	private void setupGraphPane()
 	{
 		graphPane = new Pane();
+
+		graphPane.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY,
+				BorderWidths.DEFAULT)));
 
 		// Left click
 		graphPane.setOnMouseClicked(mouseEvent ->
@@ -220,15 +239,20 @@ public class Graph
 		node.setOnMouseDragged(mouseEvent ->
 		{
 			// Calculate the distance the mouse was dragged
-			double deltaX = mouseEvent.getSceneX() - mouseLocation.get().getX();
-			double deltaY = mouseEvent.getSceneY() - mouseLocation.get().getY();
+			double x = node.getCenterX() + mouseEvent.getSceneX() - mouseLocation.get().getX();
+			double y = node.getCenterY() + mouseEvent.getSceneY() - mouseLocation.get().getY();
 
-			// Move the node by the drag distance
-			node.setCenterX(node.getCenterX() + deltaX);
-			node.setCenterY(node.getCenterY() + deltaY);
+			// Check if the circle is within the bounds of the pane
+			if (x - node.getRadius() > 0 && x + node.getRadius() < graphPane.getWidth() &&
+					y - node.getRadius() > 0 && y + node.getRadius() < graphPane.getHeight())
+			{
+				// Move the node by the drag distance
+				node.setCenterX(x);
+				node.setCenterY(y);
 
-			// Update the current mouse position
-			mouseLocation.set(new Point2D(mouseEvent.getSceneX(), mouseEvent.getSceneY()));
+				// Update the current mouse position
+				mouseLocation.set(new Point2D(mouseEvent.getSceneX(), mouseEvent.getSceneY()));
+			}
 		});
 
 		node.setOnMouseReleased(mouseEvent ->

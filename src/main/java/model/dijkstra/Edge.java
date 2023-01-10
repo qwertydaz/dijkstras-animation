@@ -1,6 +1,7 @@
 package src.main.java.model.dijkstra;
 
 import javafx.scene.shape.Line;
+import javafx.scene.text.Text;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -16,6 +17,7 @@ public class Edge
 	private int weight;
 	private final Set<Node> nodes;
 
+	private Text label;
 	private Line shape;
 
 	public Edge(Node node1, Node node2)
@@ -41,10 +43,11 @@ public class Edge
 		this.id = id;
 	}
 
-	public Edge(Node node1, Node node2, int weight, Line shape)
+	public Edge(Node node1, Node node2, Text label, Line shape)
 	{
 		this(node1, node2);
-		this.weight = weight;
+		this.weight = Integer.parseInt(label.getText());
+		this.label = label;
 		this.shape = shape;
 	}
 
@@ -71,6 +74,11 @@ public class Edge
 	public Set<Node> getNodes()
 	{
 		return nodes;
+	}
+
+	public Text getLabel()
+	{
+		return label;
 	}
 
 	public Line getShape()

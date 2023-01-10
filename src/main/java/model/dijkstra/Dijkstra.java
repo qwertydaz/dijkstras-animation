@@ -4,7 +4,9 @@ import src.main.java.exception.WeightNotFoundException;
 import src.main.java.model.Graph;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -14,7 +16,7 @@ public class Dijkstra extends Graph
 	private final NodeMap visitedNodes;
 	private final ArrayList<ArrayList<String>> steps = new ArrayList<>();
 
-	public Dijkstra(Node[] nodes, Edge[] edges)
+	public Dijkstra(List<Node> nodes, List<Edge> edges)
 	{
 		super(nodes, edges);
 		this.unvisitedNodes = new NodeMap(nodes);
@@ -160,15 +162,15 @@ public class Dijkstra extends Graph
 		Node nodeD = new Node("D");
 		Node nodeE = new Node("E");
 
-		Node[] nodes = new Node[] {nodeA, nodeB, nodeC, nodeD, nodeE};
+		LinkedList<Node> nodes = new LinkedList<>(Arrays.asList(nodeA, nodeB, nodeC, nodeD, nodeE));
 
-		Edge[] edges = new Edge[] {
+		LinkedList<Edge> edges = new LinkedList<>(Arrays.asList(
 				new Edge(nodeA, nodeE, 2),
 				new Edge(nodeE, nodeC, 3),
 				new Edge(nodeE, nodeD, 7),
 				new Edge(nodeC, nodeD, 3),
 				new Edge(nodeB, nodeC, 4)
-		};
+		));
 
 		Dijkstra dijkstraAlgo = new Dijkstra(nodes, edges);
 
