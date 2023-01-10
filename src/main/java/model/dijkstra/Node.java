@@ -1,5 +1,7 @@
 package src.main.java.model.dijkstra;
 
+import javafx.scene.shape.Circle;
+
 import java.util.Objects;
 
 public class Node implements Comparable<Node>
@@ -8,14 +10,17 @@ public class Node implements Comparable<Node>
 	private int id;
 
 	private String name;
+
 	private int x;
 	private int y;
+	private Circle shape;
 
-	public Node(int x, int y, String name)
+	public Node(String name, int x, int y, Circle shape)
 	{
 		this(name);
 		this.x = x;
 		this.y = y;
+		this.shape = shape;
 	}
 
 	public Node(String name)
@@ -56,6 +61,11 @@ public class Node implements Comparable<Node>
 	public int getY()
 	{
 		return y;
+	}
+
+	public Circle getShape()
+	{
+		return shape;
 	}
 
 	@Override

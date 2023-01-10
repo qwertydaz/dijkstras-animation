@@ -1,4 +1,4 @@
-package src.main.java.controller;
+package src.main.java.gui.javafx;
 
 import src.main.java.exception.NodeNotFoundException;
 import src.main.java.gui.swing.edge.EdgeFormEvent;
@@ -10,6 +10,7 @@ import src.main.java.model.dijkstra.Node;
 import java.sql.SQLException;
 import java.util.List;
 
+// TODO: setup connection between javafx app and database (save/load)
 public class Controller
 {
 	Database db = new Database();

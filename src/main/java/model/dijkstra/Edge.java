@@ -1,5 +1,7 @@
 package src.main.java.model.dijkstra;
 
+import javafx.scene.shape.Line;
+
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -13,6 +15,8 @@ public class Edge
 	private final Node node2;
 	private int weight;
 	private final Set<Node> nodes;
+
+	private Line shape;
 
 	public Edge(Node node1, Node node2)
 	{
@@ -35,6 +39,13 @@ public class Edge
 		this(node1, node2, weight);
 
 		this.id = id;
+	}
+
+	public Edge(Node node1, Node node2, int weight, Line shape)
+	{
+		this(node1, node2);
+		this.weight = weight;
+		this.shape = shape;
 	}
 
 	public int getId()
@@ -60,6 +71,11 @@ public class Edge
 	public Set<Node> getNodes()
 	{
 		return nodes;
+	}
+
+	public Line getShape()
+	{
+		return shape;
 	}
 
 	// checks if one edge has the same nodes as another edge
