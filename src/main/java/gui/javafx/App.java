@@ -20,7 +20,7 @@ public class App extends Application
 	{
 		graph = new Graph(controller);
 		table = new Table(controller);
-		buttons = new Buttons(graph, table);
+		buttons = new Buttons(controller, graph, table);
 	}
 
 	public static void main(String[] args)

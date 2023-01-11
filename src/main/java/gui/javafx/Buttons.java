@@ -13,17 +13,18 @@ import javafx.scene.paint.Color;
 
 public class Buttons
 {
+	private final Controller controller;
+
 	private GridPane buttonsPane;
-	private Graph graph;
-	private Table table;
+	private final Graph graph;
+	private final Table table;
 
-	private Button refreshTableButton;
-	private Button fillTableButton;
-
+	private Button dijkstraButton;
 	private Button clearGraphButton;
 
-	public Buttons(Graph graph, Table table)
+	public Buttons(Controller controller, Graph graph, Table table)
 	{
+		this.controller = controller;
 		this.graph = graph;
 		this.table = table;
 
@@ -49,35 +50,41 @@ public class Buttons
 	private void setupButtons()
 	{
 		// Button 1
-		refreshTableButton = new Button("Refresh Table");
-		refreshTableButton.prefHeight(Double.MAX_VALUE);
-		refreshTableButton.prefWidth(Double.MAX_VALUE);
-		GridPane.setHgrow(refreshTableButton, Priority.ALWAYS);
-		GridPane.setVgrow(refreshTableButton, Priority.ALWAYS);
+		dijkstraButton = new Button("Run Dijkstra's Algorithm");
+		dijkstraButton.prefHeight(Double.MAX_VALUE);
+		dijkstraButton.prefWidth(Double.MAX_VALUE);
+		GridPane.setHgrow(dijkstraButton, Priority.ALWAYS);
+		GridPane.setVgrow(dijkstraButton, Priority.ALWAYS);
 
 		// Button 2
-		fillTableButton = new Button("Fill Table");
-		fillTableButton.prefHeight(Double.MAX_VALUE);
-		fillTableButton.prefWidth(Double.MAX_VALUE);
-		GridPane.setHgrow(fillTableButton, Priority.ALWAYS);
-		GridPane.setVgrow(fillTableButton, Priority.ALWAYS);
-
-		// Button 3
 		clearGraphButton = new Button("Clear Graph");
 		clearGraphButton.prefHeight(Double.MAX_VALUE);
 		clearGraphButton.prefWidth(Double.MAX_VALUE);
 		GridPane.setHgrow(clearGraphButton, Priority.ALWAYS);
 		GridPane.setVgrow(clearGraphButton, Priority.ALWAYS);
 
-		buttonsPane.add(refreshTableButton, 0, 0);
-		buttonsPane.add(fillTableButton, 1, 0);
-		buttonsPane.add(clearGraphButton, 2, 0);
+		buttonsPane.add(dijkstraButton, 0, 0);
+		buttonsPane.add(clearGraphButton, 1, 0);
 	}
 
 	private void setupButtonsActions()
 	{
-		refreshTableButton.setOnAction(actionEvent -> table.refreshTable());
-		fillTableButton.setOnAction(actionEvent -> table.fillTable());
+		// Button 1
+		dijkstraButton.setOnAction(actionEvent ->
+		{
+			if (controller.getStartNode() != null)
+			{
+				table.fillTable();
+			}
+			else
+			{
+				Util.displayErrorMessage("No start node selected!",
+						"Right click on a node to select it as the start node.");
+			}
+		});
+
+		// TODO: Clear table as well
+		// Button 2
 		clearGraphButton.setOnAction(actionEvent -> graph.clearGraph());
 	}
 }

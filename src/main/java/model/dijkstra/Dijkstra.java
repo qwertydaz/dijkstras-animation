@@ -14,23 +14,26 @@ public class Dijkstra extends Graph
 {
 	private final NodeMap unvisitedNodes;
 	private final NodeMap visitedNodes;
-	private final ArrayList<ArrayList<String>> steps = new ArrayList<>();
+	private final ArrayList<String[]> steps = new ArrayList<>();
+	private int stepSize;
 
 	public Dijkstra(List<Node> nodes, List<Edge> edges)
 	{
 		super(nodes, edges);
 		this.unvisitedNodes = new NodeMap(nodes);
 		this.visitedNodes = new NodeMap();
+		this.stepSize = nodes.size();
 	}
 
 	public void updateNodes(List<Node> nodes)
 	{
 		this.unvisitedNodes.update(nodes);
 		this.visitedNodes.clear();
+		this.stepSize = nodes.size();
 	}
 
 	// Dijkstra's Algorithm
-	public List<ArrayList<String>> run(Node startingNode)
+	public List<String[]> run(Node startingNode)
 	{
 		try
 		{
@@ -56,11 +59,13 @@ public class Dijkstra extends Graph
 
 	private void instantiateSteps()
 	{
-		ArrayList<String> step = new ArrayList<>();
+		String[] step = new String[stepSize];
+		int index = 0;
 
 		for (Map.Entry<Node, Integer> entry : unvisitedNodes.entrySet())
 		{
-			step.add(entry.getKey().getName());
+			step[index] = entry.getKey().getName();
+			index++;
 		}
 
 		steps.add(step);
@@ -68,11 +73,13 @@ public class Dijkstra extends Graph
 
 	private void updateSteps()
 	{
-		ArrayList<String> step = new ArrayList<>();
+		String[] step = new String[stepSize];
+		int index = 0;
 
 		for (Map.Entry<Node, Integer> entry : unvisitedNodes.entrySet())
 		{
-			step.add(String.valueOf(entry.getValue()));
+			step[index] = entry.getValue().toString();
+			index++;
 		}
 
 		steps.add(step);
@@ -180,11 +187,11 @@ public class Dijkstra extends Graph
 
 		Dijkstra dijkstraAlgo = new Dijkstra(nodes, edges);
 
-		ArrayList<ArrayList<String>> steps = (ArrayList<ArrayList<String>>) dijkstraAlgo.run(nodeA);
+		ArrayList<String[]> steps = (ArrayList<String[]>) dijkstraAlgo.run(nodeA);
 
-		for (ArrayList<String> step : steps)
+		for (String[] step : steps)
 		{
-			System.out.println(step);
+			System.out.println(Arrays.toString(step));
 		}
 	}
 }

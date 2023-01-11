@@ -67,7 +67,7 @@ public class Controller
 		db.setStartNode(node);
 	}
 
-	public List<ArrayList<String>> runDijkstra()
+	public List<String[]> runDijkstra()
 	{
 		return db.runDijkstra();
 	}

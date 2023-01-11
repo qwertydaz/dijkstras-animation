@@ -177,7 +177,7 @@ public class Database
 		edges.removeIf(edge -> node == edge.getNode1() || node == edge.getNode2());
 	}
 
-	public List<ArrayList<String>> runDijkstra()
+	public List<String[]> runDijkstra()
 	{
 		if (startNode != null)
 		{
