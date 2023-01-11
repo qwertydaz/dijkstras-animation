@@ -51,6 +51,12 @@ public class Node implements Comparable<Node>
 		return name;
 	}
 
+	public void setName(String name)
+	{
+		this.name = name;
+		label.setText(name);
+	}
+
 	public Text getLabel()
 	{
 		return label;

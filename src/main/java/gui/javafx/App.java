@@ -14,11 +14,12 @@ public class App extends Application
 	Graph graph;
 	Table table;
 	Buttons buttons;
+	Controller controller = new Controller();
 
 	public App()
 	{
-		graph = new Graph();
-		table = new Table();
+		graph = new Graph(controller);
+		table = new Table(controller);
 		buttons = new Buttons(graph, table);
 	}
 

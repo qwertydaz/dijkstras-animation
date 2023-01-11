@@ -42,14 +42,4 @@ public abstract class Graph
 
 		throw new WeightNotFoundException();
 	}
-
-	public List<Node> getNodes()
-	{
-		return nodes;
-	}
-
-	public List<Edge> getEdges()
-	{
-		return edges;
-	}
 }

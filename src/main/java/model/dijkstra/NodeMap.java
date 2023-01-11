@@ -25,6 +25,16 @@ public class NodeMap implements Map<Node, Integer>
 		this.nodesAndLValues = new TreeMap<>();
 	}
 
+	public void update(List<Node> nodes)
+	{
+		nodesAndLValues.clear();
+
+		for (Node node : nodes)
+		{
+			nodesAndLValues.put(node, null);
+		}
+	}
+
 	@Override
 	public Integer put(Node node, Integer integer)
 	{

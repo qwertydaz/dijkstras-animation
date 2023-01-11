@@ -71,6 +71,12 @@ public class Edge
 		return weight;
 	}
 
+	public void setWeight(String weight)
+	{
+		this.weight = Integer.parseInt(weight);
+		label.setText(weight);
+	}
+
 	public Set<Node> getNodes()
 	{
 		return nodes;

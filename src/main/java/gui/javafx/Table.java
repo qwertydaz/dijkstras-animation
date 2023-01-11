@@ -17,11 +17,13 @@ import java.util.List;
 public class Table
 {
 	private Pane tablePane;
-	private final Controller controller = new Controller();
+	private final Controller controller;
 	private TableView<String> lTable;
 
-	public Table()
+	public Table(Controller controller)
 	{
+		this.controller = controller;
+
 		setupTablePane();
 	}
 

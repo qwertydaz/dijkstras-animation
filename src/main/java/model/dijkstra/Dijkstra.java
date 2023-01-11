@@ -23,8 +23,14 @@ public class Dijkstra extends Graph
 		this.visitedNodes = new NodeMap();
 	}
 
+	public void updateNodes(List<Node> nodes)
+	{
+		this.unvisitedNodes.update(nodes);
+		this.visitedNodes.clear();
+	}
+
 	// Dijkstra's Algorithm
-	public List<ArrayList<String>> findShortestPaths(Node startingNode)
+	public List<ArrayList<String>> run(Node startingNode)
 	{
 		try
 		{
@@ -174,7 +180,7 @@ public class Dijkstra extends Graph
 
 		Dijkstra dijkstraAlgo = new Dijkstra(nodes, edges);
 
-		ArrayList<ArrayList<String>> steps = (ArrayList<ArrayList<String>>) dijkstraAlgo.findShortestPaths(nodeA);
+		ArrayList<ArrayList<String>> steps = (ArrayList<ArrayList<String>>) dijkstraAlgo.run(nodeA);
 
 		for (ArrayList<String> step : steps)
 		{

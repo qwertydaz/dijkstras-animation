@@ -52,10 +52,11 @@ public class Graph
 	private static final Color unselectedEdgeColour = Color.GRAY;
 
 	private Object source;
-	private final Controller controller = new Controller();
+	private final Controller controller;
 
-	public Graph()
+	public Graph(Controller controller)
 	{
+		this.controller = controller;
 		nodeLabels = new ArrayList<>();
 		selectedNodes = new ArrayList<>();
 		inputBox = new TextField();
@@ -208,8 +209,9 @@ public class Graph
 
 				inputBox.setOnAction(event ->
 				{
-					((Text) source).setText(inputBox.getText());
+					controller.updateLabel((Text) source, inputBox.getText());
 					popupStage.close();
+					inputBox.clear();
 				});
 			}
 		}
@@ -330,7 +332,7 @@ public class Graph
 		edge.endXProperty().bind(node2.centerXProperty());
 		edge.endYProperty().bind(node2.centerYProperty());
 
-		Text label = new Text("0");
+		Text label = new Text("1");
 		label.setFont(Font.font(24));
 
 		// Bind the position of the label to the midpoint of the line
@@ -421,23 +423,20 @@ public class Graph
 	// Selects a starting node by changing colour and adding to variable
 	private void selectStartNode(Circle node)
 	{
-		if (selectedStartNode == null)
-		{
-			controller.setStartNode(node);
-			node.setStroke(selectedStartNodeColour);
-			node.setStrokeWidth(3);
-			selectedStartNode = node;
-		}
-		else
+		if (selectedStartNode != null)
 		{
 			clearSelectedStartNode();
 		}
+
+		controller.setStartNode(node);
+		node.setStroke(selectedStartNodeColour);
+		node.setStrokeWidth(3);
+		selectedStartNode = node;
 	}
 
 	// Deselects starting node by changing colour and emptying variable
 	private void clearSelectedStartNode()
 	{
-		controller.setStartNode(null);
 		selectedStartNode.setStroke(null);
 		selectedStartNode = null;
 	}

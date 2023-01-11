@@ -3,6 +3,7 @@ package src.main.java.gui.javafx;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
+import src.main.java.model.dijkstra.Node;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +20,11 @@ public class Controller
 	public List<Line> getEdges()
 	{
 		return db.getEdges();
+	}
+
+	public Node getStartNode()
+	{
+		return db.getStartNode();
 	}
 
 	public void saveNode(Text label, Circle node)
@@ -39,6 +45,11 @@ public class Controller
 	public void deleteEdge(Line edge)
 	{
 		db.deleteEdge(edge);
+	}
+
+	public void updateLabel(Text label, String newText)
+	{
+		db.updateLabel(label, newText);
 	}
 
 	public Text findLabel(Circle node)

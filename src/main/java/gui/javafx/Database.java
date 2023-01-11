@@ -41,16 +41,14 @@ public class Database
 		return edgeShapes;
 	}
 
+	public Node getStartNode()
+	{
+		return startNode;
+	}
+
 	public void setStartNode(Circle nodeShape)
 	{
-		if (nodeShape == null)
-		{
-			startNode = null;
-		}
-		else
-		{
-			startNode = findNode(nodeShape);
-		}
+		startNode = findNode(nodeShape);
 	}
 
 	public void saveNode(Text label, Circle node)
@@ -153,6 +151,27 @@ public class Database
 		return null;
 	}
 
+	public void updateLabel(Text label, String newText)
+	{
+		for (Edge edge : edges)
+		{
+			if (label == edge.getLabel())
+			{
+				edge.setWeight(newText);
+				return;
+			}
+		}
+
+		for (Node node : nodes)
+		{
+			if (label == node.getLabel())
+			{
+				node.setName(newText);
+				return;
+			}
+		}
+	}
+
 	private void deleteConnectedEdges(Node node)
 	{
 		edges.removeIf(edge -> node == edge.getNode1() || node == edge.getNode2());
@@ -162,7 +181,8 @@ public class Database
 	{
 		if (startNode != null)
 		{
-			return dijkstra.findShortestPaths(startNode);
+			dijkstra.updateNodes(nodes);
+			return dijkstra.run(startNode);
 		}
 
 		return Collections.emptyList();
