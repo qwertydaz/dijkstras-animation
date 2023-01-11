@@ -454,4 +454,10 @@ public class Graph
 	{
 		return graphPane;
 	}
+
+	public void clearGraph()
+	{
+		graphPane.getChildren().clear();
+		controller.clear();
+	}
 }

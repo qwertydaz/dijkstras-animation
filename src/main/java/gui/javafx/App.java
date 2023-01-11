@@ -19,7 +19,7 @@ public class App extends Application
 	{
 		graph = new Graph();
 		table = new Table();
-		buttons = new Buttons();
+		buttons = new Buttons(graph, table);
 	}
 
 	public static void main(String[] args)

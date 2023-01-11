@@ -167,4 +167,13 @@ public class Database
 
 		return Collections.emptyList();
 	}
+
+	public void clear()
+	{
+		nodes.clear();
+		edges.clear();
+		nodeShapes.clear();
+		edgeShapes.clear();
+		startNode = null;
+	}
 }

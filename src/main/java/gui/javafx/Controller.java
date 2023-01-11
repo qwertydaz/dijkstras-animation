@@ -60,4 +60,9 @@ public class Controller
 	{
 		return db.runDijkstra();
 	}
+
+	public void clear()
+	{
+		db.clear();
+	}
 }
