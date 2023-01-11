@@ -34,28 +34,28 @@ public class Graph
 	private MenuItem removeNodeMenuItem;
 	private MenuItem addEdgeMenuItem;
 	private MenuItem removeEdgeMenuItem;
+	private MenuItem selectStartNodeMenuItem;
 
 	private final TextField inputBox;
 	private final Stage popupStage;
 
-	private final List<Circle> nodes;
-	private final List<Line> edges;
 	private final List<Text> nodeLabels;
 
 	private final List<Circle> selectedNodes;
 	private Line selectedEdge;
+	private Circle selectedStartNode;
 
 	private static final Color selectedNodeColour = Color.RED;
 	private static final Color unselectedNodeColour = Color.LIGHTBLUE;
+	private static final Color selectedStartNodeColour = Color.GREEN;
 	private static final Color selectedEdgeColour = Color.RED;
 	private static final Color unselectedEdgeColour = Color.GRAY;
 
 	private Object source;
+	private final Controller controller = new Controller();
 
 	public Graph()
 	{
-		nodes = new ArrayList<>();
-		edges = new ArrayList<>();
 		nodeLabels = new ArrayList<>();
 		selectedNodes = new ArrayList<>();
 		inputBox = new TextField();
@@ -75,9 +75,26 @@ public class Graph
 
 		// Menu option 1
 		addNodeMenuItem = new MenuItem("Add Node");
+
+		// Menu option 2
+		removeNodeMenuItem = new MenuItem("Remove Node");
+
+		// Menu option 3
+		addEdgeMenuItem = new MenuItem("Add Edge");
+
+		// Menu option 4
+		removeEdgeMenuItem = new MenuItem("Remove Edge");
+
+		// Menu option 5
+		selectStartNodeMenuItem = new MenuItem("Select Start Node");
+	}
+
+	private void setupMenuItemActions(Object source)
+	{
+		// Menu option 1
 		addNodeMenuItem.setOnAction(actionEvent ->
 		{
-			if (nodes.size() < 10)
+			if (controller.getNodes().size() < 10)
 			{
 				addNode();
 			}
@@ -88,30 +105,21 @@ public class Graph
 			}
 		});
 
-		// TODO:
 		// Menu option 2
-		removeNodeMenuItem = new MenuItem("Remove Node");
-		removeNodeMenuItem.setOnAction(actionEvent -> removeNode((Circle) actionEvent.getSource()));
+		removeNodeMenuItem.setOnAction(actionEvent -> removeNode((Circle) source));
 
 		// Menu option 3
-		addEdgeMenuItem = new MenuItem("Add Edge");
 		addEdgeMenuItem.setOnAction(actionEvent -> addEdge());
 
-		// TODO:
 		// Menu option 4
-		removeEdgeMenuItem = new MenuItem("Remove Edge");
-		removeEdgeMenuItem.setOnAction(actionEvent -> removeEdge((Line) actionEvent.getSource()));
+		removeEdgeMenuItem.setOnAction(actionEvent -> removeEdge((Line) source));
+
+		// Menu option 5
+		selectStartNodeMenuItem.setOnAction(actionEvent -> selectStartNode((Circle) source));
 	}
-
-	// Handles events in the graph pane
-	private void setupGraphPane()
+	
+	private void setupLeftClick()
 	{
-		graphPane = new Pane();
-
-		graphPane.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY,
-				BorderWidths.DEFAULT)));
-
-		// Left click
 		graphPane.setOnMouseClicked(mouseEvent ->
 		{
 			contextMenu.hide();
@@ -131,17 +139,24 @@ public class Graph
 
 			handleDoubleClick(mouseEvent);
 		});
+	}
 
-		// Right click
+	private void setupRightClick()
+	{
 		graphPane.setOnContextMenuRequested(event ->
 		{
 			// Determine what was right-clicked
 			source = event.getPickResult().getIntersectedNode();
+			setupMenuItemActions(source);
 			contextMenu.getItems().clear();
 
 			if (source instanceof Circle)
 			{
-				// Show only the second menu option if the user right-clicked on a node
+				if (selectedStartNode != source)
+				{
+					contextMenu.getItems().add(selectStartNodeMenuItem);
+				}
+
 				contextMenu.getItems().add(removeNodeMenuItem);
 
 				if (selectedNodes.size() == 2)
@@ -156,12 +171,26 @@ public class Graph
 			}
 			else
 			{
-				// Show only the first menu option if the user right-clicked elsewhere on the window
 				contextMenu.getItems().add(addNodeMenuItem);
 			}
 
 			contextMenu.show(graphPane, event.getScreenX(), event.getScreenY());
 		});
+	}
+
+	// Handles events in the graph pane
+	private void setupGraphPane()
+	{
+		graphPane = new Pane();
+
+		graphPane.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY,
+				BorderWidths.DEFAULT)));
+
+		// Left click
+		setupLeftClick();
+
+		// Right click
+		setupRightClick();
 	}
 
 	private void handleDoubleClick(MouseEvent mouseEvent)
@@ -201,7 +230,7 @@ public class Graph
 
 		graphPane.getChildren().add(label);
 		graphPane.getChildren().add(node);
-		nodes.add(node);
+		controller.saveNode(label, node);
 		nodeLabels.add(label);
 
 		label.toFront();
@@ -268,11 +297,21 @@ public class Graph
 		});
 	}
 
-	// TODO:
 	private void removeNode(Circle node)
 	{
+		Text label = controller.findLabel(node);
+
+		if (label != null)
+		{
+			graphPane.getChildren().remove(label);
+		}
+		else
+		{
+			System.err.println("Label cannot be deleted; Invalid label");
+		}
+
 		graphPane.getChildren().remove(node);
-		nodes.remove(node);
+		controller.deleteNode(node);
 	}
 
 	private void addEdge()
@@ -301,7 +340,7 @@ public class Graph
 		graphPane.getChildren().add(label);
 		graphPane.getChildren().add(edge);
 
-		edges.add(edge);
+		controller.saveEdge(node1, node2, label, edge);
 
 		label.toFront();
 		node1.toFront();
@@ -321,11 +360,21 @@ public class Graph
 		});
 	}
 
-	// TODO:
 	private void removeEdge(Line edge)
 	{
+		Text label = controller.findLabel(edge);
+
+		if (label != null)
+		{
+			graphPane.getChildren().remove(label);
+		}
+		else
+		{
+			System.err.println("Label cannot be deleted; Invalid label");
+		}
+
 		graphPane.getChildren().remove(edge);
-		edges.remove(edge);
+		controller.deleteEdge(edge);
 	}
 
 	// Selects a node by changing colour and adding to list
@@ -367,6 +416,30 @@ public class Graph
 	{
 		selectedEdge.setStroke(unselectedEdgeColour);
 		selectedEdge = null;
+	}
+
+	// Selects a starting node by changing colour and adding to variable
+	private void selectStartNode(Circle node)
+	{
+		if (selectedStartNode == null)
+		{
+			controller.setStartNode(node);
+			node.setStroke(selectedStartNodeColour);
+			node.setStrokeWidth(3);
+			selectedStartNode = node;
+		}
+		else
+		{
+			clearSelectedStartNode();
+		}
+	}
+
+	// Deselects starting node by changing colour and emptying variable
+	private void clearSelectedStartNode()
+	{
+		controller.setStartNode(null);
+		selectedStartNode.setStroke(null);
+		selectedStartNode = null;
 	}
 
 	private void displayNodeLabels()

@@ -17,27 +17,45 @@ public class Database
 {
 	private final LinkedList<Node> nodes;
 	private final LinkedList<Edge> edges;
+	private final LinkedList<Circle> nodeShapes;
+	private final LinkedList<Line> edgeShapes;
 	private final Dijkstra dijkstra;
+	private Node startNode = null;
 
 	public Database()
 	{
 		nodes = new LinkedList<>();
 		edges = new LinkedList<>();
+		nodeShapes = new LinkedList<>();
+		edgeShapes = new LinkedList<>();
 		dijkstra = new Dijkstra(nodes, edges);
 	}
 
-	public List<Node> getNodes()
+	public List<Circle> getNodes()
 	{
-		return nodes;
+		return nodeShapes;
 	}
 
-	public List<Edge> getEdges()
+	public List<Line> getEdges()
 	{
-		return edges;
+		return edgeShapes;
+	}
+
+	public void setStartNode(Circle nodeShape)
+	{
+		if (nodeShape == null)
+		{
+			startNode = null;
+		}
+		else
+		{
+			startNode = findNode(nodeShape);
+		}
 	}
 
 	public void saveNode(Text label, Circle node)
 	{
+		nodeShapes.add(node);
 		nodes.add(new Node(label, node));
 	}
 
@@ -85,6 +103,30 @@ public class Database
 		}
 	}
 
+	public Text findLabel(Circle nodeShape)
+	{
+		Node node = findNode(nodeShape);
+
+		if (node == null)
+		{
+			return null;
+		}
+
+		return node.getLabel();
+	}
+
+	public Text findLabel(Line edgeShape)
+	{
+		Edge edge = findEdge(edgeShape);
+
+		if (edge == null)
+		{
+			return null;
+		}
+
+		return edge.getLabel();
+	}
+
 	private Node findNode(Circle nodeShape)
 	{
 		for (Node node : nodes)
@@ -116,10 +158,8 @@ public class Database
 		edges.removeIf(edge -> node == edge.getNode1() || node == edge.getNode2());
 	}
 
-	public List<ArrayList<String>> runDijkstra(Circle node)
+	public List<ArrayList<String>> runDijkstra()
 	{
-		Node startNode = findNode(node);
-
 		if (startNode != null)
 		{
 			return dijkstra.findShortestPaths(startNode);

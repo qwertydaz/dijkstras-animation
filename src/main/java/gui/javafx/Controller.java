@@ -3,21 +3,20 @@ package src.main.java.gui.javafx;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
-import src.main.java.model.dijkstra.Edge;
-import src.main.java.model.dijkstra.Node;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Controller
 {
-	Database db = new Database();
+	private final Database db = new Database();
 
-	public List<Node> getNodes()
+	public List<Circle> getNodes()
 	{
 		return db.getNodes();
 	}
 
-	public List<Edge> getEdges()
+	public List<Line> getEdges()
 	{
 		return db.getEdges();
 	}
@@ -40,5 +39,25 @@ public class Controller
 	public void deleteEdge(Line edge)
 	{
 		db.deleteEdge(edge);
+	}
+
+	public Text findLabel(Circle node)
+	{
+		return db.findLabel(node);
+	}
+
+	public Text findLabel(Line edge)
+	{
+		return db.findLabel(edge);
+	}
+
+	public void setStartNode(Circle node)
+	{
+		db.setStartNode(node);
+	}
+
+	public List<ArrayList<String>> runDijkstra()
+	{
+		return db.runDijkstra();
 	}
 }
