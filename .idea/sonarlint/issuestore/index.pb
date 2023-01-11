@@ -16,7 +16,5 @@ Z
 .gitignore,a\5\a5cc2925ca8258af241be7e5b0381edf30266302
 Q
 !src/main/java/model/Database.java,a\d\ad18c1566664dd9d871b6ce6329c25009d53a6a4
-9
-	README.md,8\e\8ec9a00bfd09b3190ac6b22251dbb1aa95a0579d
 V
 &src/main/java/gui/swing/MainFrame.java,0\e\0e6e2e5cf0e689baafa3acd691debb9546d4d0a6
