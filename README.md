@@ -2,15 +2,20 @@
 
 This is my code for my final year project.
 
-To run, use App.java.
+## How to run
 
-## Dependencies
+1. Clone the repository
+2. Download the dependencies
+3. Use the specified VM options
 
-1. [JavaFX 19](https://gluonhq.com/products/javafx/)
+### Dependencies
 
-    #### VM Options:
-    ```
-    --module-path ~\openjfx-19_windows-x64_bin-sdk\javafx-sdk-19\lib --add-modules=javafx.controls
-    ```
+1. [JDK 15.0.2](https://www.oracle.com/java/technologies/javase-jdk15-downloads.html)
+2. [JavaFX 19](https://gluonhq.com/products/javafx/)
+3. [MySQL Connector 8.0.31](https://dev.mysql.com/downloads/connector/j/)
 
-2. [MySQL Connector 8.0.31](https://dev.mysql.com/downloads/connector/j/)
+### VM Options
+
+```
+--module-path {pathToFolder}\openjfx-19_windows-x64_bin-sdk\javafx-sdk-19\lib --add-modules=javafx.controls
+```

@@ -7,7 +7,6 @@ import src.main.java.model.dijkstra.Dijkstra;
 import src.main.java.model.dijkstra.Edge;
 import src.main.java.model.dijkstra.Node;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;

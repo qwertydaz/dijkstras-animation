@@ -2,7 +2,6 @@ package src.main.java.model;
 
 import src.main.java.model.dijkstra.Edge;
 import src.main.java.model.dijkstra.Node;
-import src.main.java.exception.WeightNotFoundException;
 
 import java.util.List;
 
@@ -17,29 +16,16 @@ public abstract class Graph
 		this.edges = edges;
 	}
 
-	public boolean edgeExists(Edge potentialEdge)
+	public Edge findEdge(Node node1, Node node2)
 	{
 		for (Edge edge : edges)
 		{
-			if (potentialEdge.isEqual(edge))
+			if (edge.getNodes().contains(node1) && edge.getNodes().contains(node2))
 			{
-				return true;
-			}
-		}
-		return false;
-	}
-
-	public int findWeight(Edge targetEdge) throws WeightNotFoundException
-	{
-		for (Edge edge : edges)
-		{
-			if (targetEdge.isEqual(edge))
-			{
-				// returns the weight as an integer
-				return edge.getWeight();
+				return edge;
 			}
 		}
 
-		throw new WeightNotFoundException();
+		return null;
 	}
 }

@@ -20,7 +20,7 @@ public class Buttons
 	private final Table table;
 
 	private Button dijkstraButton;
-	private Button clearGraphButton;
+	private Button resetButton;
 
 	public Buttons(Controller controller, Graph graph, Table table)
 	{
@@ -57,14 +57,14 @@ public class Buttons
 		GridPane.setVgrow(dijkstraButton, Priority.ALWAYS);
 
 		// Button 2
-		clearGraphButton = new Button("Clear Graph");
-		clearGraphButton.prefHeight(Double.MAX_VALUE);
-		clearGraphButton.prefWidth(Double.MAX_VALUE);
-		GridPane.setHgrow(clearGraphButton, Priority.ALWAYS);
-		GridPane.setVgrow(clearGraphButton, Priority.ALWAYS);
+		resetButton = new Button("Reset");
+		resetButton.prefHeight(Double.MAX_VALUE);
+		resetButton.prefWidth(Double.MAX_VALUE);
+		GridPane.setHgrow(resetButton, Priority.ALWAYS);
+		GridPane.setVgrow(resetButton, Priority.ALWAYS);
 
 		buttonsPane.add(dijkstraButton, 0, 0);
-		buttonsPane.add(clearGraphButton, 1, 0);
+		buttonsPane.add(resetButton, 1, 0);
 	}
 
 	private void setupButtonsActions()
@@ -83,8 +83,11 @@ public class Buttons
 			}
 		});
 
-		// TODO: Clear table as well
 		// Button 2
-		clearGraphButton.setOnAction(actionEvent -> graph.clearGraph());
+		resetButton.setOnAction(actionEvent ->
+		{
+			table.clearTable();
+			graph.clearGraph();
+		});
 	}
 }

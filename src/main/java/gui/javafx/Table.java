@@ -12,8 +12,6 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Table
@@ -47,25 +45,30 @@ public class Table
 		return tablePane;
 	}
 
+	public void clearTable()
+	{
+		if (!lTable.getColumns().isEmpty())
+		{
+			for (int i = 0; i < lTable.getColumns().size(); i++)
+			{
+				lTable.getColumns().clear();
+			}
+		}
+
+		if (!lTable.getItems().isEmpty())
+		{
+			for ( int i = 0; i < lTable.getItems().size(); i++)
+			{
+				lTable.getItems().clear();
+			}
+		}
+	}
+
 	public void fillTable()
 	{
-		// TODO: Clear table before filling it
-		if (lTable.getColumns() != null)
-		{
-			lTable.getColumns().clear();
-		}
-
-		if (lTable.getItems() != null)
-		{
-			lTable.getItems().clear();
-		}
+		clearTable();
 
 		List<String[]> results = controller.runDijkstra();
-
-		for (String[] result : results)
-		{
-			System.out.println(Arrays.toString(result));
-		}
 
 		String[] headers = results.get(0);
 

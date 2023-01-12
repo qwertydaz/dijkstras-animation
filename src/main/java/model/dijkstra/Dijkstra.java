@@ -1,11 +1,9 @@
 package src.main.java.model.dijkstra;
 
-import src.main.java.exception.WeightNotFoundException;
 import src.main.java.model.Graph;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -35,26 +33,31 @@ public class Dijkstra extends Graph
 	// Dijkstra's Algorithm
 	public List<String[]> run(Node startingNode)
 	{
-		try
+		if (!steps.isEmpty())
 		{
-			instantiateSteps();
-			findInitialLValues(startingNode);
-
-			while (visitedNodes.size() != unvisitedNodes.size())
-			{
-				updateSteps();
-				Node nextNode = findNodeWithSmallestLValue();
-				findSubsequentLValues(nextNode);
-			}
-
-			return steps;
-		}
-		catch (WeightNotFoundException e)
-		{
-			e.printStackTrace();
+			steps.clear();
 		}
 
-		return Collections.emptyList();
+		// adds the node names, used as column headers, as the first String[] in steps
+		instantiateSteps();
+
+		// runs an initial pass on the nodes to set the L values
+		findInitialLValues(startingNode);
+
+		while (visitedNodes.size() != unvisitedNodes.size())
+		{
+			// adds the current L values, in unvisitedNodes, to steps as a String[]
+			updateSteps();
+
+			// finds the node with the lowest L value
+			Node nextNode = findNodeWithSmallestLValue();
+
+			// updates unvisitedNodes with the new L values and flags the node as visited
+			findSubsequentLValues(nextNode);
+		}
+
+		// returns the final L values as a List<String[]>
+		return steps;
 	}
 
 	private void instantiateSteps()
@@ -85,20 +88,20 @@ public class Dijkstra extends Graph
 		steps.add(step);
 	}
 
-	private void findInitialLValues(Node startingNode) throws WeightNotFoundException
+	private void findInitialLValues(Node startingNode)
 	{
 		// first pass of L values
 		for (Node node : unvisitedNodes.keySet())
 		{
-			Edge potentialEdge = new Edge(startingNode, node);
+			Edge edge = findEdge(startingNode, node);
 
 			if (node.equals(startingNode))
 			{
 				unvisitedNodes.replace(node, 0);
 			}
-			else if (edgeExists(potentialEdge))
+			else if (edge != null)
 			{
-				unvisitedNodes.replace(node, findWeight(potentialEdge));
+				unvisitedNodes.replace(node, edge.getWeight());
 			}
 			else
 			{
@@ -110,20 +113,21 @@ public class Dijkstra extends Graph
 		flagNodeAsVisited(startingNode);
 	}
 
-	private void findSubsequentLValues(Node nextNode) throws WeightNotFoundException
+	private void findSubsequentLValues(Node nextNode)
 	{
 		for (Map.Entry<Node, Integer> nodeAndLValue : unvisitedNodes.entrySet())
 		{
-			Edge potentialEdge = new Edge(nextNode, nodeAndLValue.getKey());
-			if (edgeExists(potentialEdge))
+			Edge edge = findEdge(nextNode, nodeAndLValue.getKey());
+
+			if (edge != null)
 			{
-				int potentialNewLValue = unvisitedNodes.get(nextNode) + findWeight(potentialEdge);
+				int newLValue = unvisitedNodes.get(nextNode) + edge.getWeight();
 
 				// if the edge exists and the weight of its path is smaller
-				if (nodeAndLValue.getValue() > potentialNewLValue || nodeAndLValue.getValue() == -1)
+				if (nodeAndLValue.getValue() > newLValue || nodeAndLValue.getValue() == -1)
 				{
 					// L value is updated to be the smaller path
-					unvisitedNodes.replace(nodeAndLValue.getKey(), potentialNewLValue);
+					unvisitedNodes.replace(nodeAndLValue.getKey(), newLValue);
 				}
 			}
 		}
@@ -175,9 +179,9 @@ public class Dijkstra extends Graph
 		Node nodeD = new Node("D");
 		Node nodeE = new Node("E");
 
-		LinkedList<Node> nodes = new LinkedList<>(Arrays.asList(nodeA, nodeB, nodeC, nodeD, nodeE));
+		LinkedList<Node> testNodes = new LinkedList<>(Arrays.asList(nodeC, nodeB, nodeA, nodeE, nodeD));
 
-		LinkedList<Edge> edges = new LinkedList<>(Arrays.asList(
+		LinkedList<Edge> testEdges = new LinkedList<>(Arrays.asList(
 				new Edge(nodeA, nodeE, 2),
 				new Edge(nodeE, nodeC, 3),
 				new Edge(nodeE, nodeD, 7),
@@ -185,7 +189,7 @@ public class Dijkstra extends Graph
 				new Edge(nodeB, nodeC, 4)
 		));
 
-		Dijkstra dijkstraAlgo = new Dijkstra(nodes, edges);
+		Dijkstra dijkstraAlgo = new Dijkstra(testNodes, testEdges);
 
 		ArrayList<String[]> steps = (ArrayList<String[]>) dijkstraAlgo.run(nodeA);
 
