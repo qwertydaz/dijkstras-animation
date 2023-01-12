@@ -42,7 +42,7 @@ public class Database
 
 	private String[] getDatabaseDetails()
 	{
-		String csvFile = "./src/main/java/resource/database_details.csv";
+		String csvFile = "./src/main/java/resources/database_details.csv";
 
 		try (BufferedReader br = new BufferedReader(new FileReader(csvFile)))
 		{

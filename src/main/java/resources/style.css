@@ -1,0 +1,17 @@
+.button
+{
+    -fx-background-color: #708090;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 40px;
+    -fx-font-weight: bold;
+    -fx-border-color: #ffffff;
+    -fx-border-width: 1px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-padding: 5px 10px 5px 10px;
+}
+
+.table-view
+{
+    -fx-font-size: 15;
+}

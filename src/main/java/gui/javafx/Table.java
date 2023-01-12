@@ -2,6 +2,7 @@ package src.main.java.gui.javafx;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.Border;
@@ -16,7 +17,7 @@ import java.util.List;
 
 public class Table
 {
-	private Pane tablePane;
+	private ScrollPane tableScrollPane;
 	private final Controller controller;
 	private TableView<String[]> lTable;
 
@@ -25,24 +26,32 @@ public class Table
 		this.controller = controller;
 
 		setupTablePane();
+		setupTableScrollPane();
 	}
 
 	private void setupTablePane()
 	{
-		tablePane = new Pane();
+		Pane tablePane = new Pane();
 
 		tablePane.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY,
 				BorderWidths.DEFAULT)));
 
 		lTable = new TableView<>();
-		lTable.setStyle("-fx-font-size: 20;");
 
 		tablePane.getChildren().add(lTable);
 	}
 
-	public Pane getTablePane()
+	private void setupTableScrollPane()
 	{
-		return tablePane;
+		tableScrollPane = new ScrollPane();
+		tableScrollPane.setFitToWidth(true);
+		tableScrollPane.setFitToHeight(true);
+		tableScrollPane.setContent(lTable);
+	}
+
+	public ScrollPane getTablePane()
+	{
+		return tableScrollPane;
 	}
 
 	public void clearTable()

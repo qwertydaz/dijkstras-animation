@@ -13,6 +13,17 @@ public class Node implements Comparable<Node>
 
 	private Text label;
 	private Circle shape;
+	private double xCoord;
+	private double yCoord;
+
+	public Node(int id, String name, double xCoord, double yCoord)
+	{
+		this(name);
+
+		this.id = id;
+		this.xCoord = xCoord;
+		this.yCoord = yCoord;
+	}
 
 	public Node(Text label, Circle shape)
 	{
@@ -65,6 +76,16 @@ public class Node implements Comparable<Node>
 	public Circle getShape()
 	{
 		return shape;
+	}
+
+	public double getXCoord()
+	{
+		return xCoord;
+	}
+
+	public double getYCoord()
+	{
+		return yCoord;
 	}
 
 	@Override

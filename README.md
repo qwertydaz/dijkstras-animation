@@ -19,3 +19,20 @@ This is my code for my final year project.
 ```
 --module-path {pathToFolder}\openjfx-19_windows-x64_bin-sdk\javafx-sdk-19\lib --add-modules=javafx.controls
 ```
+
+### MySQL Database
+
+This program uses MySQL to save and load graphs.
+If you want this functionality to work, you will need to set up a database and a CSV file.
+
+Create a file called "database_details.csv" in the following directory:
+
+```
+./src/main/resources/database_details.csv
+```
+
+The CSV file should contain the connection details. It must be formatted as follows:
+
+```
+{url},{username},{password}
+```

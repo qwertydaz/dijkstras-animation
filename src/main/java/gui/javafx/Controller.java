@@ -5,7 +5,7 @@ import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import src.main.java.model.dijkstra.Node;
 
-import java.util.ArrayList;
+import java.sql.SQLException;
 import java.util.List;
 
 public class Controller
@@ -27,24 +27,29 @@ public class Controller
 		return db.getStartNode();
 	}
 
-	public void saveNode(Text label, Circle node)
+	public void addNode(Text label, Circle node)
 	{
-		db.saveNode(label, node);
+		db.addNode(label, node);
 	}
 
-	public void saveEdge(Circle node1, Circle node2, Text label, Line edge)
+	public void addEdge(Circle node1, Circle node2, Text label, Line edge)
 	{
-		db.saveEdge(node1, node2, label, edge);
+		db.addEdge(node1, node2, label, edge);
 	}
 
-	public void deleteNode(Circle node)
+	public void removeNode(Circle node)
 	{
-		db.deleteNode(node);
+		db.removeNode(node);
 	}
 
-	public void deleteEdge(Line edge)
+	public void removeEdge(Line edge)
 	{
-		db.deleteEdge(edge);
+		db.removeEdge(edge);
+	}
+
+	public boolean edgeExists(Circle node1, Circle node2)
+	{
+		return db.edgeExists(node1, node2);
 	}
 
 	public void updateLabel(Text label, String newText)
@@ -75,5 +80,35 @@ public class Controller
 	public void clear()
 	{
 		db.clear();
+	}
+
+	public void saveEdges() throws SQLException
+	{
+		db.saveEdges();
+	}
+
+	public void loadEdges() throws SQLException
+	{
+		db.loadEdges();
+	}
+
+	public void saveNodes() throws SQLException
+	{
+		db.saveNodes();
+	}
+
+	public void loadNodes() throws SQLException
+	{
+		db.loadNodes();
+	}
+
+	public void connect() throws SQLException
+	{
+		db.connect();
+	}
+
+	public void disconnect()
+	{
+		db.disconnect();
 	}
 }

@@ -3,6 +3,7 @@ package src.main.java.gui.javafx;
 import javafx.application.Application;
 import javafx.scene.Scene;
 
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
@@ -34,7 +35,7 @@ public class App extends Application
 		Pane graphPane = graph.getGraphPane();
 		graphPane.setPrefSize(600, 600);
 
-		Pane tablePane = table.getTablePane();
+		ScrollPane tablePane = table.getTablePane();
 		tablePane.setPrefSize(600, 600);
 
 		Pane buttonsPane = buttons.getButtonsPane();
@@ -49,6 +50,7 @@ public class App extends Application
 		VBox.setVgrow(buttonsPane, Priority.ALWAYS);
 
 		Scene scene = new Scene(fullPane, 1200, 700);
+		scene.getStylesheets().add("./src/main/java/resources/style.css");
 
 		mainStage.setTitle("Graph Viewer");
 		mainStage.setScene(scene);

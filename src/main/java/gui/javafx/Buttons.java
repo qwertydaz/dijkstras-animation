@@ -1,26 +1,29 @@
 package src.main.java.gui.javafx;
 
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
 
 public class Buttons
 {
 	private final Controller controller;
 
-	private GridPane buttonsPane;
+	private HBox buttonsPane;
 	private final Graph graph;
 	private final Table table;
 
 	private Button dijkstraButton;
 	private Button resetButton;
+	private Button saveButton;
+	private Button loadButton;
 
 	public Buttons(Controller controller, Graph graph, Table table)
 	{
@@ -33,7 +36,7 @@ public class Buttons
 
 	private void setupButtonsPane()
 	{
-		buttonsPane = new GridPane();
+		buttonsPane = new HBox();
 
 		buttonsPane.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY,
 				BorderWidths.DEFAULT)));
@@ -50,21 +53,22 @@ public class Buttons
 	private void setupButtons()
 	{
 		// Button 1
-		dijkstraButton = new Button("Run Dijkstra's Algorithm");
-		dijkstraButton.prefHeight(Double.MAX_VALUE);
-		dijkstraButton.prefWidth(Double.MAX_VALUE);
-		GridPane.setHgrow(dijkstraButton, Priority.ALWAYS);
-		GridPane.setVgrow(dijkstraButton, Priority.ALWAYS);
+		dijkstraButton = new Button("Run");
 
 		// Button 2
 		resetButton = new Button("Reset");
-		resetButton.prefHeight(Double.MAX_VALUE);
-		resetButton.prefWidth(Double.MAX_VALUE);
-		GridPane.setHgrow(resetButton, Priority.ALWAYS);
-		GridPane.setVgrow(resetButton, Priority.ALWAYS);
 
-		buttonsPane.add(dijkstraButton, 0, 0);
-		buttonsPane.add(resetButton, 1, 0);
+		// Button 3
+		saveButton = new Button("Save");
+
+		// Button 4
+		loadButton = new Button("Load");
+
+		// Add buttons to buttonsPane
+		buttonsPane.getChildren().addAll(dijkstraButton, resetButton, saveButton, loadButton);
+
+		// Centre buttons
+		buttonsPane.setAlignment(Pos.CENTER);
 	}
 
 	private void setupButtonsActions()
@@ -89,5 +93,13 @@ public class Buttons
 			table.clearTable();
 			graph.clearGraph();
 		});
+
+		// Button 3
+		saveButton.setOnAction(actionEvent -> Util.displayErrorMessage("Not implemented yet!",
+				"This feature is not implemented yet."));
+
+		// Button 4
+		loadButton.setOnAction(actionEvent -> Util.displayErrorMessage("Not implemented yet!",
+				"This feature is not implemented yet."));
 	}
 }

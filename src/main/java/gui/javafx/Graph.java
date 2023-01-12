@@ -71,7 +71,6 @@ public class Graph
 	private void setupContextMenu()
 	{
 		contextMenu = new ContextMenu();
-
 		separator = new SeparatorMenuItem();
 
 		// Menu option 1
@@ -95,14 +94,14 @@ public class Graph
 		// Menu option 1
 		addNodeMenuItem.setOnAction(actionEvent ->
 		{
-			if (controller.getNodes().size() < 10)
+			if (controller.getNodes().size() < 7)
 			{
 				addNode();
 			}
 			else
 			{
 				Util.displayErrorMessage("MAX LIMIT Reached",
-						"You can only have up to 10 nodes.");
+						"You can only have up to 7 nodes.");
 			}
 		});
 
@@ -232,7 +231,7 @@ public class Graph
 
 		graphPane.getChildren().add(label);
 		graphPane.getChildren().add(node);
-		controller.saveNode(label, node);
+		controller.addNode(label, node);
 		nodeLabels.add(label);
 
 		label.toFront();
@@ -313,19 +312,28 @@ public class Graph
 		}
 
 		graphPane.getChildren().remove(node);
-		controller.deleteNode(node);
+		controller.removeNode(node);
 	}
 
 	private void addEdge()
 	{
+		Circle node1 = selectedNodes.get(0);
+		Circle node2 = selectedNodes.get(1);
+
+		if (controller.edgeExists(node1, node2))
+		{
+			Util.displayErrorMessage("Edge already exists",
+					"An edge already exists between the selected nodes\n" +
+							"Please select two different nodes");
+
+			return;
+		}
+
 		Line edge = new Line();
 		edge.setStrokeWidth(3);
 		edge.setStroke(unselectedEdgeColour);
 
 		setupEdgeListeners(edge);
-
-		Circle node1 = selectedNodes.get(0);
-		Circle node2 = selectedNodes.get(1);
 
 		edge.startXProperty().bind(node1.centerXProperty());
 		edge.startYProperty().bind(node1.centerYProperty());
@@ -342,7 +350,7 @@ public class Graph
 		graphPane.getChildren().add(label);
 		graphPane.getChildren().add(edge);
 
-		controller.saveEdge(node1, node2, label, edge);
+		controller.addEdge(node1, node2, label, edge);
 
 		label.toFront();
 		node1.toFront();
@@ -376,7 +384,7 @@ public class Graph
 		}
 
 		graphPane.getChildren().remove(edge);
-		controller.deleteEdge(edge);
+		controller.removeEdge(edge);
 	}
 
 	// Selects a node by changing colour and adding to list
