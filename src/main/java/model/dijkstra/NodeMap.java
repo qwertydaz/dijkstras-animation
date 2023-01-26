@@ -1,5 +1,6 @@
 package src.main.java.model.dijkstra;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +34,18 @@ public class NodeMap implements Map<Node, Integer>
 		{
 			nodesAndLValues.put(node, null);
 		}
+	}
+
+	public String getNodeNames()
+	{
+		List<String> nodeNames = new ArrayList<>();
+
+		for (Node node : nodesAndLValues.keySet())
+		{
+			nodeNames.add(node.getName());
+		}
+
+		return nodeNames.toString();
 	}
 
 	@Override

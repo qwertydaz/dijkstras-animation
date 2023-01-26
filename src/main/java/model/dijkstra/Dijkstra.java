@@ -44,7 +44,7 @@ public class Dijkstra extends Graph
 		// runs an initial pass on the nodes to set the L values
 		findInitialLValues(startingNode);
 
-		while (visitedNodes.size() != unvisitedNodes.size())
+		while (visitedNodes.size() < unvisitedNodes.size())
 		{
 			// adds the current L values, in unvisitedNodes, to steps as a String[]
 			updateSteps();
@@ -56,6 +56,8 @@ public class Dijkstra extends Graph
 			findSubsequentLValues(nextNode);
 		}
 
+		updateSteps();
+
 		// returns the final L values as a List<String[]>
 		return steps;
 	}
@@ -65,7 +67,7 @@ public class Dijkstra extends Graph
 		String[] step = new String[numOfNodes + 1];
 		int index = 1;
 
-		step[0] = "Tv \\ L";
+		step[0] = "Tv";
 
 		for (Map.Entry<Node, Integer> entry : unvisitedNodes.entrySet())
 		{
@@ -81,7 +83,7 @@ public class Dijkstra extends Graph
 		String[] step = new String[numOfNodes + 1];
 		int index = 1;
 
-		step[0] = unvisitedNodes.toString();
+		step[0] = visitedNodes.getNodeNames();
 
 		for (Map.Entry<Node, Integer> entry : unvisitedNodes.entrySet())
 		{
