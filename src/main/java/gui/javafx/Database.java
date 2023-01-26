@@ -174,6 +174,21 @@ public class Database
 		return null;
 	}
 
+	public List<Line> getAttachedEdges(Circle nodeShape)
+	{
+		List<Line> attachedEdges = new LinkedList<>();
+
+		for (Edge edge : edges)
+		{
+			if (edge.getNodes().contains(findNode(nodeShape)))
+			{
+				attachedEdges.add(edge.getShape());
+			}
+		}
+
+		return attachedEdges;
+	}
+
 	public boolean edgeExists(Circle nodeShape1, Circle nodeShape2)
 	{
 		Node node1 = findNode(nodeShape1);

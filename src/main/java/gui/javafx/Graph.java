@@ -311,8 +311,20 @@ public class Graph
 			System.err.println("Label cannot be deleted; Invalid label");
 		}
 
+		removeAttachedEdges(node);
+
 		graphPane.getChildren().remove(node);
 		controller.removeNode(node);
+	}
+
+	private void removeAttachedEdges(Circle node)
+	{
+		List<Line> attachedEdges = controller.getAttachedEdges(node);
+
+		for (Line edge : attachedEdges)
+		{
+			removeEdge(edge);
+		}
 	}
 
 	private void addEdge()

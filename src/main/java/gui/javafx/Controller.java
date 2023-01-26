@@ -42,6 +42,11 @@ public class Controller
 		db.removeNode(node);
 	}
 
+	public List<Line> getAttachedEdges(Circle node)
+	{
+		return db.getAttachedEdges(node);
+	}
+
 	public void removeEdge(Line edge)
 	{
 		db.removeEdge(edge);
