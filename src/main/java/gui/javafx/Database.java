@@ -166,6 +166,19 @@ public class Database
 		return null;
 	}
 
+	private Node findNode(int nodeId) throws NodeNotFoundException
+	{
+		for (Node node : nodes)
+		{
+			if (node.getId() == nodeId)
+			{
+				return node;
+			}
+		}
+
+		throw new NodeNotFoundException();
+	}
+
 	private Edge findEdge(Line edgeShape)
 	{
 		for (Edge edge : edges)
@@ -362,8 +375,8 @@ public class Database
 	public void saveEdges() throws SQLException
 	{
 		String checkSql = "SELECT count(*) AS COUNT FROM edges WHERE edgeId=?";
-		String insertSql = "INSERT INTO edges (edgeId, node1Name, node2Name, weight) VALUES (?, ?, ?, ?)";
-		String updateSql = "UPDATE edges SET node1Name=?, node2Name=?, weight=? WHERE edgeId=?";
+		String insertSql = "INSERT INTO edges (edgeId, node1Id, node2Id, weight) VALUES (?, ?, ?, ?)";
+		String updateSql = "UPDATE edges SET node1Id=?, node2Id=?, weight=? WHERE edgeId=?";
 
 		try (
 				PreparedStatement checkStatement = conn.prepareStatement(checkSql);
@@ -391,8 +404,8 @@ public class Database
 					col = 1;
 
 					insertStatement.setInt(col++, edgeId);
-					insertStatement.setString(col++, edgeNode1.getName());
-					insertStatement.setString(col++, edgeNode2.getName());
+					insertStatement.setInt(col++, edgeNode1.getId());
+					insertStatement.setInt(col++, edgeNode2.getId());
 					insertStatement.setInt(col, weight);
 
 					insertStatement.executeUpdate();
@@ -404,8 +417,8 @@ public class Database
 					col = 1;
 
 					updateStatement.setInt(col++, edgeId);
-					updateStatement.setString(col++, edgeNode1.getName());
-					updateStatement.setString(col++, edgeNode2.getName());
+					updateStatement.setInt(col++, edgeNode1.getId());
+					updateStatement.setInt(col++, edgeNode2.getId());
 					updateStatement.setInt(col, weight);
 
 					updateStatement.executeUpdate();
@@ -440,7 +453,7 @@ public class Database
 	{
 		edges.clear();
 
-		String sql = "SELECT edgeId, node1Name, node2Name, weight FROM edges ORDER BY edgeId";
+		String sql = "SELECT edgeId, node1Id, node2Id, weight FROM edges ORDER BY edgeId";
 
 		try (
 				Statement selectStatement = conn.createStatement();
@@ -469,26 +482,13 @@ public class Database
 		edgeId = results.getInt("edgeId");
 		try
 		{
-			edgeNode1 = findNode(results.getString("node1Name"));
-			edgeNode2 = findNode(results.getString("node2Name"));
+			edgeNode1 = findNode(results.getInt("node1Id"));
+			edgeNode2 = findNode(results.getInt("node2Id"));
 		}
 		catch (NodeNotFoundException e)
 		{
 			e.printStackTrace();
 		}
 		weight = results.getInt("weight");
-	}
-
-	private Node findNode(String searchName) throws NodeNotFoundException
-	{
-		for (Node node : nodes)
-		{
-			if (node.getName().equals(searchName))
-			{
-				return node;
-			}
-		}
-
-		throw new NodeNotFoundException();
 	}
 }

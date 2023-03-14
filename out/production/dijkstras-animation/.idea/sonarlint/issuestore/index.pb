@@ -57,3 +57,18 @@ Q
 !src/main/java/resources/style.css,8\5\8539a97cf4a459bd33dc41cdefc109e81e5810f9
 N
 src/main/java/model/Graph.java,1\e\1ee0ce1e3d556ef697dabfa530de7bc27a9fad6c
+U
+%src/main/java/gui/javafx/Buttons.java,6\6\668e28c55b1fecc1f0174eafb3eac608f8bbe01f
+S
+#src/main/java/gui/javafx/Table.java,0\a\0af46015408927c35cef929f014616c4bd10c9b0
+S
+#src/main/java/gui/javafx/Graph.java,2\a\2ab5251d61b96aeb4e3de54df93d23f8b6177f99
+:
+
+.gitignore,a\5\a5cc2925ca8258af241be7e5b0381edf30266302
+X
+(src/main/java/gui/javafx/Controller.java,f\5\f5409d2a1defba27821d80c4cff558f255dab76d
+V
+&src/main/java/model/dijkstra/Node.java,f\3\f38c2619de3868a6958f952ef9516b8a125287e6
+V
+&src/main/java/model/dijkstra/Edge.java,b\4\b49ea1017d418101fa95187ad6a92e0e21927d40

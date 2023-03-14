@@ -49,8 +49,6 @@ d
 	README.md,8\e\8ec9a00bfd09b3190ac6b22251dbb1aa95a0579d
 X
 (src/main/java/controller/Controller.java,0\5\05fd466bff28423ca702e1a116df355b44712db1
-Q
-!src/main/java/model/Database.java,a\d\ad18c1566664dd9d871b6ce6329c25009d53a6a4
 R
 "src/main/java/gui/javafx/Util.java,2\e\2e3e640597e4e43ca68606c10b2d75c01f6c2dc7
 Q
@@ -70,5 +68,3 @@ X
 (src/main/java/gui/javafx/Controller.java,f\5\f5409d2a1defba27821d80c4cff558f255dab76d
 V
 &src/main/java/model/dijkstra/Node.java,f\3\f38c2619de3868a6958f952ef9516b8a125287e6
-V
-&src/main/java/model/dijkstra/Edge.java,b\4\b49ea1017d418101fa95187ad6a92e0e21927d40
