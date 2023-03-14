@@ -13,21 +13,21 @@ public class Dijkstra extends Graph
 	private final NodeMap unvisitedNodes;
 	private final NodeMap visitedNodes;
 	private final ArrayList<String[]> steps = new ArrayList<>();
-	private int stepSize;
+	private int numOfNodes;
 
 	public Dijkstra(List<Node> nodes, List<Edge> edges)
 	{
 		super(nodes, edges);
 		this.unvisitedNodes = new NodeMap(nodes);
 		this.visitedNodes = new NodeMap();
-		this.stepSize = nodes.size();
+		this.numOfNodes = nodes.size();
 	}
 
 	public void updateNodes(List<Node> nodes)
 	{
 		this.unvisitedNodes.update(nodes);
 		this.visitedNodes.clear();
-		this.stepSize = nodes.size();
+		this.numOfNodes = nodes.size();
 	}
 
 	// Dijkstra's Algorithm
@@ -44,7 +44,7 @@ public class Dijkstra extends Graph
 		// runs an initial pass on the nodes to set the L values
 		findInitialLValues(startingNode);
 
-		while (visitedNodes.size() != unvisitedNodes.size())
+		while (visitedNodes.size() < unvisitedNodes.size())
 		{
 			// adds the current L values, in unvisitedNodes, to steps as a String[]
 			updateSteps();
@@ -56,14 +56,18 @@ public class Dijkstra extends Graph
 			findSubsequentLValues(nextNode);
 		}
 
+		updateSteps();
+
 		// returns the final L values as a List<String[]>
 		return steps;
 	}
 
 	private void instantiateSteps()
 	{
-		String[] step = new String[stepSize];
-		int index = 0;
+		String[] step = new String[numOfNodes + 1];
+		int index = 1;
+
+		step[0] = "Tv";
 
 		for (Map.Entry<Node, Integer> entry : unvisitedNodes.entrySet())
 		{
@@ -76,8 +80,10 @@ public class Dijkstra extends Graph
 
 	private void updateSteps()
 	{
-		String[] step = new String[stepSize];
-		int index = 0;
+		String[] step = new String[numOfNodes + 1];
+		int index = 1;
+
+		step[0] = visitedNodes.getNodeNames();
 
 		for (Map.Entry<Node, Integer> entry : unvisitedNodes.entrySet())
 		{
