@@ -22,6 +22,11 @@ import java.util.LinkedList;
 import java.util.List;
 
 // TODO: setup mySQL connection (save/load)
+// TODO: use NodeNotFoundException when no node is found and pass through to UI
+// TODO: fix edges table to take nodeId instead of its name
+// TODO: issue when adding edge to nodes with same name and then changing them
+// TODO: cannot add edge to 2 sets of nodes with the same names
+// TODO: use ID or make names unique
 public class Database
 {
 	private Connection conn = null;

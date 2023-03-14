@@ -52,7 +52,7 @@ public class App extends Application
 		Scene scene = new Scene(fullPane, 1200, 700);
 		scene.getStylesheets().add("./src/main/java/resources/style.css");
 
-		mainStage.setTitle("Graph Viewer");
+		mainStage.setTitle("Dijkstra's Animation");
 		mainStage.setScene(scene);
 		mainStage.show();
 	}
