@@ -22,6 +22,7 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class Graph
@@ -235,6 +236,45 @@ public class Graph
 		nodeLabels.add(label);
 
 		label.toFront();
+	}
+
+	public void refresh()
+	{
+		clearGraph();
+
+		addNodesFromController();
+		addEdgesFromController();
+	}
+
+	private void addNodesFromController()
+	{
+		Map<Circle, Text> nodesAndLabels = controller.getNodesAndLabels();
+
+		for (Map.Entry<Circle, Text> entry : nodesAndLabels.entrySet())
+		{
+			setupNodeListeners(entry.getKey());
+
+			graphPane.getChildren().add(entry.getValue());
+			graphPane.getChildren().add(entry.getKey());
+			nodeLabels.add(entry.getValue());
+
+			entry.getValue().toFront();
+		}
+	}
+
+	private void addEdgesFromController()
+	{
+		Map<Line, Text> edgesAndLabels = controller.getEdgesAndLabels();
+
+		for (Map.Entry<Line, Text> entry : edgesAndLabels.entrySet())
+		{
+			setupEdgeListeners(entry.getKey());
+
+			graphPane.getChildren().add(entry.getValue());
+			graphPane.getChildren().add(entry.getKey());
+
+			entry.getValue().toFront();
+		}
 	}
 
 	private void setupNodeListeners(Circle node)
@@ -474,9 +514,15 @@ public class Graph
 		return graphPane;
 	}
 
-	public void clearGraph()
+	public void clearAll()
 	{
-		graphPane.getChildren().clear();
+		clearGraph();
 		controller.clear();
+	}
+
+	private void clearGraph()
+	{
+		nodeLabels.clear();
+		graphPane.getChildren().clear();
 	}
 }

@@ -12,6 +12,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
+import java.sql.SQLException;
+
 public class Buttons
 {
 	private final Controller controller;
@@ -88,18 +90,68 @@ public class Buttons
 		});
 
 		// Button 2
-		resetButton.setOnAction(actionEvent ->
-		{
-			table.clearTable();
-			graph.clearGraph();
-		});
+		resetButton.setOnAction(actionEvent -> reset());
 
 		// Button 3
-		saveButton.setOnAction(actionEvent -> Util.displayErrorMessage("Not implemented yet!",
-				"This feature is not implemented yet."));
+		saveButton.setOnAction(actionEvent -> save());
 
 		// Button 4
-		loadButton.setOnAction(actionEvent -> Util.displayErrorMessage("Not implemented yet!",
-				"This feature is not implemented yet."));
+		loadButton.setOnAction(actionEvent -> load());
+	}
+
+	private void reset()
+	{
+		table.clearAll();
+		graph.clearAll();
+	}
+
+	private void save()
+	{
+		connect();
+
+		try
+		{
+			controller.saveNodes();
+			controller.saveEdges();
+		}
+		catch (SQLException e)
+		{
+			Util.displayErrorMessage("Error saving to database", e.getMessage());
+		}
+	}
+
+	private void load()
+	{
+		connect();
+
+		try
+		{
+			controller.loadNodes();
+			controller.loadEdges();
+
+			table.refresh();
+			graph.refresh();
+		}
+		catch (SQLException e)
+		{
+			Util.displayErrorMessage("Error loading from database", e.getMessage());
+		}
+	}
+
+	private void errorMessagePrompt()
+	{
+		Util.displayErrorMessage("Not implemented yet!", "This feature is not implemented yet.");
+	}
+
+	private void connect()
+	{
+		try
+		{
+			controller.connect();
+		}
+		catch (Exception e)
+		{
+			Util.displayErrorMessage("Error connecting to database", e.getMessage());
+		}
 	}
 }

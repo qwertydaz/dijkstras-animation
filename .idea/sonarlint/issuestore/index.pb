@@ -3,8 +3,6 @@ X
 (src/main/java/controller/controller.java,2\1\21b6790389e44a952f2bf63380370b851a247952
 _
 /src/main/java/gui/swing/edge/EdgeFormEvent.java,8\f\8fc2fd48ac2e84e81c69251079d5b2b466ad0c0c
-_
-/src/main/java/gui/swing/edge/EdgeFormPanel.java,c\e\ce237bbf25e0981fa9b45b17eca08ea48b537ef5
 `
 0src/main/java/gui/swing/edge/EdgeTableModel.java,4\b\4ba93faa06e11f3cc1f3b4117ef790a13a3a3ce2
 `
@@ -29,8 +27,6 @@ T
 $src/main/java/gui/swing/Toolbar.java,d\f\dfae70cfa6049206b039ac9d131c9214797979a8
 U
 %src/main/java/gui/swing/SwingApp.java,e\3\e3e73fd37a64d1dc0eee33762aabd1c3052ea0be
-V
-&src/main/java/gui/swing/MainFrame.java,0\e\0e6e2e5cf0e689baafa3acd691debb9546d4d0a6
 W
 'src/main/java/gui/swing/GraphPanel.java,1\b\1b120ac966322edadcdd8328990da7b9c1f17bc5
 Z
@@ -47,24 +43,16 @@ d
 4src/main/java/exception/WeightNotFoundException.java,3\d\3d77ec5255bd857440cc479ace60bdd6a5818071
 9
 	README.md,8\e\8ec9a00bfd09b3190ac6b22251dbb1aa95a0579d
-X
-(src/main/java/controller/Controller.java,0\5\05fd466bff28423ca702e1a116df355b44712db1
 R
 "src/main/java/gui/javafx/Util.java,2\e\2e3e640597e4e43ca68606c10b2d75c01f6c2dc7
 Q
 !src/main/java/resources/style.css,8\5\8539a97cf4a459bd33dc41cdefc109e81e5810f9
 N
 src/main/java/model/Graph.java,1\e\1ee0ce1e3d556ef697dabfa530de7bc27a9fad6c
-U
-%src/main/java/gui/javafx/Buttons.java,6\6\668e28c55b1fecc1f0174eafb3eac608f8bbe01f
-S
-#src/main/java/gui/javafx/Table.java,0\a\0af46015408927c35cef929f014616c4bd10c9b0
-S
-#src/main/java/gui/javafx/Graph.java,2\a\2ab5251d61b96aeb4e3de54df93d23f8b6177f99
 :
 
 .gitignore,a\5\a5cc2925ca8258af241be7e5b0381edf30266302
-X
-(src/main/java/gui/javafx/Controller.java,f\5\f5409d2a1defba27821d80c4cff558f255dab76d
 V
 &src/main/java/model/dijkstra/Node.java,f\3\f38c2619de3868a6958f952ef9516b8a125287e6
+V
+&src/main/java/model/dijkstra/Edge.java,b\4\b49ea1017d418101fa95187ad6a92e0e21927d40

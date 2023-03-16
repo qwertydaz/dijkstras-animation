@@ -18,8 +18,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 // TODO: setup mySQL connection (save/load)
 // TODO: use NodeNotFoundException when no node is found and pass through to UI
@@ -471,6 +473,13 @@ public class Database
 		}
 	}
 
+	public double[] getCoords(Circle nodeShape)
+	{
+		Node node = findNode(nodeShape);
+		assert node != null;
+		return new double[] { node.getXCoord(), node.getYCoord() };
+	}
+
 	private void getNodeResults(ResultSet results) throws SQLException
 	{
 		nodeId = results.getInt("nodeId");
@@ -490,5 +499,29 @@ public class Database
 			e.printStackTrace();
 		}
 		weight = results.getInt("weight");
+	}
+
+	public Map<Circle, Text> getNodesAndLabels()
+	{
+		Map<Circle, Text> nodesAndLabels = new HashMap<>();
+
+		for (Node node : nodes)
+		{
+			nodesAndLabels.put(node.getShape(), node.getLabel());
+		}
+
+		return nodesAndLabels;
+	}
+
+	public Map<Line, Text> getEdgesAndLabels()
+	{
+		Map<Line, Text> edgesAndLabels = new HashMap<>();
+
+		for (Edge edge : edges)
+		{
+			edgesAndLabels.put(edge.getShape(), edge.getLabel());
+		}
+
+		return edgesAndLabels;
 	}
 }

@@ -54,7 +54,7 @@ public class Table
 		return tableScrollPane;
 	}
 
-	public void clearTable()
+	public void clearAll()
 	{
 		if (!lTable.getColumns().isEmpty())
 		{
@@ -75,7 +75,7 @@ public class Table
 
 	public void fillTable()
 	{
-		clearTable();
+		clearAll();
 
 		List<String[]> results = controller.runDijkstra();
 
@@ -104,5 +104,10 @@ public class Table
 		}
 
 		lTable.setItems(FXCollections.observableArrayList(results.subList(1, results.size())));
+	}
+
+	public void refresh()
+	{
+		fillTable();
 	}
 }

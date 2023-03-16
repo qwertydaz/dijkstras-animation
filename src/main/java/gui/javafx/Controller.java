@@ -7,6 +7,7 @@ import src.main.java.model.dijkstra.Node;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 public class Controller
 {
@@ -105,6 +106,21 @@ public class Controller
 	public void loadNodes() throws SQLException
 	{
 		db.loadNodes();
+	}
+
+	public double[] getCoords(Circle node)
+	{
+		return db.getCoords(node);
+	}
+
+	public Map<Circle, Text> getNodesAndLabels()
+	{
+		return db.getNodesAndLabels();
+	}
+
+	public Map<Line, Text> getEdgesAndLabels()
+	{
+		return db.getEdgesAndLabels();
 	}
 
 	public void connect() throws SQLException
