@@ -91,6 +91,11 @@ public class Node implements Comparable<Node>
 	@Override
 	public int compareTo(Node other)
 	{
+		if (this.name == null || other.name == null)
+		{
+			throw new NullPointerException("Name cannot be null");
+		}
+
 		return this.name.compareTo(other.name);
 	}
 

@@ -363,10 +363,10 @@ public class Database
 
 					col = 1;
 
-					updateStatement.setInt(col++, nodeId);
 					updateStatement.setString(col++, name);
 					updateStatement.setDouble(col++, xCoord);
-					updateStatement.setDouble(col, yCoord);
+					updateStatement.setDouble(col++, yCoord);
+					updateStatement.setInt(col, nodeId);
 
 					updateStatement.executeUpdate();
 				}
@@ -418,11 +418,12 @@ public class Database
 
 					col = 1;
 
-					updateStatement.setInt(col++, edgeId);
 					updateStatement.setInt(col++, edgeNode1.getId());
 					updateStatement.setInt(col++, edgeNode2.getId());
-					updateStatement.setInt(col, weight);
+					updateStatement.setInt(col++, weight);
+					updateStatement.setInt(col, edgeId);
 
+					// TODO: Fix this
 					updateStatement.executeUpdate();
 				}
 			}

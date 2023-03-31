@@ -3,8 +3,6 @@ X
 (src/main/java/controller/controller.java,2\1\21b6790389e44a952f2bf63380370b851a247952
 _
 /src/main/java/gui/swing/edge/EdgeFormEvent.java,8\f\8fc2fd48ac2e84e81c69251079d5b2b466ad0c0c
-_
-/src/main/java/gui/swing/edge/EdgeFormPanel.java,c\e\ce237bbf25e0981fa9b45b17eca08ea48b537ef5
 `
 0src/main/java/gui/swing/edge/EdgeTableModel.java,4\b\4ba93faa06e11f3cc1f3b4117ef790a13a3a3ce2
 `
@@ -51,10 +49,6 @@ Q
 !src/main/java/resources/style.css,8\5\8539a97cf4a459bd33dc41cdefc109e81e5810f9
 N
 src/main/java/model/Graph.java,1\e\1ee0ce1e3d556ef697dabfa530de7bc27a9fad6c
-S
-#src/main/java/gui/javafx/Table.java,0\a\0af46015408927c35cef929f014616c4bd10c9b0
-S
-#src/main/java/gui/javafx/Graph.java,2\a\2ab5251d61b96aeb4e3de54df93d23f8b6177f99
 :
 
 .gitignore,a\5\a5cc2925ca8258af241be7e5b0381edf30266302
@@ -62,7 +56,11 @@ V
 &src/main/java/model/dijkstra/Node.java,f\3\f38c2619de3868a6958f952ef9516b8a125287e6
 V
 &src/main/java/model/dijkstra/Edge.java,b\4\b49ea1017d418101fa95187ad6a92e0e21927d40
+_
+/src/main/java/gui/swing/edge/EdgeFormPanel.java,c\e\ce237bbf25e0981fa9b45b17eca08ea48b537ef5
 Q
 !src/main/java/model/Database.java,a\d\ad18c1566664dd9d871b6ce6329c25009d53a6a4
 X
 (src/main/java/controller/Controller.java,0\5\05fd466bff28423ca702e1a116df355b44712db1
+V
+&src/main/java/gui/swing/MainFrame.java,0\e\0e6e2e5cf0e689baafa3acd691debb9546d4d0a6

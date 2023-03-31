@@ -105,9 +105,4 @@ public class Table
 
 		lTable.setItems(FXCollections.observableArrayList(results.subList(1, results.size())));
 	}
-
-	public void refresh()
-	{
-		fillTable();
-	}
 }

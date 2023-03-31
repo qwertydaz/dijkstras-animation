@@ -129,7 +129,7 @@ public class Buttons
 			controller.loadNodes();
 			controller.loadEdges();
 
-			table.refresh();
+			table.clearAll();
 			graph.refresh();
 		}
 		catch (SQLException e)
