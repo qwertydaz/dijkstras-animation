@@ -21,21 +21,20 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
-// TODO: setup mySQL connection (save/load)
-// TODO: use NodeNotFoundException when no node is found and pass through to UI
-// TODO: fix edges table to take nodeId instead of its name
 // TODO: issue when adding edge to nodes with same name and then changing them
-// TODO: cannot add edge to 2 sets of nodes with the same names
-// TODO: use ID or make names unique
+// TODO: table breaks with duplicate node names
 public class Database
 {
 	private Connection conn = null;
 	private int col;
 	private final Dijkstra dijkstra;
+	private final Map<Integer, Set<Integer>> adjacencyMap;
 
 	// Node data
 	private final LinkedList<Node> nodes;
@@ -60,6 +59,7 @@ public class Database
 		edges = new LinkedList<>();
 		nodeShapes = new LinkedList<>();
 		edgeShapes = new LinkedList<>();
+		adjacencyMap = new HashMap<>();
 		dijkstra = new Dijkstra(nodes, edges);
 	}
 
@@ -107,6 +107,9 @@ public class Database
 		if (node1 != null && node2 != null)
 		{
 			edges.add(new Edge(node1, node2, label, edge));
+
+			adjacencyMap.computeIfAbsent(node1.getId(), k -> new HashSet<>()).add(node2.getId());
+			adjacencyMap.computeIfAbsent(node2.getId(), k -> new HashSet<>()).add(node1.getId());
 		}
 		else
 		{
@@ -223,18 +226,12 @@ public class Database
 
 	public boolean edgeExists(Circle nodeShape1, Circle nodeShape2)
 	{
-		Node node1 = findNode(nodeShape1);
-		Node node2 = findNode(nodeShape2);
+		int node1Id = findNode(nodeShape1).getId();
+		int node2Id = findNode(nodeShape2).getId();
 
-		for (Edge edge : edges)
-		{
-			if (edge.getNodes().contains(node1) && edge.getNodes().contains(node2))
-			{
-				return true;
-			}
-		}
+		Set<Integer> adjacentNodes = adjacencyMap.get(node1Id);
 
-		return false;
+		return adjacentNodes != null && adjacentNodes.contains(node2Id);
 	}
 
 	public void updateLabel(Text label, String newText)
@@ -268,6 +265,10 @@ public class Database
 		if (startNode != null)
 		{
 			dijkstra.updateNodes(nodes);
+
+			System.out.println(nodes);
+			System.out.println(edges);
+
 			return dijkstra.run(startNode);
 		}
 
@@ -435,7 +436,6 @@ public class Database
 					updateStatement.setInt(col++, weight);
 					updateStatement.setInt(col, edgeId);
 
-					// TODO: Fix this
 					updateStatement.executeUpdate();
 				}
 			}
