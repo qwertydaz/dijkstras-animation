@@ -18,8 +18,6 @@ public class Node implements Comparable<Node>
 	private double xCoord;
 	private double yCoord;
 
-	private List<Integer> lValues;
-
 	public Node(int id, double xCoord, double yCoord, Text label, Circle shape)
 	{
 		this(label, shape);
@@ -27,8 +25,6 @@ public class Node implements Comparable<Node>
 		this.id = id;
 		this.xCoord = xCoord;
 		this.yCoord = yCoord;
-
-		this.lValues = new ArrayList<>();
 	}
 
 	public Node(Text label, Circle shape)
@@ -41,7 +37,6 @@ public class Node implements Comparable<Node>
 	public Node(String name)
 	{
 		this.name = name;
-		this.lValues = new ArrayList<>();
 
 		this.id = count;
 		count++;
@@ -93,16 +88,6 @@ public class Node implements Comparable<Node>
 	public double getYCoord()
 	{
 		return yCoord;
-	}
-
-	public List<Integer> getLValues()
-	{
-		return lValues;
-	}
-
-	public void addLValue(int lValue)
-	{
-		lValues.add(lValue);
 	}
 
 	@Override

@@ -86,7 +86,7 @@ public class Dijkstra extends Graph
 
 		for (Node node : unvisitedNodes.getNodes())
 		{
-			step[index] = node.getLValues().toString();
+			step[index] = unvisitedNodes.getLValueByNodeId(node.getId()).toString();
 			index++;
 		}
 
@@ -102,16 +102,16 @@ public class Dijkstra extends Graph
 
 			if (node.equals(startingNode))
 			{
-				node.addLValue(0);
+				unvisitedNodes.setLValueByNodeId(node.getId(), 0);
 			}
 			else if (edge != null)
 			{
-				node.addLValue(edge.getWeight());
+				unvisitedNodes.setLValueByNodeId(node.getId(), edge.getWeight());
 			}
 			else
 			{
 				// this is to be representative of infinity
-				node.addLValue(-1);
+				unvisitedNodes.setLValueByNodeId(node.getId(), -1);
 			}
 		}
 
@@ -126,13 +126,14 @@ public class Dijkstra extends Graph
 
 			if (edge != null)
 			{
-				int newLValue = nextNode.getLValues().get(0) + edge.getWeight();
+				int oldLValue = unvisitedNodes.getLValueByNodeId(node.getId());
+				int newLValue = unvisitedNodes.getLValueByNodeId(nextNode.getId()) + edge.getWeight();
 
 				// if the edge exists and the weight of its path is smaller
-				if (node.getLValues().get(0) > newLValue || node.getLValues().get(0) == -1)
+				if (oldLValue > newLValue || oldLValue == -1)
 				{
 					// L value is updated to be the smaller path
-					node.addLValue(newLValue);
+					unvisitedNodes.setLValueByNodeId(node.getId(), newLValue);
 				}
 			}
 		}
@@ -142,7 +143,8 @@ public class Dijkstra extends Graph
 
 	private void flagNodeAsVisited(Node node)
 	{
-		visitedNodes.addNode(node);
+		int lValue = unvisitedNodes.getLValueByNodeId(node.getId());
+		visitedNodes.setLValueByNodeId(node.getId(), lValue);
 	}
 
 	private Node findNodeWithSmallestLValue()
@@ -159,15 +161,12 @@ public class Dijkstra extends Graph
 				continue; // skip nodes that have already been visited
 			}
 
-			if (currentNode.getLValues().isEmpty())
-			{
-				lValue = currentNode.getLValues().get(0);
+			lValue = unvisitedNodes.getLValueByNodeId(currentNode.getId());
 
-				if (lValue > 0 && lValue < smallestLValue)
-				{
-					smallestLValue = lValue;
-					node = currentNode;
-				}
+			if (lValue > 0 && lValue < smallestLValue)
+			{
+				smallestLValue = lValue;
+				node = currentNode;
 			}
 		}
 
