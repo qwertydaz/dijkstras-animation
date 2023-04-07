@@ -173,6 +173,12 @@ public class Dijkstra extends Graph
 				}
 			}
 		}
+
+		if (node.getName() == null)
+		{
+			throw new RuntimeException("No node with smallest L value found");
+		}
+
 		return node;
 	}
 

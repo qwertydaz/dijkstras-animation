@@ -16,9 +16,9 @@ public class Node implements Comparable<Node>
 	private double xCoord;
 	private double yCoord;
 
-	public Node(int id, String name, double xCoord, double yCoord)
+	public Node(int id, double xCoord, double yCoord, Text label, Circle shape)
 	{
-		this(name);
+		this(label, shape);
 
 		this.id = id;
 		this.xCoord = xCoord;

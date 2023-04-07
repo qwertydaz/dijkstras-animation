@@ -43,6 +43,20 @@ public class Edge
 		this.id = id;
 	}
 
+	public Edge(int id, Node node1, Node node2, Text label, Line shape)
+	{
+		this.node1 = node1;
+		this.node2 = node2;
+		this.nodes = new HashSet<>(Arrays.asList(node1, node2));
+
+		this.weight = Integer.parseInt(label.getText());
+
+		this.label = label;
+		this.shape = shape;
+		this.id = id;
+		count++;
+	}
+
 	public Edge(Node node1, Node node2, Text label, Line shape)
 	{
 		this(node1, node2);

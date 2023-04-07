@@ -1,7 +1,9 @@
 package src.main.java.gui.javafx;
 
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import src.main.java.exception.NodeNotFoundException;
 import src.main.java.model.dijkstra.Dijkstra;
@@ -69,6 +71,16 @@ public class Database
 	public List<Line> getEdges()
 	{
 		return edgeShapes;
+	}
+
+	public int numNodes()
+	{
+		return nodes.size();
+	}
+
+	public int numEdges()
+	{
+		return edges.size();
 	}
 
 	public Node getStartNode()
@@ -444,12 +456,21 @@ public class Database
 			{
 				getNodeResults(results);
 
-				Node node = new Node(nodeId, name, xCoord, yCoord);
-				nodes.add(node);
+				Circle nodeShape = new Circle(xCoord, yCoord, 50);
+				nodeShape.setFill(Color.LIGHTBLUE);
 
-				System.out.println(node);
+				Text label = new Text(name);
+				label.setFont(Font.font(24));
+
+				label.xProperty().bind(nodeShape.centerXProperty().subtract(nodeShape.getRadius()/2));
+				label.yProperty().bind(nodeShape.centerYProperty().add(nodeShape.getRadius()/8));
+
+				Node node = new Node(nodeId, xCoord, yCoord, label, nodeShape);
+				nodes.add(node);
 			}
 		}
+
+		System.out.println(nodes);
 	}
 
 	public void loadEdges() throws SQLException
@@ -466,12 +487,27 @@ public class Database
 			{
 				getEdgeResults(results);
 
-				Edge edge = new Edge(edgeId, edgeNode1, edgeNode2, weight);
-				edges.add(edge);
+				Line edgeShape = new Line();
+				edgeShape.setStrokeWidth(3);
+				edgeShape.setStroke(Color.GRAY);
 
-				System.out.println(edge);
+				edgeShape.startXProperty().bind(edgeNode1.getShape().centerXProperty());
+				edgeShape.startYProperty().bind(edgeNode1.getShape().centerYProperty());
+				edgeShape.endXProperty().bind(edgeNode2.getShape().centerXProperty());
+				edgeShape.endYProperty().bind(edgeNode2.getShape().centerYProperty());
+
+				Text label = new Text(String.valueOf(weight));
+				label.setFont(Font.font(24));
+
+				label.xProperty().bind(edgeShape.startXProperty().add(edgeShape.endXProperty()).divide(2));
+				label.yProperty().bind(edgeShape.startYProperty().add(edgeShape.endYProperty()).divide(2));
+
+				Edge edge = new Edge(edgeId, edgeNode1, edgeNode2, label, edgeShape);
+				edges.add(edge);
 			}
 		}
+
+		System.out.println(edges);
 	}
 
 	public double[] getCoords(Circle nodeShape)
