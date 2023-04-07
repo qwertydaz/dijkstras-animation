@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 public class Dijkstra extends Graph
 {
@@ -69,9 +68,9 @@ public class Dijkstra extends Graph
 
 		step[0] = "Tv";
 
-		for (Map.Entry<Node, Integer> entry : unvisitedNodes.entrySet())
+		for (Node node : unvisitedNodes.getNodes())
 		{
-			step[index] = entry.getKey().getName();
+			step[index] = node.getName();
 			index++;
 		}
 
@@ -85,9 +84,9 @@ public class Dijkstra extends Graph
 
 		step[0] = visitedNodes.getNodeNames();
 
-		for (Map.Entry<Node, Integer> entry : unvisitedNodes.entrySet())
+		for (Node node : unvisitedNodes.getNodes())
 		{
-			step[index] = entry.getValue().toString();
+			step[index] = node.getLValues().toString();
 			index++;
 		}
 
@@ -97,22 +96,22 @@ public class Dijkstra extends Graph
 	private void findInitialLValues(Node startingNode)
 	{
 		// first pass of L values
-		for (Node node : unvisitedNodes.keySet())
+		for (Node node : unvisitedNodes.getNodes())
 		{
 			Edge edge = findEdge(startingNode, node);
 
 			if (node.equals(startingNode))
 			{
-				unvisitedNodes.replace(node, 0);
+				node.addLValue(0);
 			}
 			else if (edge != null)
 			{
-				unvisitedNodes.replace(node, edge.getWeight());
+				node.addLValue(edge.getWeight());
 			}
 			else
 			{
 				// this is to be representative of infinity
-				unvisitedNodes.replace(node, -1);
+				node.addLValue(-1);
 			}
 		}
 
@@ -121,19 +120,19 @@ public class Dijkstra extends Graph
 
 	private void findSubsequentLValues(Node nextNode)
 	{
-		for (Map.Entry<Node, Integer> nodeAndLValue : unvisitedNodes.entrySet())
+		for (Node node : unvisitedNodes.getNodes())
 		{
-			Edge edge = findEdge(nextNode, nodeAndLValue.getKey());
+			Edge edge = findEdge(nextNode, node);
 
 			if (edge != null)
 			{
-				int newLValue = unvisitedNodes.get(nextNode) + edge.getWeight();
+				int newLValue = nextNode.getLValues().get(0) + edge.getWeight();
 
 				// if the edge exists and the weight of its path is smaller
-				if (nodeAndLValue.getValue() > newLValue || nodeAndLValue.getValue() == -1)
+				if (node.getLValues().get(0) > newLValue || node.getLValues().get(0) == -1)
 				{
 					// L value is updated to be the smaller path
-					unvisitedNodes.replace(nodeAndLValue.getKey(), newLValue);
+					node.addLValue(newLValue);
 				}
 			}
 		}
@@ -143,28 +142,26 @@ public class Dijkstra extends Graph
 
 	private void flagNodeAsVisited(Node node)
 	{
-		int lValue = unvisitedNodes.get(node);
-		visitedNodes.put(node, lValue);
+		visitedNodes.addNode(node);
 	}
 
 	private Node findNodeWithSmallestLValue()
 	{
 		int smallestLValue = Integer.MAX_VALUE;
 
-		Node node = new Node();
+		Node node = null;
 		int lValue;
 
-		for (Map.Entry<Node, Integer> nodeAndLValue : unvisitedNodes.entrySet())
+		for (Node currentNode : unvisitedNodes.getNodes())
 		{
-			Node currentNode = nodeAndLValue.getKey();
-			if (visitedNodes.containsKey(currentNode))
+			if (visitedNodes.contains(currentNode))
 			{
 				continue; // skip nodes that have already been visited
 			}
 
-			if (nodeAndLValue.getValue() != null)
+			if (currentNode.getLValues().isEmpty())
 			{
-				lValue = nodeAndLValue.getValue();
+				lValue = currentNode.getLValues().get(0);
 
 				if (lValue > 0 && lValue < smallestLValue)
 				{
@@ -174,7 +171,7 @@ public class Dijkstra extends Graph
 			}
 		}
 
-		if (node.getName() == null)
+		if (node == null)
 		{
 			throw new RuntimeException("No node with smallest L value found");
 		}

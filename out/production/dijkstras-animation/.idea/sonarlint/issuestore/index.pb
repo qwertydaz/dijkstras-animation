@@ -43,13 +43,9 @@ R
 "src/main/java/gui/javafx/Util.java,2\e\2e3e640597e4e43ca68606c10b2d75c01f6c2dc7
 Q
 !src/main/java/resources/style.css,8\5\8539a97cf4a459bd33dc41cdefc109e81e5810f9
-N
-src/main/java/model/Graph.java,1\e\1ee0ce1e3d556ef697dabfa530de7bc27a9fad6c
 :
 
 .gitignore,a\5\a5cc2925ca8258af241be7e5b0381edf30266302
-V
-&src/main/java/model/dijkstra/Edge.java,b\4\b49ea1017d418101fa95187ad6a92e0e21927d40
 _
 /src/main/java/gui/swing/edge/EdgeFormPanel.java,c\e\ce237bbf25e0981fa9b45b17eca08ea48b537ef5
 Q
@@ -58,3 +54,5 @@ X
 (src/main/java/controller/Controller.java,0\5\05fd466bff28423ca702e1a116df355b44712db1
 V
 &src/main/java/gui/swing/MainFrame.java,0\e\0e6e2e5cf0e689baafa3acd691debb9546d4d0a6
+N
+src/main/java/model/Graph.java,1\e\1ee0ce1e3d556ef697dabfa530de7bc27a9fad6c

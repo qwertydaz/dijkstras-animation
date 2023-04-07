@@ -54,3 +54,5 @@ X
 (src/main/java/controller/Controller.java,0\5\05fd466bff28423ca702e1a116df355b44712db1
 V
 &src/main/java/gui/swing/MainFrame.java,0\e\0e6e2e5cf0e689baafa3acd691debb9546d4d0a6
+N
+src/main/java/model/Graph.java,1\e\1ee0ce1e3d556ef697dabfa530de7bc27a9fad6c

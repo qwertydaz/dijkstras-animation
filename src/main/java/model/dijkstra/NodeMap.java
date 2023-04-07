@@ -2,121 +2,95 @@ package src.main.java.model.dijkstra;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-public class NodeMap implements Map<Node, Integer>
+public class NodeMap
 {
-	private final Map<Node, Integer> nodesAndLValues;
+	private final List<Node> nodes;
 
 	public NodeMap(List<Node> nodes)
 	{
-		this.nodesAndLValues = new TreeMap<>();
-
-		for (Node node : nodes)
-		{
-			nodesAndLValues.put(node, null);
-		}
+		this.nodes = new ArrayList<>(nodes);
 	}
 
 	public NodeMap()
 	{
-		this.nodesAndLValues = new TreeMap<>();
+		this.nodes = new ArrayList<>();
 	}
 
 	public void update(List<Node> nodes)
 	{
-		nodesAndLValues.clear();
-
-		for (Node node : nodes)
-		{
-			nodesAndLValues.put(node, null);
-		}
+		this.nodes.clear();
+		this.nodes.addAll(nodes);
 	}
 
 	public String getNodeNames()
 	{
-		List<String> nodeNames = new ArrayList<>();
+		StringBuilder sb = new StringBuilder();
 
-		for (Node node : nodesAndLValues.keySet())
+		for (Node node : nodes)
 		{
-			nodeNames.add(node.getName());
+			sb.append(node.getName());
+			sb.append(" ");
 		}
 
-		return nodeNames.toString();
+		return sb.toString().trim();
 	}
 
-	@Override
-	public Integer put(Node node, Integer integer)
+	public Node getNodeByName(String name)
 	{
-		return nodesAndLValues.put(node, integer);
+		for (Node node : nodes)
+		{
+			if (node.getName().equals(name))
+			{
+				return node;
+			}
+		}
+
+		return null;
 	}
 
-	@Override
-	public void putAll(Map<? extends Node, ? extends Integer> nodeMap)
+	public boolean containsNode(Node node)
 	{
-		nodesAndLValues.putAll(nodeMap);
+		return nodes.contains(node);
 	}
 
-	@Override
-	public void clear()
+	public boolean addNode(Node node)
 	{
-		nodesAndLValues.clear();
+		return nodes.add(node);
 	}
 
-	@Override
-	public Set<Node> keySet()
+	public boolean removeNode(Node node)
 	{
-		return nodesAndLValues.keySet();
+		return nodes.remove(node);
 	}
 
-	@Override
-	public Collection<Integer> values()
+	public List<Node> getNodes()
 	{
-		return nodesAndLValues.values();
+		return new ArrayList<>(nodes);
 	}
 
-	@Override
-	public Set<Entry<Node, Integer>> entrySet()
-	{
-		return nodesAndLValues.entrySet();
-	}
-
-	@Override
-	public Integer get(Object node)
-	{
-		return nodesAndLValues.get(node);
-	}
-
-	@Override
 	public int size()
 	{
-		return nodesAndLValues.size();
+		return nodes.size();
 	}
 
-	@Override
 	public boolean isEmpty()
 	{
-		return nodesAndLValues.isEmpty();
+		return nodes.isEmpty();
 	}
 
-	@Override
-	public boolean containsKey(Object node)
+	public void clear()
 	{
-		return nodesAndLValues.containsKey(node);
+		nodes.clear();
 	}
 
-	@Override
-	public boolean containsValue(Object lValue)
+	public boolean contains(Node node)
 	{
-		return nodesAndLValues.containsValue(lValue);
-	}
-
-	@Override
-	public Integer remove(Object node)
-	{
-		return nodesAndLValues.remove(node);
+		return nodes.contains(node);
 	}
 }
