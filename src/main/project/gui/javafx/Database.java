@@ -14,6 +14,8 @@ import project.exception.NodeNotFoundException;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -26,6 +28,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 // TODO: issue when adding edge to nodes with same name and then changing them
@@ -289,9 +292,10 @@ public class Database
 
 	private String[] getDatabaseDetails()
 	{
-		String csvFile = "./src/main/java/resources/database_details.csv";
-
-		try (BufferedReader br = new BufferedReader(new FileReader(csvFile)))
+		try (
+				InputStream inputStream = getClass().getResourceAsStream("/database_details.csv");
+				InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+				BufferedReader br = new BufferedReader(inputStreamReader))
 		{
 			String values = br.readLine();
 			return values.split(",");

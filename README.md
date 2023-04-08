@@ -28,7 +28,7 @@ If you want this functionality to work, you will need to set up a database and a
 Create a file called "database_details.csv" in the following directory:
 
 ```
-./src/main/resources/database_details.csv
+./src/resources/database_details.csv
 ```
 
 The CSV file should contain the connection details. It must be formatted as follows:

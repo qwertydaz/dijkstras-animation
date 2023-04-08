@@ -37,15 +37,10 @@ b
 2src/main/java/exception/NodeNotFoundException.java,4\2\426bd756c16f3431aae739b0771f1d02f5ab6558
 d
 4src/main/java/exception/WeightNotFoundException.java,3\d\3d77ec5255bd857440cc479ace60bdd6a5818071
-9
-	README.md,8\e\8ec9a00bfd09b3190ac6b22251dbb1aa95a0579d
 R
 "src/main/java/gui/javafx/Util.java,2\e\2e3e640597e4e43ca68606c10b2d75c01f6c2dc7
 Q
 !src/main/java/resources/style.css,8\5\8539a97cf4a459bd33dc41cdefc109e81e5810f9
-:
-
-.gitignore,a\5\a5cc2925ca8258af241be7e5b0381edf30266302
 _
 /src/main/java/gui/swing/edge/EdgeFormPanel.java,c\e\ce237bbf25e0981fa9b45b17eca08ea48b537ef5
 Q

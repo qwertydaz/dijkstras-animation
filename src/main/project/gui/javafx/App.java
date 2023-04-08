@@ -10,6 +10,8 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.util.Objects;
+
 public class App extends Application
 {
 	Graph graph;
@@ -56,7 +58,8 @@ public class App extends Application
 		VBox.setVgrow(buttonsPane, Priority.ALWAYS);
 
 		Scene scene = new Scene(fullPane, 1200, 700);
-		scene.getStylesheets().add("./src/main/java/resources/style.css");
+		String cssPath = getClass().getResource("/style.css").toExternalForm();
+		scene.getStylesheets().add(cssPath);
 
 		// Main Stage
 		mainStage.setTitle("Dijkstra's Animation");
