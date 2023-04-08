@@ -58,7 +58,7 @@ public class App extends Application
 		VBox.setVgrow(buttonsPane, Priority.ALWAYS);
 
 		Scene scene = new Scene(fullPane, 1200, 700);
-		String cssPath = getClass().getResource("/style.css").toExternalForm();
+		String cssPath = Objects.requireNonNull(getClass().getResource("/style.css")).toExternalForm();
 		scene.getStylesheets().add(cssPath);
 
 		// Main Stage

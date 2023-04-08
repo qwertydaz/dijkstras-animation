@@ -106,12 +106,6 @@ public class Edge
 		return shape;
 	}
 
-	// checks if one edge has the same nodes as another edge
-	public boolean isEqual(Edge edge)
-	{
-		return nodes.containsAll(edge.getNodes());
-	}
-
 	public String toString()
 	{
 		return "{" + id + ": " + node1.toString() + ", " + node2.toString() + ", " + weight + "}";

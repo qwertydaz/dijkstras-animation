@@ -182,6 +182,7 @@ public class Dijkstra extends Graph
 			}
 		}
 
+		// just for debugging, node should never be null
 		if (node == null)
 		{
 			throw new RuntimeException("No node with smallest L value found");

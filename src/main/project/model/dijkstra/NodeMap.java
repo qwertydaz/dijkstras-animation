@@ -67,12 +67,6 @@ public class NodeMap
 		this.nodeIdToLValue.put(node.getId(), -1);
 	}
 
-	public void removeNode(Node node)
-	{
-		this.nodes.remove(node.getId());
-		this.nodeIdToLValue.remove(node.getId());
-	}
-
 	public Integer getLValueByNodeId(int nodeId)
 	{
 		return nodeIdToLValue.get(nodeId);
