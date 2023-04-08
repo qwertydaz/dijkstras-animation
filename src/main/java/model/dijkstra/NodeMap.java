@@ -1,60 +1,77 @@
 package src.main.java.model.dijkstra;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class NodeMap
 {
-	private final List<Node> nodes;
+	private final Map<Integer, Node> nodes;
 	private final Map<Integer, Integer> nodeIdToLValue;
 
 	public NodeMap(List<Node> nodes)
 	{
-		this.nodes = new ArrayList<>(nodes);
+		this.nodes = new HashMap<>();
 		this.nodeIdToLValue = new HashMap<>();
 
 		for (Node node : nodes)
 		{
+			this.nodes.put(node.getId(), node);
 			this.nodeIdToLValue.put(node.getId(), -1);
 		}
 	}
 
 	public NodeMap()
 	{
-		this.nodes = new ArrayList<>();
+		this.nodes = new HashMap<>();
 		this.nodeIdToLValue = new HashMap<>();
 	}
 
 	public void update(List<Node> nodes)
 	{
 		this.nodes.clear();
-		this.nodes.addAll(nodes);
 		this.nodeIdToLValue.clear();
 
 		for (Node node : nodes)
 		{
+			this.nodes.put(node.getId(), node);
 			this.nodeIdToLValue.put(node.getId(), -1);
 		}
 	}
 
 	public String getNodeNames()
 	{
-		StringBuilder sb = new StringBuilder();
+		StringBuilder sb = new StringBuilder("[");
 
-		for (Node node : nodes)
+		for (Node node : nodes.values())
 		{
 			sb.append(node.getName());
-			sb.append(" ");
+			sb.append(", ");
 		}
+
+		sb.delete(sb.length() - 2, sb.length());
+		sb.append("]");
 
 		return sb.toString();
 	}
 
-	public List<Node> getNodes()
+	public Collection<Node> getNodes()
 	{
-		return nodes;
+		return nodes.values();
+	}
+
+	public void addNode(Node node)
+	{
+		this.nodes.put(node.getId(), node);
+		this.nodeIdToLValue.put(node.getId(), -1);
+	}
+
+	public void removeNode(Node node)
+	{
+		this.nodes.remove(node.getId());
+		this.nodeIdToLValue.remove(node.getId());
 	}
 
 	public Integer getLValueByNodeId(int nodeId)

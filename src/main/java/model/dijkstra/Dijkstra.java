@@ -145,6 +145,8 @@ public class Dijkstra extends Graph
 	{
 		int lValue = unvisitedNodes.getLValueByNodeId(node.getId());
 		visitedNodes.setLValueByNodeId(node.getId(), lValue);
+
+		visitedNodes.addNode(node);
 	}
 
 	private Node findNodeWithSmallestLValue()
