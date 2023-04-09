@@ -47,6 +47,7 @@ public class Graph
 	private Circle selectedStartNode;
 
 	private Circle previousNode;
+	private Circle currentNode;
 
 	private static final Color selectedNodeColour = Color.RED;
 	private static final Color unselectedNodeColour = Color.LIGHTBLUE;
@@ -488,6 +489,11 @@ public class Graph
 	{
 		controller.setInactive(edge);
 		edge.setStroke(unselectedEdgeColour);
+	}
+
+	private void findCurrentNode(List<String> result)
+	{
+
 	}
 
 	// Deselects all nodes by changing colours and emptying list

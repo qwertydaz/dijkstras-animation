@@ -349,6 +349,7 @@ public class Database
 		edges.removeIf(edge -> node == edge.getNode1() || node == edge.getNode2());
 	}
 
+	// TODO: Fix this
 	public List<String[]> runDijkstra()
 	{
 		if (startNode != null)
@@ -358,7 +359,7 @@ public class Database
 			System.out.println(nodes);
 			System.out.println(edges);
 
-			return dijkstra.run(startNode);
+			//return dijkstra.run(startNode);
 		}
 
 		return Collections.emptyList();
