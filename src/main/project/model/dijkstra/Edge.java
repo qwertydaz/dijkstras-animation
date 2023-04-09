@@ -19,6 +19,7 @@ public class Edge
 
 	private Text label;
 	private Line shape;
+	private boolean isActive = false;
 
 	public Edge(Node node1, Node node2)
 	{
@@ -104,6 +105,16 @@ public class Edge
 	public Line getShape()
 	{
 		return shape;
+	}
+
+	public void setActive()
+	{
+		isActive = true;
+	}
+
+	public void setInactive()
+	{
+		isActive = false;
 	}
 
 	public String toString()

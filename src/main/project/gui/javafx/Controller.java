@@ -28,6 +28,11 @@ public class Controller
 		return db.getStartNode();
 	}
 
+	public Map<Circle, Line> getAdjacentNodesAndEdges(Circle node)
+	{
+		return db.getAdjacentNodesAndEdges(node);
+	}
+
 	public void addNode(Text label, Circle node)
 	{
 		db.addNode(label, node);
@@ -76,6 +81,26 @@ public class Controller
 	public void setStartNode(Circle node)
 	{
 		db.setStartNode(node);
+	}
+
+	public void setActive(Circle node)
+	{
+		db.setActive(node);
+	}
+
+	public void setActive(Line edge)
+	{
+		db.setActive(edge);
+	}
+
+	public void setInactive(Circle node)
+	{
+		db.setInactive(node);
+	}
+
+	public void setInactive(Line edge)
+	{
+		db.setInactive(edge);
 	}
 
 	public List<String[]> runDijkstra()

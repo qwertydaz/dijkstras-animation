@@ -15,6 +15,7 @@ public class Node implements Comparable<Node>
 	private Circle shape;
 	private double xCoord;
 	private double yCoord;
+	private boolean isActive = false;
 
 	public Node(int id, double xCoord, double yCoord, Text label, Circle shape)
 	{
@@ -86,6 +87,16 @@ public class Node implements Comparable<Node>
 	public double getYCoord()
 	{
 		return yCoord;
+	}
+
+	public void setActive()
+	{
+		isActive = true;
+	}
+
+	public void setInactive()
+	{
+		isActive = false;
 	}
 
 	@Override

@@ -12,6 +12,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
 import java.sql.SQLException;
+import java.util.List;
 
 public class Buttons
 {
@@ -21,10 +22,17 @@ public class Buttons
 	private final Graph graph;
 	private final Table table;
 
-	private Button dijkstraButton;
+	private List<String[]> results;
+	private String[] headers;
+	private int currentResultIndex = 0;
+
+	private Button runButton;
 	private Button resetButton;
 	private Button saveButton;
 	private Button loadButton;
+	private Button forwardButton;
+	private Button backButton;
+	private Button stopButton;
 
 	public Buttons(Controller controller, Graph graph, Table table)
 	{
@@ -54,7 +62,7 @@ public class Buttons
 	private void setupButtons()
 	{
 		// Button 1
-		dijkstraButton = new Button("Run");
+		runButton = new Button("Run");
 
 		// Button 2
 		resetButton = new Button("Reset");
@@ -65,8 +73,17 @@ public class Buttons
 		// Button 4
 		loadButton = new Button("Load");
 
+		// Button 5
+		forwardButton = new Button("Forward");
+
+		// Button 6
+		backButton = new Button("Back");
+
+		// Button 7
+		stopButton = new Button("Stop");
+
 		// Add buttons to buttonsPane
-		buttonsPane.getChildren().addAll(dijkstraButton, resetButton, saveButton, loadButton);
+		buttonsPane.getChildren().addAll(runButton, resetButton, saveButton, loadButton);
 
 		// Centre buttons
 		buttonsPane.setAlignment(Pos.CENTER);
@@ -75,18 +92,7 @@ public class Buttons
 	private void setupButtonsActions()
 	{
 		// Button 1
-		dijkstraButton.setOnAction(actionEvent ->
-		{
-			if (controller.getStartNode() != null)
-			{
-				table.fillTable();
-			}
-			else
-			{
-				Util.displayErrorMessage("No start node selected!",
-						"Right click on a node to select it as the start node.");
-			}
-		});
+		runButton.setOnAction(actionEvent -> run());
 
 		// Button 2
 		resetButton.setOnAction(actionEvent -> reset());
@@ -96,6 +102,38 @@ public class Buttons
 
 		// Button 4
 		loadButton.setOnAction(actionEvent -> load());
+
+		// Button 5
+		forwardButton.setOnAction(actionEvent -> forward());
+
+		// Button 6
+		backButton.setOnAction(actionEvent -> backward());
+
+		// Button 7
+		stopButton.setOnAction(actionEvent -> stop());
+	}
+
+	private void run()
+	{
+		if (controller.getStartNode() != null)
+		{
+			// Toggle button visibility
+			buttonsPane.getChildren().removeAll(runButton, resetButton, saveButton, loadButton);
+			buttonsPane.getChildren().addAll(forwardButton, backButton, stopButton);
+
+			results = controller.runDijkstra();
+			headers = results.get(0);
+			results.remove(0);
+
+
+
+			table.fillTable();
+		}
+		else
+		{
+			Util.displayErrorMessage("No start node selected!",
+					"Right click on a node to select it as the start node.");
+		}
 	}
 
 	private void reset()
@@ -135,6 +173,27 @@ public class Buttons
 		{
 			Util.displayErrorMessage("Error loading from database", e.getMessage());
 		}
+	}
+
+	private void forward()
+	{
+		errorMessagePrompt();
+	}
+
+	private void backward()
+	{
+		errorMessagePrompt();
+	}
+
+	private void stop()
+	{
+		// Toggle button visibility
+		buttonsPane.getChildren().removeAll(forwardButton, backButton, stopButton);
+		buttonsPane.getChildren().addAll(runButton, resetButton, saveButton, loadButton);
+
+		results = null;
+		headers = null;
+		currentResultIndex = 0;
 	}
 
 	private void errorMessagePrompt()

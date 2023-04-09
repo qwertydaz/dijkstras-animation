@@ -1,5 +1,7 @@
 package project.model.dijkstra;
 
+import javafx.scene.shape.Circle;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -46,7 +48,7 @@ public class NodeMap
 
 		for (Node node : nodes.values())
 		{
-			sb.append(node.getName());
+			sb.append(node);
 			sb.append(", ");
 		}
 
@@ -54,6 +56,19 @@ public class NodeMap
 		sb.append("]");
 
 		return sb.toString();
+	}
+
+	public Circle getNodeShape(int nodeId)
+	{
+		for (Node node : nodes.values())
+		{
+			if (node.getId() == nodeId)
+			{
+				return node.getShape();
+			}
+		}
+
+		return null;
 	}
 
 	public Collection<Node> getNodes()

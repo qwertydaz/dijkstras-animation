@@ -46,11 +46,14 @@ public class Graph
 	private Line selectedEdge;
 	private Circle selectedStartNode;
 
+	private Circle previousNode;
+
 	private static final Color selectedNodeColour = Color.RED;
 	private static final Color unselectedNodeColour = Color.LIGHTBLUE;
 	private static final Color selectedStartNodeColour = Color.GREEN;
 	private static final Color selectedEdgeColour = Color.RED;
 	private static final Color unselectedEdgeColour = Color.GRAY;
+	private static final Color activeColour = Color.BLUE;
 
 	private Object source;
 	private final Controller controller;
@@ -451,6 +454,40 @@ public class Graph
 
 		node.setFill(selectedNodeColour);
 		selectedNodes.add(node);
+	}
+
+	private void highlightAdjacentNodes(Circle node)
+	{
+		Map<Circle, Line> adjacentNodes = controller.getAdjacentNodesAndEdges(node);
+
+		for (Circle adjacentNode : adjacentNodes.keySet())
+		{
+			adjacentNode.setFill(activeColour);
+		}
+	}
+
+	private void setActive(Circle node)
+	{
+		controller.setActive(node);
+		node.setFill(activeColour);
+	}
+
+	private void setInactive(Circle node)
+	{
+		controller.setInactive(node);
+		node.setFill(unselectedNodeColour);
+	}
+
+	private void setActive(Line edge)
+	{
+		controller.setActive(edge);
+		edge.setStroke(activeColour);
+	}
+
+	private void setInactive(Line edge)
+	{
+		controller.setInactive(edge);
+		edge.setStroke(unselectedEdgeColour);
 	}
 
 	// Deselects all nodes by changing colours and emptying list

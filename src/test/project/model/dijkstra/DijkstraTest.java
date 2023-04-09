@@ -117,6 +117,5 @@ class DijkstraTest
 
 		assertEquals(expected, formatResult(d.run(startingNode)),
 				"run: Did not return the expected output");
-		d.run(startingNode);
 	}
 }

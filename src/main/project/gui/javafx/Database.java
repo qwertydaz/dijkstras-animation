@@ -97,6 +97,91 @@ public class Database
 		startNode = findNode(nodeShape);
 	}
 
+	public void setActive(Circle nodeShape)
+	{
+		Node node = findNode(nodeShape);
+
+		if (node != null)
+		{
+			node.setActive();
+		}
+		else
+		{
+			System.err.println("Invalid node");
+		}
+	}
+
+	public void setActive(Line edgeShape)
+	{
+		Edge edge = findEdge(edgeShape);
+
+		if (edge != null)
+		{
+			edge.setActive();
+		}
+		else
+		{
+			System.err.println("Invalid edge");
+		}
+	}
+
+	public void setInactive(Circle nodeShape)
+	{
+		Node node = findNode(nodeShape);
+
+		if (node != null)
+		{
+			node.setInactive();
+		}
+		else
+		{
+			System.err.println("Invalid node");
+		}
+	}
+
+	public void setInactive(Line edgeShape)
+	{
+		Edge edge = findEdge(edgeShape);
+
+		if (edge != null)
+		{
+			edge.setInactive();
+		}
+		else
+		{
+			System.err.println("Invalid edge");
+		}
+	}
+
+	public Map<Circle, Line> getAdjacentNodesAndEdges(Circle nodeShape)
+	{
+		Node node = findNode(nodeShape);
+
+		if (node != null)
+		{
+			Map<Circle, Line> adjacentNodesAndEdges = new HashMap<>();
+
+			for (Edge edge : edges)
+			{
+				if (edge.getNode1().equals(node))
+				{
+					adjacentNodesAndEdges.put(edge.getNode2().getShape(), edge.getShape());
+				}
+				else if (edge.getNode2().equals(node))
+				{
+					adjacentNodesAndEdges.put(edge.getNode1().getShape(), edge.getShape());
+				}
+			}
+
+			return adjacentNodesAndEdges;
+		}
+		else
+		{
+			System.err.println("Invalid node");
+			return Collections.emptyMap();
+		}
+	}
+
 	public void addNode(Text label, Circle node)
 	{
 		nodeShapes.add(node);
