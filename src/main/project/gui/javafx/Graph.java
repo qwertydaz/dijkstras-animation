@@ -492,6 +492,8 @@ public class Graph
 
 	public void highlightNodeAndAdjacentEdges(Circle node)
 	{
+		unhighlightAllNodesAndEdges();
+
 		Map<Circle, Line> adjacentNodesAndEdges = controller.getAdjacentNodesAndEdges(node);
 
 		setActive(node);
@@ -499,6 +501,19 @@ public class Graph
 		for (Line edge : adjacentNodesAndEdges.values())
 		{
 			setActive(edge);
+		}
+	}
+
+	public void unhighlightAllNodesAndEdges()
+	{
+		for (Circle node : controller.getNodes())
+		{
+			setInactive(node);
+		}
+
+		for (Line edge : controller.getEdges())
+		{
+			setInactive(edge);
 		}
 	}
 

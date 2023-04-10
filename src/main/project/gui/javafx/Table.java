@@ -1,9 +1,6 @@
 package project.gui.javafx;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.FXCollections;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderStroke;
@@ -13,8 +10,8 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
-import java.util.List;
 
+// TODO: ∞ symbol in table
 public class Table
 {
 	private ScrollPane tableScrollPane;

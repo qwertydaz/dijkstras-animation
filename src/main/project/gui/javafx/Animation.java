@@ -1,7 +1,12 @@
 package project.gui.javafx;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.Set;
 
 public class Animation
 {
@@ -9,10 +14,12 @@ public class Animation
 	private final Graph graph;
 	private final Table table;
 
-	private Map<String[], String[]> results;
-	private Map<String[], String[]> headers;
+	private LinkedHashMap<String[], String[]> results;
+	private String[] headers;
 	private LinkedList<String> visitedNodes;
 	private int currentNodeIndex = 0;
+	private int frame = 0;
+	private int totalFrames;
 
 	public Animation(Controller controller, Graph graph, Table table)
 	{
@@ -24,46 +31,93 @@ public class Animation
 	// starts animation
 	public void start()
 	{
-		results = controller.runDijkstra();
+		results = (LinkedHashMap<String[], String[]>) controller.runDijkstra();
+		headers = results.get(new String[]{"Tv"});
+		results.remove(new String[]{"Tv"});
+		totalFrames = results.size();
+
+		graph.setAnimationStatus(true);
+		graph.highlightNodeAndAdjacentEdges();
 
 		this.visitedNodes = new LinkedList<>();
-		graph.setAnimationStatus(true);
 		currentNodeIndex = graph.getStartNodeIndex();
-		graph.highlightNodeAndAdjacentEdges();
+		visitedNodes.add(String.valueOf(currentNodeIndex));
 	}
 
 	// highlights the next node and adjacent edges
 	public void forward()
 	{
 		// TODO:
-		//  - change dijkstra.run() output to list node ids instead of node names
-		//  - then use node id to get node shape and highlight it and its adjacent edges
-		//  - mark that node id as visited and ensure its not used again
 		//  - update table with current L values (add a new row)
-		//  - ensure that nothing happens once all nodes have been visited
+
+		if (frame == totalFrames)
+		{
+			return;
+		}
+
+		frame++;
+		String nextNodeId = findNextNodeId(getDataRow());
+		visitedNodes.add(nextNodeId);
+
+		graph.highlightNodeAndAdjacentEdges(Integer.parseInt(nextNodeId));
 	}
 
 	// unhighlights the current node and adjacent edges
 	public void backward()
 	{
 		// TODO:
-		//  - unhighlight the current node and adjacent edges
-		//  - mark that node id as unvisited and ensure it can be used again
 		//  - update table with current L values (remove the last row)
-		//  - ensure that nothing happens once all nodes are unvisited
+
+		if (frame == 0)
+		{
+			return;
+		}
+
+		frame--;
+		visitedNodes.removeLast();
+		String nodeId = visitedNodes.getLast();
+
+		graph.highlightNodeAndAdjacentEdges(Integer.parseInt(nodeId));
 	}
 
 	// stops animation
 	public void stop()
 	{
 		// TODO:
-		//  - unhighlight all nodes and edges
 		//  - reset table to initial state
 
-		graph.setAnimationStatus(false);
 		results = null;
 		headers = null;
 		currentNodeIndex = 0;
+		frame= 0;
 		visitedNodes.clear();
+
+		graph.setAnimationStatus(false);
+		graph.unhighlightAllNodesAndEdges();
+	}
+
+	private Map.Entry<String[], String[]> getDataRow()
+	{
+		int index = 0;
+
+		for (Map.Entry<String[], String[]> entry : results.entrySet())
+		{
+			if (index == frame)
+			{
+				return entry;
+			}
+
+			index++;
+		}
+
+		return null;
+	}
+
+	private String findNextNodeId(Map.Entry<String[], String[]> dataRow)
+	{
+		Set<String> newNodes = new HashSet<>(Arrays.asList(dataRow.getKey()));
+		visitedNodes.forEach(newNodes::remove);
+
+		return Collections.min(newNodes);
 	}
 }
