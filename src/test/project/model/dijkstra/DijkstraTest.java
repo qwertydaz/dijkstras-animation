@@ -3,13 +3,13 @@ package project.model.dijkstra;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
-import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class DijkstraTest
 {
@@ -18,37 +18,39 @@ class DijkstraTest
 	private LinkedList<Node> normalNodes;
 	private LinkedList<Edge> normalEdges;
 
-	private String formatResult(List<String[]> list)
+	private boolean deepEquals(Map<String[], String[]> expectedSteps, Map<String[], String[]> actualSteps)
 	{
-		StringBuilder result = new StringBuilder();
-		result.append('[');
-
-		for (int i = 0; i < list.size(); i++)
+		if (expectedSteps == actualSteps)
 		{
-			String[] array = list.get(i);
-			result.append('[');
+			return true;
+		}
 
-			for (int j = 0; j < array.length; j++)
+		if (expectedSteps.size() != actualSteps.size())
+		{
+			return false;
+		}
+
+		for (Map.Entry<String[], String[]> expectedEntry : expectedSteps.entrySet())
+		{
+			boolean found = false;
+
+			for (Map.Entry<String[], String[]> actualEntry : actualSteps.entrySet())
 			{
-				result.append('"').append(array[j]).append('"');
-
-				if (j < array.length - 1)
+				if (Arrays.deepEquals(expectedEntry.getKey(), actualEntry.getKey()) &&
+						Arrays.deepEquals(expectedEntry.getValue(), actualEntry.getValue()))
 				{
-					result.append(", ");
+					found = true;
+					break;
 				}
 			}
 
-			result.append(']');
-
-			if (i < list.size() - 1)
+			if (!found)
 			{
-				result.append(", ");
+				return false;
 			}
 		}
 
-		result.append(']');
-
-		return result.toString();
+		return true;
 	}
 
 	@BeforeEach
@@ -112,10 +114,18 @@ class DijkstraTest
 	@Test
 	void testRunNormalInput()
 	{
-		String expected = "[[\"Tv\", \"A\", \"B\", \"C\", \"D\", \"E\"], [\"[A]\", \"0\", \"-1\", \"-1\", \"-1\", \"2\"], [\"[A, E]\", \"0\", \"-1\", \"5\", \"9\", \"2\"], [\"[A, C, E]\", \"0\", \"9\", \"5\", \"8\", \"2\"], [\"[A, C, D, E]\", \"0\", \"9\", \"5\", \"8\", \"2\"], [\"[A, B, C, D, E]\", \"0\", \"9\", \"5\", \"8\", \"2\"]]";
+		Map<String[], String[]> expected = Map.of(
+				new String[]{"Tv"}, new String[]{"A", "B", "C", "D", "E"},
+				new String[]{"A"}, new String[]{"0", "-1", "-1", "-1", "2"},
+				new String[]{"A", "E"}, new String[]{"0", "-1", "5", "9", "2"},
+				new String[]{"A", "C", "E"}, new String[]{"0", "9", "5", "8", "2"},
+				new String[]{"A", "C", "D", "E"}, new String[]{"0", "9", "5", "8", "2"},
+				new String[]{"A", "B", "C", "D", "E"}, new String[]{"0", "9", "5", "8", "2"}
+		);
+
 		d = new Dijkstra(normalNodes, normalEdges);
 
-		assertEquals(expected, formatResult(d.run(startingNode)),
+		assertTrue(deepEquals(expected, d.run(startingNode)),
 				"run: Did not return the expected output");
 	}
 }

@@ -99,6 +99,11 @@ public class Node implements Comparable<Node>
 		isActive = false;
 	}
 
+	public boolean isActive()
+	{
+		return isActive;
+	}
+
 	@Override
 	public int compareTo(Node other)
 	{

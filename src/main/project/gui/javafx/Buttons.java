@@ -12,7 +12,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
 import java.sql.SQLException;
-import java.util.List;
 
 public class Buttons
 {
@@ -21,10 +20,7 @@ public class Buttons
 	private HBox buttonsPane;
 	private final Graph graph;
 	private final Table table;
-
-	private List<String[]> results;
-	private String[] headers;
-	private int currentResultIndex = 0;
+	private final Animation animation;
 
 	private Button runButton;
 	private Button resetButton;
@@ -34,11 +30,12 @@ public class Buttons
 	private Button backButton;
 	private Button stopButton;
 
-	public Buttons(Controller controller, Graph graph, Table table)
+	public Buttons(Controller controller, Graph graph, Table table, Animation animation)
 	{
 		this.controller = controller;
 		this.graph = graph;
 		this.table = table;
+		this.animation = animation;
 
 		setupButtonsPane();
 	}
@@ -117,17 +114,7 @@ public class Buttons
 	{
 		if (controller.getStartNode() != null)
 		{
-			// Toggle button visibility
-			buttonsPane.getChildren().removeAll(runButton, resetButton, saveButton, loadButton);
-			buttonsPane.getChildren().addAll(forwardButton, backButton, stopButton);
-
-			results = controller.runDijkstra();
-			headers = results.get(0);
-			results.remove(0);
-
-
-
-			table.fillTable();
+			start();
 		}
 		else
 		{
@@ -175,14 +162,23 @@ public class Buttons
 		}
 	}
 
+	private void start()
+	{
+		// Toggle button visibility
+		buttonsPane.getChildren().removeAll(runButton, resetButton, saveButton, loadButton);
+		buttonsPane.getChildren().addAll(forwardButton, backButton, stopButton);
+
+		animation.start();
+	}
+
 	private void forward()
 	{
-		errorMessagePrompt();
+		animation.forward();
 	}
 
 	private void backward()
 	{
-		errorMessagePrompt();
+		animation.backward();
 	}
 
 	private void stop()
@@ -191,14 +187,7 @@ public class Buttons
 		buttonsPane.getChildren().removeAll(forwardButton, backButton, stopButton);
 		buttonsPane.getChildren().addAll(runButton, resetButton, saveButton, loadButton);
 
-		results = null;
-		headers = null;
-		currentResultIndex = 0;
-	}
-
-	private void errorMessagePrompt()
-	{
-		Util.displayErrorMessage("Not implemented yet!", "This feature is not implemented yet.");
+		animation.stop();
 	}
 
 	private void connect()

@@ -14,18 +14,19 @@ import java.util.Objects;
 
 public class App extends Application
 {
-	Graph graph;
-	Table table;
-	Buttons buttons;
-	Controller controller;
+	private final Graph graph;
+	private final Table table;
+	private final Buttons buttons;
+	private final Controller controller;
 
 	public App()
 	{
 		controller = new Controller();
-
 		graph = new Graph(controller);
 		table = new Table(controller);
-		buttons = new Buttons(controller, graph, table);
+
+		Animation animation = new Animation(controller, graph, table);
+		buttons = new Buttons(controller, graph, table, animation);
 	}
 
 	public static void main(String[] args)

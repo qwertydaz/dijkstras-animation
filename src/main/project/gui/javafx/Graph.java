@@ -46,8 +46,7 @@ public class Graph
 	private Line selectedEdge;
 	private Circle selectedStartNode;
 
-	private Circle previousNode;
-	private Circle currentNode;
+	private boolean isAnimationActive = false;
 
 	private static final Color selectedNodeColour = Color.RED;
 	private static final Color unselectedNodeColour = Color.LIGHTBLUE;
@@ -129,6 +128,11 @@ public class Graph
 		{
 			contextMenu.hide();
 
+			if (isAnimationActive)
+			{
+				return;
+			}
+
 			source = mouseEvent.getPickResult().getIntersectedNode();
 
 			// Clear selections
@@ -150,6 +154,11 @@ public class Graph
 	{
 		graphPane.setOnContextMenuRequested(event ->
 		{
+			if (isAnimationActive)
+			{
+				return;
+			}
+
 			// Determine what was right-clicked
 			source = event.getPickResult().getIntersectedNode();
 			setupMenuItemActions(source);
@@ -200,6 +209,11 @@ public class Graph
 
 	private void handleDoubleClick(MouseEvent mouseEvent)
 	{
+		if (isAnimationActive)
+		{
+			return;
+		}
+
 		if (mouseEvent.getClickCount() == 2)
 		{
 			if (source instanceof Circle)
@@ -297,7 +311,7 @@ public class Graph
 			// Record the current mouse position
 			mouseLocation.set(new Point2D(mouseEvent.getSceneX(), mouseEvent.getSceneY()));
 
-			if (selectedNodes.contains(node))
+			if (selectedNodes.contains(node) || controller.isNodeActive(node))
 			{
 				node.setFill(Color.DARKRED);
 			}
@@ -331,7 +345,7 @@ public class Graph
 
 		node.setOnMouseReleased(mouseEvent ->
 		{
-			if (selectedNodes.contains(node))
+			if (selectedNodes.contains(node) || controller.isNodeActive(node))
 			{
 				node.setFill(selectedNodeColour);
 			}
@@ -446,24 +460,34 @@ public class Graph
 	// Selects a node by changing colour and adding to list
 	private void selectNode(Circle node)
 	{
-		// Unselects first node selected. Only 2 nodes can be selected at once
-		if (selectedNodes.size() == 2)
+		if (!controller.isNodeActive(node))
 		{
-			selectedNodes.get(0).setFill(unselectedNodeColour);
-			selectedNodes.remove(0);
-		}
+			// Unselects first node selected. Only 2 nodes can be selected at once
+			if (selectedNodes.size() == 2)
+			{
+				selectedNodes.get(0).setFill(unselectedNodeColour);
+				selectedNodes.remove(0);
+			}
 
-		node.setFill(selectedNodeColour);
-		selectedNodes.add(node);
+			node.setFill(selectedNodeColour);
+			selectedNodes.add(node);
+		}
 	}
 
-	private void highlightAdjacentNodes(Circle node)
+	public void highlightNodeAndAdjacentEdges()
 	{
-		Map<Circle, Line> adjacentNodes = controller.getAdjacentNodesAndEdges(node);
+		highlightNodeAndAdjacentEdges(selectedStartNode);
+	}
 
-		for (Circle adjacentNode : adjacentNodes.keySet())
+	public void highlightNodeAndAdjacentEdges(Circle node)
+	{
+		Map<Circle, Line> adjacentNodesAndEdges = controller.getAdjacentNodesAndEdges(node);
+
+		setActive(node);
+
+		for (Line edge : adjacentNodesAndEdges.values())
 		{
-			adjacentNode.setFill(activeColour);
+			setActive(edge);
 		}
 	}
 
@@ -473,27 +497,22 @@ public class Graph
 		node.setFill(activeColour);
 	}
 
-	private void setInactive(Circle node)
-	{
-		controller.setInactive(node);
-		node.setFill(unselectedNodeColour);
-	}
-
 	private void setActive(Line edge)
 	{
 		controller.setActive(edge);
 		edge.setStroke(activeColour);
 	}
 
+	private void setInactive(Circle node)
+	{
+		controller.setInactive(node);
+		node.setFill(unselectedNodeColour);
+	}
+
 	private void setInactive(Line edge)
 	{
 		controller.setInactive(edge);
 		edge.setStroke(unselectedEdgeColour);
-	}
-
-	private void findCurrentNode(List<String> result)
-	{
-
 	}
 
 	// Deselects all nodes by changing colours and emptying list
@@ -567,5 +586,15 @@ public class Graph
 	{
 		nodeLabels.clear();
 		graphPane.getChildren().clear();
+	}
+
+	public int getStartNodeIndex()
+	{
+		return controller.getNodeId(selectedStartNode);
+	}
+
+	public void setAnimationStatus(boolean animationStatus)
+	{
+		this.isAnimationActive = animationStatus;
 	}
 }

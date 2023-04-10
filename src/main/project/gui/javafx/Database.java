@@ -350,7 +350,7 @@ public class Database
 	}
 
 	// TODO: Fix this
-	public List<String[]> runDijkstra()
+	public Map<String[], String[]> runDijkstra()
 	{
 		if (startNode != null)
 		{
@@ -359,10 +359,10 @@ public class Database
 			System.out.println(nodes);
 			System.out.println(edges);
 
-			//return dijkstra.run(startNode);
+			return dijkstra.run(startNode);
 		}
 
-		return Collections.emptyList();
+		return Collections.emptyMap();
 	}
 
 	public void clear()
@@ -604,6 +604,7 @@ public class Database
 	public double[] getCoords(Circle nodeShape)
 	{
 		Node node = findNode(nodeShape);
+
 		assert node != null;
 		return new double[] { node.getXCoord(), node.getYCoord() };
 	}
@@ -651,5 +652,29 @@ public class Database
 		}
 
 		return edgesAndLabels;
+	}
+
+	public int getNodeId(Circle nodeShape)
+	{
+		Node node = findNode(nodeShape);
+
+		assert node != null;
+		return node.getId();
+	}
+
+	public boolean isNodeActive(Circle nodeShape)
+	{
+		Node node = findNode(nodeShape);
+
+		assert node != null;
+		return node.isActive();
+	}
+
+	public boolean isEdgeActive(Line edgeShape)
+	{
+		Edge edge = findEdge(edgeShape);
+
+		assert edge != null;
+		return edge.isActive();
 	}
 }

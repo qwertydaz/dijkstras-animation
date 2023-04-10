@@ -117,6 +117,11 @@ public class Edge
 		isActive = false;
 	}
 
+	public boolean isActive()
+	{
+		return isActive;
+	}
+
 	public String toString()
 	{
 		return "{" + id + ": " + node1.toString() + ", " + node2.toString() + ", " + weight + "}";

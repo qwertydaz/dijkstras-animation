@@ -2,9 +2,8 @@ package project.model.dijkstra;
 
 import project.model.Graph;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -13,7 +12,7 @@ public class Dijkstra extends Graph
 {
 	private final NodeMap unvisitedNodes;
 	private final NodeMap visitedNodes;
-	private final List<Map<String[], String[]>> steps = new ArrayList<>();
+	private final Map<String[], String[]> steps = new LinkedHashMap<>();
 	private int numOfNodes;
 
 	public Dijkstra(List<Node> nodes, List<Edge> edges)
@@ -29,11 +28,6 @@ public class Dijkstra extends Graph
 		return unvisitedNodes;
 	}
 
-	public NodeMap getVisitedNodes()
-	{
-		return visitedNodes;
-	}
-
 	public void updateNodes(List<Node> nodes)
 	{
 		this.unvisitedNodes.update(nodes);
@@ -42,7 +36,7 @@ public class Dijkstra extends Graph
 	}
 
 	// Dijkstra's Algorithm
-	public List<Map<String[], String[]>> run(Node startingNode)
+	public Map<String[], String[]> run(Node startingNode)
 	{
 		if (!steps.isEmpty())
 		{
@@ -75,7 +69,6 @@ public class Dijkstra extends Graph
 
 	private void instantiateSteps()
 	{
-		Map<String[], String[]> step = new HashMap<>();
 		int index = 0;
 
 		String[] nodeNames = new String[numOfNodes];
@@ -86,13 +79,11 @@ public class Dijkstra extends Graph
 			index++;
 		}
 
-		step.put(new String[]{"Tv"}, nodeNames);
-		steps.add(step);
+		steps.put(new String[]{"Tv"}, nodeNames);
 	}
 
 	private void updateSteps()
 	{
-		Map<String[], String[]> step = new HashMap<>();
 		int index = 0;
 
 		String[] nodeIds = new String[visitedNodes.size()];
@@ -112,8 +103,7 @@ public class Dijkstra extends Graph
 			index++;
 		}
 
-		step.put(nodeIds, lValues);
-		steps.add(step);
+		steps.put(nodeIds, lValues);
 	}
 
 	private void findInitialLValues(Node startingNode)
@@ -225,14 +215,11 @@ public class Dijkstra extends Graph
 
 		Dijkstra dijkstraAlgo = new Dijkstra(testNodes, testEdges);
 
-		List<Map<String[], String[]>> steps = dijkstraAlgo.run(nodeA);
+		Map<String[], String[]> steps = dijkstraAlgo.run(nodeA);
 
-		for (Map<String[], String[]> step : steps)
+		for (Map.Entry<String[], String[]> entry : steps.entrySet())
 		{
-			for (Map.Entry<String[], String[]> entry : step.entrySet())
-			{
-				System.out.println(Arrays.toString(entry.getKey()) + " : " + Arrays.toString(entry.getValue()));
-			}
+			System.out.println(Arrays.toString(entry.getKey()) + " : " + Arrays.toString(entry.getValue()));
 		}
 	}
 }

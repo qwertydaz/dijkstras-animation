@@ -103,7 +103,7 @@ public class Controller
 		db.setInactive(edge);
 	}
 
-	public List<String[]> runDijkstra()
+	public Map<String[], String[]> runDijkstra()
 	{
 		return db.runDijkstra();
 	}
@@ -146,6 +146,21 @@ public class Controller
 	public Map<Line, Text> getEdgesAndLabels()
 	{
 		return db.getEdgesAndLabels();
+	}
+
+	public int getNodeId(Circle node)
+	{
+		return db.getNodeId(node);
+	}
+
+	public boolean isNodeActive(Circle node)
+	{
+		return db.isNodeActive(node);
+	}
+
+	public boolean isEdgeActive(Line edge)
+	{
+		return db.isEdgeActive(edge);
 	}
 
 	public void connect() throws SQLException

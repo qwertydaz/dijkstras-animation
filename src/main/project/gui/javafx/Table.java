@@ -73,36 +73,36 @@ public class Table
 		}
 	}
 
-	public void fillTable()
-	{
-		clearAll();
-
-		List<String[]> results = controller.runDijkstra();
-
-		String[] headers = results.get(0);
-
-		for (int i = 0; i < headers.length; i++)
-		{
-			TableColumn<String[], String> column = new TableColumn<>(headers[i]);
-			final int colIndex = i;
-
-			column.setCellValueFactory(param ->
-			{
-				String[] values = param.getValue();
-
-				if (colIndex < values.length)
-				{
-					return new SimpleStringProperty(values[colIndex]);
-				}
-				else
-				{
-					return new SimpleStringProperty("");
-				}
-			});
-
-			lTable.getColumns().add(column);
-		}
-
-		lTable.setItems(FXCollections.observableArrayList(results.subList(1, results.size())));
-	}
+//	public void fillTable()
+//	{
+//		clearAll();
+//
+//		List<String[]> results = controller.runDijkstra();
+//
+//		String[] headers = results.get(0);
+//
+//		for (int i = 0; i < headers.length; i++)
+//		{
+//			TableColumn<String[], String> column = new TableColumn<>(headers[i]);
+//			final int colIndex = i;
+//
+//			column.setCellValueFactory(param ->
+//			{
+//				String[] values = param.getValue();
+//
+//				if (colIndex < values.length)
+//				{
+//					return new SimpleStringProperty(values[colIndex]);
+//				}
+//				else
+//				{
+//					return new SimpleStringProperty("");
+//				}
+//			});
+//
+//			lTable.getColumns().add(column);
+//		}
+//
+//		lTable.setItems(FXCollections.observableArrayList(results.subList(1, results.size())));
+//	}
 }
