@@ -3,6 +3,7 @@ package project.gui.javafx;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
+import project.exception.NodeNotFoundException;
 import project.model.dijkstra.Node;
 
 import java.sql.SQLException;
@@ -161,6 +162,11 @@ public class Controller
 	public boolean isEdgeActive(Line edge)
 	{
 		return db.isEdgeActive(edge);
+	}
+
+	public Circle findNodeShape(int nodeId)
+	{
+		return db.findNodeShape(nodeId);
 	}
 
 	public void connect() throws SQLException

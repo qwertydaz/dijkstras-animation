@@ -1,5 +1,6 @@
 package project.gui.javafx;
 
+import java.util.LinkedList;
 import java.util.Map;
 
 public class Animation
@@ -10,6 +11,7 @@ public class Animation
 
 	private Map<String[], String[]> results;
 	private Map<String[], String[]> headers;
+	private LinkedList<String> visitedNodes;
 	private int currentNodeIndex = 0;
 
 	public Animation(Controller controller, Graph graph, Table table)
@@ -22,10 +24,11 @@ public class Animation
 	// starts animation
 	public void start()
 	{
-		graph.setAnimationStatus(true);
-		currentNodeIndex = graph.getStartNodeIndex();
 		results = controller.runDijkstra();
 
+		this.visitedNodes = new LinkedList<>();
+		graph.setAnimationStatus(true);
+		currentNodeIndex = graph.getStartNodeIndex();
 		graph.highlightNodeAndAdjacentEdges();
 	}
 
@@ -61,5 +64,6 @@ public class Animation
 		results = null;
 		headers = null;
 		currentNodeIndex = 0;
+		visitedNodes.clear();
 	}
 }

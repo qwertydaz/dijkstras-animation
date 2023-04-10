@@ -12,3 +12,9 @@ M
 src/main/project/MainApp.java,0\b\0b5e1d8bd6269b51ac5844244c436472643ae6c6
 a
 1src/test/project/model/dijkstra/DijkstraTest.java,c\9\c9089d01e8da2da625f1b641f33c80fc92c54891
+Y
+)src/main/project/gui/swing/MainFrame.java,f\2\f209aaddb1c243eb38b896850fbb973cfc0a8174
+X
+(src/main/project/gui/swing/SwingApp.java,8\b\8bc9e1035641b4b44712850dc0575e791c41073c
+e
+5src/main/project/exception/NodeNotFoundException.java,1\c\1ceabc87466f6efb736d8372c3bf69a55b6a64b8

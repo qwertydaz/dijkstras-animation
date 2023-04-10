@@ -79,7 +79,7 @@ public class Dijkstra extends Graph
 			index++;
 		}
 
-		steps.put(new String[]{"Tv"}, nodeNames);
+		steps.put(new String[] {"Tv"}, nodeNames);
 	}
 
 	private void updateSteps()
@@ -91,7 +91,7 @@ public class Dijkstra extends Graph
 
 		for (Node node : visitedNodes.getNodes())
 		{
-			nodeIds[index] = node.getName();
+			nodeIds[index] = String.valueOf(node.getId());
 			index++;
 		}
 

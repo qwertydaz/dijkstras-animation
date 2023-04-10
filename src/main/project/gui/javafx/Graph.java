@@ -19,6 +19,7 @@ import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import project.exception.NodeNotFoundException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -477,6 +478,16 @@ public class Graph
 	public void highlightNodeAndAdjacentEdges()
 	{
 		highlightNodeAndAdjacentEdges(selectedStartNode);
+	}
+
+	public void highlightNodeAndAdjacentEdges(int nodeId)
+	{
+		Circle node = controller.findNodeShape(nodeId);
+
+		if (node != null)
+		{
+			highlightNodeAndAdjacentEdges(node);
+		}
 	}
 
 	public void highlightNodeAndAdjacentEdges(Circle node)

@@ -5,6 +5,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import project.exception.EdgeNotFoundException;
 import project.model.dijkstra.Dijkstra;
 import project.model.dijkstra.Edge;
 import project.model.dijkstra.Node;
@@ -12,7 +13,6 @@ import project.model.dijkstra.Node;
 import project.exception.NodeNotFoundException;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -28,11 +28,8 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 
-// TODO: issue when adding edge to nodes with same name and then changing them
-// TODO: table breaks with duplicate node names
 public class Database
 {
 	private Connection conn = null;
@@ -94,71 +91,73 @@ public class Database
 
 	public void setStartNode(Circle nodeShape)
 	{
-		startNode = findNode(nodeShape);
+		try
+		{
+			startNode = findNode(nodeShape);
+		}
+		catch (NodeNotFoundException e)
+		{
+			e.printStackTrace();
+		}
 	}
 
 	public void setActive(Circle nodeShape)
 	{
-		Node node = findNode(nodeShape);
-
-		if (node != null)
+		try
 		{
+			Node node = findNode(nodeShape);
 			node.setActive();
 		}
-		else
+		catch (NodeNotFoundException e)
 		{
-			System.err.println("Invalid node");
+			e.printStackTrace();
 		}
 	}
 
 	public void setActive(Line edgeShape)
 	{
-		Edge edge = findEdge(edgeShape);
-
-		if (edge != null)
+		try
 		{
+			Edge edge = findEdge(edgeShape);
 			edge.setActive();
 		}
-		else
+		catch (EdgeNotFoundException e)
 		{
-			System.err.println("Invalid edge");
+			e.printStackTrace();
 		}
 	}
 
 	public void setInactive(Circle nodeShape)
 	{
-		Node node = findNode(nodeShape);
-
-		if (node != null)
+		try
 		{
+			Node node = findNode(nodeShape);
 			node.setInactive();
 		}
-		else
+		catch (NodeNotFoundException e)
 		{
-			System.err.println("Invalid node");
+			e.printStackTrace();
 		}
 	}
 
 	public void setInactive(Line edgeShape)
 	{
-		Edge edge = findEdge(edgeShape);
-
-		if (edge != null)
+		try
 		{
+			Edge edge = findEdge(edgeShape);
 			edge.setInactive();
 		}
-		else
+		catch (EdgeNotFoundException e)
 		{
-			System.err.println("Invalid edge");
+			e.printStackTrace();
 		}
 	}
 
 	public Map<Circle, Line> getAdjacentNodesAndEdges(Circle nodeShape)
 	{
-		Node node = findNode(nodeShape);
-
-		if (node != null)
+		try
 		{
+			Node node = findNode(nodeShape);
 			Map<Circle, Line> adjacentNodesAndEdges = new HashMap<>();
 
 			for (Edge edge : edges)
@@ -175,9 +174,9 @@ public class Database
 
 			return adjacentNodesAndEdges;
 		}
-		else
+		catch (NodeNotFoundException e)
 		{
-			System.err.println("Invalid node");
+			e.printStackTrace();
 			return Collections.emptyMap();
 		}
 	}
@@ -190,76 +189,78 @@ public class Database
 
 	public void addEdge(Circle nodeShape1, Circle nodeShape2, Text label, Line edge)
 	{
-		Node node1 = findNode(nodeShape1);
-		Node node2 = findNode(nodeShape2);
-
-		if (node1 != null && node2 != null)
+		try
 		{
+			Node node1 = findNode(nodeShape1);
+			Node node2 = findNode(nodeShape2);
+
 			edges.add(new Edge(node1, node2, label, edge));
 
 			adjacencyMap.computeIfAbsent(node1.getId(), k -> new HashSet<>()).add(node2.getId());
 			adjacencyMap.computeIfAbsent(node2.getId(), k -> new HashSet<>()).add(node1.getId());
 		}
-		else
+		catch (NodeNotFoundException e)
 		{
-			System.err.println("Edge cannot be added; Invalid nodes");
+			e.printStackTrace();
 		}
 	}
 
 	public void removeNode(Circle nodeShape)
 	{
-		Node node = findNode(nodeShape);
-
-		if (node != null)
+		try
 		{
+			Node node = findNode(nodeShape);
 			nodes.remove(node);
 			deleteConnectedEdges(node);
 		}
-		else
+		catch (NodeNotFoundException e)
 		{
-			System.err.println("Node cannot be deleted; Invalid node");
+			e.printStackTrace();
 		}
 	}
 
 	public void removeEdge(Line edgeShape)
 	{
-		Edge edge = findEdge(edgeShape);
-
-		if (edge != null)
+		try
 		{
+			Edge edge = findEdge(edgeShape);
 			edges.remove(edge);
 		}
-		else
+		catch (EdgeNotFoundException e)
 		{
-			System.err.println("Edge cannot be deleted; Invalid edge");
+			e.printStackTrace();
 		}
 	}
 
 	public Text findLabel(Circle nodeShape)
 	{
-		Node node = findNode(nodeShape);
-
-		if (node == null)
+		try
 		{
+			Node node = findNode(nodeShape);
+			return node.getLabel();
+		}
+		catch (NodeNotFoundException e)
+		{
+			e.printStackTrace();
 			return null;
 		}
-
-		return node.getLabel();
 	}
 
 	public Text findLabel(Line edgeShape)
 	{
-		Edge edge = findEdge(edgeShape);
-
-		if (edge == null)
+		try
 		{
+			Edge edge = findEdge(edgeShape);
+			return edge.getLabel();
+		}
+		catch (EdgeNotFoundException e)
+		{
+			e.printStackTrace();
 			return null;
 		}
-
-		return edge.getLabel();
 	}
 
-	private Node findNode(Circle nodeShape)
+	private Node findNode(Circle nodeShape) throws NodeNotFoundException
 	{
 		for (Node node : nodes)
 		{
@@ -269,7 +270,7 @@ public class Database
 			}
 		}
 
-		return null;
+		throw new NodeNotFoundException();
 	}
 
 	private Node findNode(int nodeId) throws NodeNotFoundException
@@ -285,7 +286,20 @@ public class Database
 		throw new NodeNotFoundException();
 	}
 
-	private Edge findEdge(Line edgeShape)
+	public Circle findNodeShape(int nodeId)
+	{
+		try
+		{
+			return findNode(nodeId).getShape();
+		}
+		catch (NodeNotFoundException e)
+		{
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	private Edge findEdge(Line edgeShape) throws EdgeNotFoundException
 	{
 		for (Edge edge : edges)
 		{
@@ -295,32 +309,47 @@ public class Database
 			}
 		}
 
-		return null;
+		throw new EdgeNotFoundException();
 	}
 
 	public List<Line> getAttachedEdges(Circle nodeShape)
 	{
-		List<Line> attachedEdges = new LinkedList<>();
-
-		for (Edge edge : edges)
+		try
 		{
-			if (edge.getNodes().contains(findNode(nodeShape)))
-			{
-				attachedEdges.add(edge.getShape());
-			}
-		}
+			List<Line> attachedEdges = new LinkedList<>();
 
-		return attachedEdges;
+			for (Edge edge : edges)
+			{
+				if (edge.getNodes().contains(findNode(nodeShape)))
+				{
+					attachedEdges.add(edge.getShape());
+				}
+			}
+
+			return attachedEdges;
+		}
+		catch (NodeNotFoundException e)
+		{
+			e.printStackTrace();
+			return Collections.emptyList();
+		}
 	}
 
 	public boolean edgeExists(Circle nodeShape1, Circle nodeShape2)
 	{
-		int node1Id = findNode(nodeShape1).getId();
-		int node2Id = findNode(nodeShape2).getId();
+		try
+		{
+			int node1Id = findNode(nodeShape1).getId();
+			int node2Id = findNode(nodeShape2).getId();
 
-		Set<Integer> adjacentNodes = adjacencyMap.get(node1Id);
+			Set<Integer> adjacentNodes = adjacencyMap.get(node1Id);
 
-		return adjacentNodes != null && adjacentNodes.contains(node2Id);
+			return adjacentNodes != null && adjacentNodes.contains(node2Id);
+		}
+		catch (NodeNotFoundException e)
+		{
+			return false;
+		}
 	}
 
 	public void updateLabel(Text label, String newText)
@@ -603,10 +632,16 @@ public class Database
 
 	public double[] getCoords(Circle nodeShape)
 	{
-		Node node = findNode(nodeShape);
-
-		assert node != null;
-		return new double[] { node.getXCoord(), node.getYCoord() };
+		try
+		{
+			Node node = findNode(nodeShape);
+			return new double[] { node.getXCoord(), node.getYCoord() };
+		}
+		catch (NodeNotFoundException e)
+		{
+			e.printStackTrace();
+			return new double[0];
+		}
 	}
 
 	private void getNodeResults(ResultSet results) throws SQLException
@@ -618,6 +653,7 @@ public class Database
 	private void getEdgeResults(ResultSet results) throws SQLException
 	{
 		edgeId = results.getInt("edgeId");
+
 		try
 		{
 			edgeNode1 = findNode(results.getInt("node1Id"));
@@ -627,6 +663,7 @@ public class Database
 		{
 			e.printStackTrace();
 		}
+
 		weight = results.getInt("weight");
 	}
 
@@ -656,25 +693,43 @@ public class Database
 
 	public int getNodeId(Circle nodeShape)
 	{
-		Node node = findNode(nodeShape);
-
-		assert node != null;
-		return node.getId();
+		try
+		{
+			Node node = findNode(nodeShape);
+			return node.getId();
+		}
+		catch (NodeNotFoundException e)
+		{
+			e.printStackTrace();
+			return -1;
+		}
 	}
 
 	public boolean isNodeActive(Circle nodeShape)
 	{
-		Node node = findNode(nodeShape);
-
-		assert node != null;
-		return node.isActive();
+		try
+		{
+			Node node = findNode(nodeShape);
+			return node.isActive();
+		}
+		catch (NodeNotFoundException e)
+		{
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 	public boolean isEdgeActive(Line edgeShape)
 	{
-		Edge edge = findEdge(edgeShape);
-
-		assert edge != null;
-		return edge.isActive();
+		try
+		{
+			Edge edge = findEdge(edgeShape);
+			return edge.isActive();
+		}
+		catch (EdgeNotFoundException e)
+		{
+			e.printStackTrace();
+			return false;
+		}
 	}
 }
