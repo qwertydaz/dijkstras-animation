@@ -1,6 +1,10 @@
 package project.gui.javafx;
 
+import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderStroke;
@@ -10,18 +14,14 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
-
 // TODO: ∞ symbol in table
 public class Table
 {
 	private ScrollPane tableScrollPane;
-	private final Controller controller;
 	private TableView<String[]> lTable;
 
-	public Table(Controller controller)
+	public Table()
 	{
-		this.controller = controller;
-
 		setupTablePane();
 		setupTableScrollPane();
 	}
@@ -34,6 +34,8 @@ public class Table
 				BorderWidths.DEFAULT)));
 
 		lTable = new TableView<>();
+		ObservableList<String[]> data = FXCollections.observableArrayList();
+		lTable.setItems(data);
 
 		tablePane.getChildren().add(lTable);
 	}
@@ -53,53 +55,44 @@ public class Table
 
 	public void clearAll()
 	{
-		if (!lTable.getColumns().isEmpty())
-		{
-			for (int i = 0; i < lTable.getColumns().size(); i++)
-			{
-				lTable.getColumns().clear();
-			}
-		}
-
-		if (!lTable.getItems().isEmpty())
-		{
-			for ( int i = 0; i < lTable.getItems().size(); i++)
-			{
-				lTable.getItems().clear();
-			}
-		}
-	}
-
-//	public void fillTable()
-//	{
-//		clearAll();
-//
-//		List<String[]> results = controller.runDijkstra();
-//
-//		String[] headers = results.get(0);
-//
-//		for (int i = 0; i < headers.length; i++)
+//		if (!lTable.getColumns().isEmpty())
 //		{
-//			TableColumn<String[], String> column = new TableColumn<>(headers[i]);
-//			final int colIndex = i;
-//
-//			column.setCellValueFactory(param ->
+//			for (int i = 0; i < lTable.getColumns().size(); i++)
 //			{
-//				String[] values = param.getValue();
-//
-//				if (colIndex < values.length)
-//				{
-//					return new SimpleStringProperty(values[colIndex]);
-//				}
-//				else
-//				{
-//					return new SimpleStringProperty("");
-//				}
-//			});
-//
-//			lTable.getColumns().add(column);
+//				lTable.getColumns().clear();
+//			}
 //		}
 //
-//		lTable.setItems(FXCollections.observableArrayList(results.subList(1, results.size())));
-//	}
+//		if (!lTable.getItems().isEmpty())
+//		{
+//			for ( int i = 0; i < lTable.getItems().size(); i++)
+//			{
+//				lTable.getItems().clear();
+//			}
+//		}
+
+		lTable.getItems().clear();
+		lTable.getColumns().clear();
+	}
+
+	public void addRow(String[] row)
+	{
+		lTable.getItems().add(row);
+	}
+
+	public void removeLastRow()
+	{
+		lTable.getItems().remove(lTable.getItems().size() - 1);
+	}
+
+	public void setColumnNames(String[] columnNames)
+	{
+		for (int i = 0; i < columnNames.length; i++)
+		{
+			TableColumn<String[], String> column = new TableColumn<>(columnNames[i]);
+			final int columnIndex = i;
+			column.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue()[columnIndex]));
+			lTable.getColumns().add(column);
+		}
+	}
 }

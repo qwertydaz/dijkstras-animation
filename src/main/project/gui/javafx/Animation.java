@@ -15,7 +15,6 @@ public class Animation
 	private final Table table;
 
 	private LinkedHashMap<String[], String[]> results;
-	private String[] headers;
 	private LinkedList<String> visitedNodes;
 	private int currentNodeIndex = 0;
 	private int frame = 0;
@@ -32,8 +31,18 @@ public class Animation
 	public void start()
 	{
 		results = (LinkedHashMap<String[], String[]>) controller.runDijkstra();
-		headers = results.get(new String[]{"Tv"});
-		results.remove(new String[]{"Tv"});
+
+		for (Map.Entry<String[], String[]> entry : results.entrySet())
+		{
+			String[] columnNames = new String[entry.getKey().length + entry.getValue().length];
+			System.arraycopy(entry.getKey(), 0, columnNames, 0, entry.getKey().length);
+			System.arraycopy(entry.getValue(), 0, columnNames, entry.getKey().length, entry.getValue().length);
+			table.setColumnNames(columnNames);
+
+			results.remove(entry.getKey());
+			break;
+		}
+
 		totalFrames = results.size();
 
 		graph.setAnimationStatus(true);
@@ -47,27 +56,25 @@ public class Animation
 	// highlights the next node and adjacent edges
 	public void forward()
 	{
-		// TODO:
-		//  - update table with current L values (add a new row)
-
 		if (frame == totalFrames)
 		{
 			return;
 		}
 
 		frame++;
-		String nextNodeId = findNextNodeId(getDataRow());
+		Map.Entry<String[], String[]> dataRow = getDataRow();
+
+		assert dataRow != null;
+		String nextNodeId = findNextNodeId(dataRow);
 		visitedNodes.add(nextNodeId);
 
 		graph.highlightNodeAndAdjacentEdges(Integer.parseInt(nextNodeId));
+		table.addRow(formatDataRow(dataRow));
 	}
 
 	// unhighlights the current node and adjacent edges
 	public void backward()
 	{
-		// TODO:
-		//  - update table with current L values (remove the last row)
-
 		if (frame == 0)
 		{
 			return;
@@ -78,19 +85,18 @@ public class Animation
 		String nodeId = visitedNodes.getLast();
 
 		graph.highlightNodeAndAdjacentEdges(Integer.parseInt(nodeId));
+		table.removeLastRow();
 	}
 
 	// stops animation
 	public void stop()
 	{
-		// TODO:
-		//  - reset table to initial state
-
 		results = null;
-		headers = null;
 		currentNodeIndex = 0;
 		frame= 0;
 		visitedNodes.clear();
+
+		table.clearAll();
 
 		graph.setAnimationStatus(false);
 		graph.unhighlightAllNodesAndEdges();
@@ -111,6 +117,16 @@ public class Animation
 		}
 
 		return null;
+	}
+
+	private String[] formatDataRow(Map.Entry<String[], String[]> dataRow)
+	{
+		String combinedString = String.join(" ", dataRow.getKey());
+		String[] formattedDataRow = new String[dataRow.getValue().length + 1];
+		formattedDataRow[0] = combinedString;
+		System.arraycopy(dataRow.getValue(), 0, formattedDataRow, 1, dataRow.getValue().length);
+
+		return formattedDataRow;
 	}
 
 	private String findNextNodeId(Map.Entry<String[], String[]> dataRow)

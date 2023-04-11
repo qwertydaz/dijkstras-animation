@@ -23,7 +23,7 @@ public class App extends Application
 	{
 		controller = new Controller();
 		graph = new Graph(controller);
-		table = new Table(controller);
+		table = new Table();
 
 		Animation animation = new Animation(controller, graph, table);
 		buttons = new Buttons(controller, graph, table, animation);
