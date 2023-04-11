@@ -286,7 +286,20 @@ public class Database
 		throw new NodeNotFoundException();
 	}
 
-	public Circle findNodeShape(int nodeId)
+	public String getNodeName(int nodeId)
+	{
+		try
+		{
+			return findNode(nodeId).getName();
+		}
+		catch (NodeNotFoundException e)
+		{
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public Circle getNodeShape(int nodeId)
 	{
 		try
 		{
@@ -378,7 +391,6 @@ public class Database
 		edges.removeIf(edge -> node == edge.getNode1() || node == edge.getNode2());
 	}
 
-	// TODO: Fix this
 	public Map<String[], String[]> runDijkstra()
 	{
 		if (startNode != null)

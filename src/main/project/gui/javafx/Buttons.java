@@ -71,10 +71,10 @@ public class Buttons
 		loadButton = new Button("Load");
 
 		// Button 5
-		forwardButton = new Button("Forward");
+		forwardButton = new Button("→");
 
 		// Button 6
-		backButton = new Button("Back");
+		backButton = new Button("←");
 
 		// Button 7
 		stopButton = new Button("Stop");
@@ -166,7 +166,7 @@ public class Buttons
 	{
 		// Toggle button visibility
 		buttonsPane.getChildren().removeAll(runButton, resetButton, saveButton, loadButton);
-		buttonsPane.getChildren().addAll(forwardButton, backButton, stopButton);
+		buttonsPane.getChildren().addAll(backButton, forwardButton, stopButton);
 
 		animation.start();
 	}
@@ -184,7 +184,7 @@ public class Buttons
 	private void stop()
 	{
 		// Toggle button visibility
-		buttonsPane.getChildren().removeAll(forwardButton, backButton, stopButton);
+		buttonsPane.getChildren().removeAll(backButton, forwardButton, stopButton);
 		buttonsPane.getChildren().addAll(runButton, resetButton, saveButton, loadButton);
 
 		animation.stop();
