@@ -264,8 +264,8 @@ public class Graph
 	{
 		clearGraph();
 
-		addNodesFromController();
 		addEdgesFromController();
+		addNodesFromController();
 	}
 
 	private void addNodesFromController()

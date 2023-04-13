@@ -604,6 +604,8 @@ public class Database
 	{
 		nodeId = results.getInt("nodeId");
 		name = results.getString("name");
+		xCoord = results.getDouble("xCoord");
+		yCoord = results.getDouble("yCoord");
 	}
 
 	private void getEdgeResults(ResultSet results) throws SQLException
