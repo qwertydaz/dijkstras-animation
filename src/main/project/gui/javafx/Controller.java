@@ -178,8 +178,18 @@ public class Controller
 		db.connect();
 	}
 
-	public void disconnect()
+	public void disconnect() throws SQLException
 	{
 		db.disconnect();
+	}
+
+	public String getNodeDetails(Circle node)
+	{
+		return db.getNodeDetails(node);
+	}
+
+	public String getEdgeDetails(Line edge)
+	{
+		return db.getEdgeDetails(edge);
 	}
 }

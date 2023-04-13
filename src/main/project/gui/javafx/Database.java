@@ -397,9 +397,6 @@ public class Database
 		{
 			dijkstra.updateNodes(nodes);
 
-			System.out.println(nodes);
-			System.out.println(edges);
-
 			return dijkstra.run(startNode);
 		}
 
@@ -448,7 +445,7 @@ public class Database
 		conn = DriverManager.getConnection(url, user, password);
 	}
 
-	public void disconnect()
+	public void disconnect() throws SQLException
 	{
 		if (conn != null)
 		{
@@ -458,22 +455,28 @@ public class Database
 			}
 			catch (SQLException e)
 			{
-				System.err.println("Cannot close connection");
+				throw new SQLException("Cannot close connection", e);
 			}
 		}
 	}
 
 	public void saveNodes() throws SQLException
 	{
-		String checkSql = "SELECT count(*) AS COUNT FROM nodes WHERE nodeId=?";
+		String deleteEdgesSql = "DELETE FROM edges";
+		String deleteNodesSql = "DELETE FROM nodes";
 		String insertSql = "INSERT INTO nodes (nodeId, name, xCoord, yCoord) VALUES (?, ?, ?, ?)";
-		String updateSql = "UPDATE nodes SET name=?, xCoord=?, yCoord=? WHERE nodeId=?";
 
 		try (
-				PreparedStatement checkStatement = conn.prepareStatement(checkSql);
-				PreparedStatement insertStatement = conn.prepareStatement(insertSql);
-				PreparedStatement updateStatement = conn.prepareStatement(updateSql))
+				PreparedStatement deleteEdgesStatement = conn.prepareStatement(deleteEdgesSql);
+				PreparedStatement deleteNodesStatement = conn.prepareStatement(deleteNodesSql);
+				PreparedStatement insertStatement = conn.prepareStatement(insertSql))
 		{
+			// Delete all existing edges in the database
+			deleteEdgesStatement.executeUpdate();
+
+			// Delete all existing nodes in the database
+			deleteNodesStatement.executeUpdate();
+
 			for (Node node : nodes)
 			{
 				nodeId = node.getId();
@@ -481,54 +484,24 @@ public class Database
 				xCoord = node.getShape().getCenterX();
 				yCoord = node.getShape().getCenterY();
 
-				checkStatement.setInt(1, nodeId);
+				col = 1;
 
-				ResultSet checkResult = checkStatement.executeQuery();
-				checkResult.next();
+				insertStatement.setInt(col++, nodeId);
+				insertStatement.setString(col++, name);
+				insertStatement.setDouble(col++, xCoord);
+				insertStatement.setDouble(col, yCoord);
 
-				// Checks if the node already exists in the database
-				int count = checkResult.getInt(1);
-
-				if (count == 0)
-				{
-					System.out.println("Inserting node with ID " + nodeId);
-
-					col = 1;
-
-					insertStatement.setInt(col++, nodeId);
-					insertStatement.setString(col++, name);
-					insertStatement.setDouble(col++, xCoord);
-					insertStatement.setDouble(col, yCoord);
-
-					insertStatement.executeUpdate();
-				}
-				else
-				{
-					System.out.println("Updating node with ID " + nodeId);
-
-					col = 1;
-
-					updateStatement.setString(col++, name);
-					updateStatement.setDouble(col++, xCoord);
-					updateStatement.setDouble(col++, yCoord);
-					updateStatement.setInt(col, nodeId);
-
-					updateStatement.executeUpdate();
-				}
+				insertStatement.executeUpdate();
 			}
 		}
 	}
 
 	public void saveEdges() throws SQLException
 	{
-		String checkSql = "SELECT count(*) AS COUNT FROM edges WHERE edgeId=?";
 		String insertSql = "INSERT INTO edges (edgeId, node1Id, node2Id, weight) VALUES (?, ?, ?, ?)";
-		String updateSql = "UPDATE edges SET node1Id=?, node2Id=?, weight=? WHERE edgeId=?";
 
 		try (
-				PreparedStatement checkStatement = conn.prepareStatement(checkSql);
-				PreparedStatement insertStatement = conn.prepareStatement(insertSql);
-				PreparedStatement updateStatement = conn.prepareStatement(updateSql))
+				PreparedStatement insertStatement = conn.prepareStatement(insertSql))
 		{
 			for (Edge edge : edges)
 			{
@@ -537,39 +510,14 @@ public class Database
 				edgeNode2 = edge.getNode2();
 				weight = edge.getWeight();
 
-				checkStatement.setInt(1, edgeId);
+				col = 1;
 
-				ResultSet checkResult = checkStatement.executeQuery();
-				checkResult.next();
+				insertStatement.setInt(col++, edgeId);
+				insertStatement.setInt(col++, edgeNode1.getId());
+				insertStatement.setInt(col++, edgeNode2.getId());
+				insertStatement.setInt(col, weight);
 
-				int count = checkResult.getInt(1);
-
-				if (count == 0)
-				{
-					System.out.println("Inserting edge with ID " + edgeId);
-
-					col = 1;
-
-					insertStatement.setInt(col++, edgeId);
-					insertStatement.setInt(col++, edgeNode1.getId());
-					insertStatement.setInt(col++, edgeNode2.getId());
-					insertStatement.setInt(col, weight);
-
-					insertStatement.executeUpdate();
-				}
-				else
-				{
-					System.out.println("Updating edge with ID " + edgeId);
-
-					col = 1;
-
-					updateStatement.setInt(col++, edgeNode1.getId());
-					updateStatement.setInt(col++, edgeNode2.getId());
-					updateStatement.setInt(col++, weight);
-					updateStatement.setInt(col, edgeId);
-
-					updateStatement.executeUpdate();
-				}
+				insertStatement.executeUpdate();
 			}
 		}
 	}
@@ -601,8 +549,6 @@ public class Database
 				nodes.add(node);
 			}
 		}
-
-		System.out.println(nodes);
 	}
 
 	public void loadEdges() throws SQLException
@@ -638,8 +584,6 @@ public class Database
 				edges.add(edge);
 			}
 		}
-
-		System.out.println(edges);
 	}
 
 	public double[] getCoords(Circle nodeShape)
@@ -742,6 +686,34 @@ public class Database
 		{
 			e.printStackTrace();
 			return false;
+		}
+	}
+
+	public String getNodeDetails(Circle nodeShape)
+	{
+		try
+		{
+			Node node = findNode(nodeShape);
+			return node.toString();
+		}
+		catch (NodeNotFoundException e)
+		{
+			e.printStackTrace();
+			return "";
+		}
+	}
+
+	public String getEdgeDetails(Line edgeShape)
+	{
+		try
+		{
+			Edge edge = findEdge(edgeShape);
+			return edge.toString();
+		}
+		catch (EdgeNotFoundException e)
+		{
+			e.printStackTrace();
+			return "";
 		}
 	}
 }

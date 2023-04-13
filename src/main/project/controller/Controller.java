@@ -96,7 +96,7 @@ public class Controller
 		db.connect();
 	}
 
-	public void disconnect()
+	public void disconnect() throws SQLException
 	{
 		db.disconnect();
 	}

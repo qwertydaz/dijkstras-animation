@@ -1,19 +1,15 @@
 package project.gui.javafx;
 
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
 
-
-// TODO:
-//  - fix highlighting of nodes and edges
-//  - first frame in table isn't appearing
 public class Animation
 {
 	private final Controller controller;
@@ -21,8 +17,7 @@ public class Animation
 	private final Table table;
 
 	private LinkedHashMap<String[], String[]> results;
-	private LinkedList<String> visitedNodes;
-	private int currentNodeId = 0;
+
 	private int frame = 0;
 	private int totalFrames;
 
@@ -45,56 +40,54 @@ public class Animation
 			System.arraycopy(entry.getValue(), 0, columnNames, entry.getKey().length, entry.getValue().length);
 			table.setColumnNames(columnNames);
 
-			results.remove(entry.getKey());
 			break;
 		}
 
-		totalFrames = results.size();
 		graph.setAnimationStatus(true);
-		currentNodeId = graph.getStartNodeId();
+		totalFrames = results.size();
 
-		Circle currentNode = controller.getNodeShape(currentNodeId);
-		graph.highlightNodeAndAdjacentEdges(currentNode);
-
-		this.visitedNodes = new LinkedList<>();
-		visitedNodes.add(String.valueOf(currentNodeId));
+		forward();
 	}
 
+	// TODO: fix the highlighting of nodes and edges
 	// highlights the next node and adjacent edges
 	public void forward()
 	{
-		if (frame == totalFrames)
+		// frame data
+		if (frame == totalFrames - 1)
 		{
 			return;
 		}
-
 		frame++;
-		Map.Entry<String[], String[]> dataRow = getDataRow();
 
+		// gather adjacent nodes and edges
+		Map.Entry<String[], String[]> dataRow = getDataRow();
 		assert dataRow != null;
 		String nextNodeId = findNextNodeId(dataRow);
-		visitedNodes.add(nextNodeId);
-
 		Circle nextNode = controller.getNodeShape(Integer.parseInt(nextNodeId));
-		graph.highlightNodeAndAdjacentEdges(nextNode);
+		Map<Circle, Line> adjacentNodesAndEdges = controller.getAdjacentNodesAndEdges(nextNode);
+
+		// highlight adjacent nodes and edges
+		graph.highlight(nextNode, adjacentNodesAndEdges);
+
+		// update table
 		table.addRow(formatDataRow(dataRow));
 	}
 
 	// unhighlights the current node and adjacent edges
 	public void backward()
 	{
-		if (frame == 0)
+		// frame data
+		if (frame == 1)
 		{
 			return;
 		}
-
 		frame--;
-		visitedNodes.removeLast();
-		String nodeId = visitedNodes.getLast();
 
-		Circle currentNode = controller.getNodeShape(Integer.parseInt(nodeId));
-		graph.highlightNodeAndAdjacentEdges(currentNode);
+		// unhighlight current node and edges
+		graph.unhighlightCurrent();
 
+		// update table
 		table.removeLastRow();
 	}
 
@@ -102,14 +95,12 @@ public class Animation
 	public void stop()
 	{
 		results = null;
-		currentNodeId = 0;
 		frame= 0;
-		visitedNodes.clear();
 
 		table.clearAll();
 
 		graph.setAnimationStatus(false);
-		graph.unhighlightAllNodesAndEdges();
+		graph.unhighlightAll();
 	}
 
 	private Map.Entry<String[], String[]> getDataRow()
@@ -137,6 +128,14 @@ public class Animation
 		formattedDataRow[0] = Arrays.toString(nodeNames);
 		System.arraycopy(dataRow.getValue(), 0, formattedDataRow, 1, dataRow.getValue().length);
 
+		for (int i = 0; i < formattedDataRow.length; i++)
+		{
+			if (formattedDataRow[i].equals("-1"))
+			{
+				formattedDataRow[i] = "∞";
+			}
+		}
+
 		return formattedDataRow;
 	}
 
@@ -155,7 +154,6 @@ public class Animation
 	private String findNextNodeId(Map.Entry<String[], String[]> dataRow)
 	{
 		Set<String> newNodes = new HashSet<>(Arrays.asList(dataRow.getKey()));
-		visitedNodes.forEach(newNodes::remove);
 
 		return Collections.min(newNodes);
 	}

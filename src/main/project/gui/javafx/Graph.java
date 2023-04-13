@@ -46,6 +46,10 @@ public class Graph
 	private Line selectedEdge;
 	private Circle selectedStartNode;
 
+	private final List<Circle> previousNodes = new ArrayList<>();
+	private final List<Line> previousEdges = new ArrayList<>();
+	private final List<Circle> currentNodes = new ArrayList<>();
+	private final List<Line> currentEdges = new ArrayList<>();
 	private boolean isAnimationActive = false;
 
 	private static final Color selectedNodeColour = Color.RED;
@@ -358,15 +362,14 @@ public class Graph
 
 	private void removeNode(Circle node)
 	{
-		Text label = controller.findLabel(node);
-
-		if (label != null)
+		try
 		{
+			Text label = controller.findLabel(node);
 			graphPane.getChildren().remove(label);
 		}
-		else
+		catch (NullPointerException e)
 		{
-			System.err.println("Label cannot be deleted; Invalid label");
+			throw new NullPointerException("Node does not have a label");
 		}
 
 		removeAttachedEdges(node);
@@ -442,15 +445,14 @@ public class Graph
 
 	private void removeEdge(Line edge)
 	{
-		Text label = controller.findLabel(edge);
-
-		if (label != null)
+		try
 		{
+			Text label = controller.findLabel(edge);
 			graphPane.getChildren().remove(label);
 		}
-		else
+		catch (NullPointerException e)
 		{
-			System.err.println("Label cannot be deleted; Invalid label");
+			throw new NullPointerException("Edge does not have a label");
 		}
 
 		graphPane.getChildren().remove(edge);
@@ -474,30 +476,92 @@ public class Graph
 		}
 	}
 
-	public void highlightNodeAndAdjacentEdges(Circle node)
+	public void highlight(Circle node, Map<Circle, Line> adjacentNodesAndEdges)
 	{
-		unhighlightAllNodesAndEdges();
-
-		Map<Circle, Line> adjacentNodesAndEdges = controller.getAdjacentNodesAndEdges(node);
-
+		updatePreviousNodesAndEdges(adjacentNodesAndEdges);
 		setActive(node);
 
-		for (Line edge : adjacentNodesAndEdges.values())
+		for (Map.Entry<Circle, Line> entry : adjacentNodesAndEdges.entrySet())
 		{
-			setActive(edge);
+			if (!controller.isNodeActive(entry.getKey()))
+			{
+				currentNodes.remove(entry.getKey());
+			}
+
+			setActive(entry.getValue());
 		}
+
+		currentNodes.add(node);
+
+		System.out.println("Current nodes: " + currentNodes.size());
+		for (Circle nodeShape : currentNodes)
+		{
+			String nodeDetails = controller.getNodeDetails(nodeShape);
+			System.out.println(nodeDetails);
+		}
+
+		System.out.println("Current edges: " + currentEdges.size());
+		for (Line edge : currentEdges)
+		{
+			String edgeDetails = controller.getEdgeDetails(edge);
+			System.out.println(edgeDetails);
+		}
+		System.out.println("\n");
 	}
 
-	public void unhighlightAllNodesAndEdges()
+	public void unhighlightAll()
 	{
-		for (Circle node : controller.getNodes())
+		unhighlight(previousNodes, previousEdges);
+		unhighlight(currentNodes, currentEdges);
+	}
+
+	public void unhighlightCurrent()
+	{
+		unhighlight(currentNodes, currentEdges);
+	}
+
+	private void unhighlight(List<Circle> nodes, List<Line> edges)
+	{
+		for (Circle node : nodes)
 		{
 			setInactive(node);
 		}
 
-		for (Line edge : controller.getEdges())
+		for (Line edge : edges)
 		{
 			setInactive(edge);
+		}
+	}
+
+	public void updatePreviousNodesAndEdges(Map<Circle, Line> adjacentNodesAndEdges)
+	{
+		// Copy previous to temp
+		List<Circle> tempNodes = new ArrayList<>(previousNodes);
+		List<Line> tempEdges = new ArrayList<>(previousEdges);
+
+		// Copy current to previous
+		previousNodes.clear();
+		previousEdges.clear();
+		previousNodes.addAll(currentNodes);
+		previousEdges.addAll(currentEdges);
+
+		// Set current to adjacent - temp
+		currentNodes.clear();
+		currentEdges.clear();
+
+		for (Map.Entry<Circle, Line> entry : adjacentNodesAndEdges.entrySet())
+		{
+			Circle node = entry.getKey();
+			Line edge = entry.getValue();
+
+			if (!tempNodes.contains(node))
+			{
+				currentNodes.add(node);
+			}
+			if (!tempEdges.contains(edge))
+			{
+				currentEdges.add(edge);
+			}
 		}
 	}
 
@@ -596,11 +660,6 @@ public class Graph
 	{
 		nodeLabels.clear();
 		graphPane.getChildren().clear();
-	}
-
-	public int getStartNodeId()
-	{
-		return controller.getNodeId(selectedStartNode);
 	}
 
 	public void setAnimationStatus(boolean animationStatus)

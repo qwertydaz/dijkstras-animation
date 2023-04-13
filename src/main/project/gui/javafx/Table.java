@@ -14,7 +14,6 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
-// TODO: ∞ symbol in table
 public class Table
 {
 	private ScrollPane tableScrollPane;
@@ -55,22 +54,6 @@ public class Table
 
 	public void clearAll()
 	{
-//		if (!lTable.getColumns().isEmpty())
-//		{
-//			for (int i = 0; i < lTable.getColumns().size(); i++)
-//			{
-//				lTable.getColumns().clear();
-//			}
-//		}
-//
-//		if (!lTable.getItems().isEmpty())
-//		{
-//			for ( int i = 0; i < lTable.getItems().size(); i++)
-//			{
-//				lTable.getItems().clear();
-//			}
-//		}
-
 		lTable.getItems().clear();
 		lTable.getColumns().clear();
 	}

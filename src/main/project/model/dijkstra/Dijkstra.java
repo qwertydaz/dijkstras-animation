@@ -7,6 +7,8 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Dijkstra extends Graph
 {
@@ -56,6 +58,11 @@ public class Dijkstra extends Graph
 
 			// finds the node with the lowest L value
 			Node nextNode = findNodeWithSmallestLValue();
+
+			if (nextNode == null)
+			{
+				break;
+			}
 
 			// updates unvisitedNodes with the new L values and flags the node as visited
 			findSubsequentLValues(nextNode);
@@ -185,12 +192,6 @@ public class Dijkstra extends Graph
 			}
 		}
 
-		// just for debugging, node should never be null
-		if (node == null)
-		{
-			throw new RuntimeException("No node with smallest L value found");
-		}
-
 		return node;
 	}
 
@@ -217,9 +218,19 @@ public class Dijkstra extends Graph
 
 		Map<String[], String[]> steps = dijkstraAlgo.run(nodeA);
 
+		StringBuilder sb = new StringBuilder();
+		sb.append("Dijkstra's Algorithm\n\n");
+
 		for (Map.Entry<String[], String[]> entry : steps.entrySet())
 		{
-			System.out.println(Arrays.toString(entry.getKey()) + " : " + Arrays.toString(entry.getValue()));
+			sb.append(Arrays.toString(entry.getKey()))
+					.append(" : ")
+					.append(Arrays.toString(entry.getValue()))
+					.append("\n");
 		}
+
+		String output = sb.toString();
+		Logger logger = Logger.getLogger(Dijkstra.class.getName());
+		logger.log(Level.INFO, output);
 	}
 }

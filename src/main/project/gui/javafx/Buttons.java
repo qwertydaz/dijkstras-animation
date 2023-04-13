@@ -125,40 +125,53 @@ public class Buttons
 
 	private void reset()
 	{
-		table.clearAll();
-		graph.clearAll();
+		if (Util.displayOptionDialog("Reset", "Are you sure you want to reset?"))
+		{
+			table.clearAll();
+			graph.clearAll();
+		}
 	}
 
 	private void save()
 	{
-		connect();
+		if (Util.displayOptionDialog("Save", "Are you sure you want to save this graph?"))
+		{
+			connect();
 
-		try
-		{
-			controller.saveNodes();
-			controller.saveEdges();
-		}
-		catch (SQLException e)
-		{
-			Util.displayErrorMessage("Error saving to database", e.getMessage());
+			try
+			{
+				controller.saveNodes();
+				controller.saveEdges();
+
+				Util.displayInfoMessage("Success", "Saved to database");
+			}
+			catch (SQLException e)
+			{
+				Util.displayErrorMessage("Error saving to database", e.getMessage());
+			}
 		}
 	}
 
 	private void load()
 	{
-		connect();
-
-		try
+		if (Util.displayOptionDialog("Load", "Are you sure you want to load your saved graph?"))
 		{
-			controller.loadNodes();
-			controller.loadEdges();
+			connect();
 
-			table.clearAll();
-			graph.refresh();
-		}
-		catch (SQLException e)
-		{
-			Util.displayErrorMessage("Error loading from database", e.getMessage());
+			try
+			{
+				controller.loadNodes();
+				controller.loadEdges();
+
+				table.clearAll();
+				graph.refresh();
+
+				Util.displayInfoMessage("Success", "Loaded from database");
+			}
+			catch (SQLException e)
+			{
+				Util.displayErrorMessage("Error loading from database", e.getMessage());
+			}
 		}
 	}
 
@@ -183,11 +196,14 @@ public class Buttons
 
 	private void stop()
 	{
-		// Toggle button visibility
-		buttonsPane.getChildren().removeAll(backButton, forwardButton, stopButton);
-		buttonsPane.getChildren().addAll(runButton, resetButton, saveButton, loadButton);
+		if (Util.displayOptionDialog("Stop", "Are you sure you want to stop the animation?"))
+		{
+			// Toggle button visibility
+			buttonsPane.getChildren().removeAll(backButton, forwardButton, stopButton);
+			buttonsPane.getChildren().addAll(runButton, resetButton, saveButton, loadButton);
 
-		animation.stop();
+			animation.stop();
+		}
 	}
 
 	private void connect()

@@ -10,6 +10,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.sql.SQLException;
 import java.util.Objects;
 
 public class App extends Application
@@ -66,9 +67,16 @@ public class App extends Application
 		mainStage.setTitle("Dijkstra's Animation");
 		mainStage.setScene(scene);
 		mainStage.show();
-		mainStage.setOnCloseRequest(e ->
+		mainStage.setOnCloseRequest(event ->
 		{
-			controller.disconnect();
+			try
+			{
+				controller.disconnect();
+			}
+			catch (SQLException e)
+			{
+				e.printStackTrace();
+			}
 			System.exit(0);
 		});
 	}

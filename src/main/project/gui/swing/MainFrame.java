@@ -165,7 +165,14 @@ public class MainFrame extends JFrame
 			@Override
 			public void windowClosing(WindowEvent e)
 			{
-				controller.disconnect();
+				try
+				{
+					controller.disconnect();
+				}
+				catch (SQLException ex)
+				{
+					ex.printStackTrace();
+				}
 				dispose();
 			}
 		});

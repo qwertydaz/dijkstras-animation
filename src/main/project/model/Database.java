@@ -67,19 +67,10 @@ public class Database
 		String user = databaseDetails[1];
 		String password = databaseDetails[2];
 
-//		try
-//		{
-//			Class.forName("com.mysql.cj.jdbc.Driver");
-//		}
-//		catch (ClassNotFoundException e)
-//		{
-//			throw new ClassNotFoundException("Driver not found");
-//		}
-
 		conn = DriverManager.getConnection(url, user, password);
 	}
 
-	public void disconnect()
+	public void disconnect() throws SQLException
 	{
 		if (conn != null)
 		{
@@ -89,7 +80,7 @@ public class Database
 			}
 			catch (SQLException e)
 			{
-				System.err.println("Cannot close connection");
+				throw new SQLException("Cannot close connection");
 			}
 		}
 	}
@@ -119,8 +110,6 @@ public class Database
 
 				if (count == 0)
 				{
-					System.out.println("Inserting node with ID " + nodeId);
-
 					col = 1;
 
 					insertStatement.setInt(col++, nodeId);
@@ -130,8 +119,6 @@ public class Database
 				}
 				else
 				{
-					System.out.println("Updating node with ID " + nodeId);
-
 					col = 1;
 
 					updateStatement.setInt(col++, nodeId);
@@ -170,8 +157,6 @@ public class Database
 
 				if (count == 0)
 				{
-					System.out.println("Inserting edge with ID " + edgeId);
-
 					col = 1;
 
 					insertStatement.setInt(col++, edgeId);
@@ -183,8 +168,6 @@ public class Database
 				}
 				else
 				{
-					System.out.println("Updating edge with ID " + edgeId);
-
 					col = 1;
 
 					updateStatement.setInt(col++, edgeId);
@@ -214,8 +197,6 @@ public class Database
 
 				Node node = new Node(nodeId, name);
 				nodes.add(node);
-
-				System.out.println(node);
 			}
 		}
 	}
@@ -236,8 +217,6 @@ public class Database
 
 				Edge edge = new Edge(edgeId, node1, node2, weight);
 				edges.add(edge);
-
-				System.out.println(edge);
 			}
 		}
 	}
