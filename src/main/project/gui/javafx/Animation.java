@@ -3,10 +3,11 @@ package project.gui.javafx;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -16,7 +17,12 @@ public class Animation
 	private final Graph graph;
 	private final Table table;
 
+	private final List<Map<Circle, Line>> toggledEdgesHistory = new ArrayList<>();
+
 	private LinkedHashMap<String[], String[]> results;
+
+	private Set<String> previousNodes = new HashSet<>();
+	private final List<Integer> lastHighlightedNodeIds = new ArrayList<>();
 
 	private int frame = 0;
 	private int totalFrames;
@@ -44,31 +50,32 @@ public class Animation
 		}
 
 		graph.setAnimationStatus(true);
-		totalFrames = results.size();
+		totalFrames = results.size() - 1;
 
 		forward();
 	}
 
-	// TODO: fix the highlighting of nodes and edges
 	// highlights the next node and adjacent edges
 	public void forward()
 	{
 		// frame data
-		if (frame == totalFrames - 1)
+		if (frame == totalFrames)
 		{
 			return;
 		}
 		frame++;
 
-		// gather adjacent nodes and edges
+		// get adjacent nodes and edges
 		Map.Entry<String[], String[]> dataRow = getDataRow();
 		assert dataRow != null;
 		String nextNodeId = findNextNodeId(dataRow);
 		Circle nextNode = controller.getNodeShape(Integer.parseInt(nextNodeId));
 		Map<Circle, Line> adjacentNodesAndEdges = controller.getAdjacentNodesAndEdges(nextNode);
 
-		// highlight adjacent nodes and edges
-		graph.highlight(nextNode, adjacentNodesAndEdges);
+		// highlight current node and edges
+		Map<Circle, Line> toggledEdges = graph.highlight(nextNode, adjacentNodesAndEdges);
+		toggledEdges.put(nextNode, null); // Store the next node with a null edge value
+		toggledEdgesHistory.add(toggledEdges);
 
 		// update table
 		table.addRow(formatDataRow(dataRow));
@@ -85,7 +92,8 @@ public class Animation
 		frame--;
 
 		// unhighlight current node and edges
-		graph.unhighlightCurrent();
+		Map<Circle, Line> lastToggledEdges = toggledEdgesHistory.remove(toggledEdgesHistory.size() - 1);
+		graph.unhighlight(lastToggledEdges);
 
 		// update table
 		table.removeLastRow();
@@ -100,7 +108,7 @@ public class Animation
 		table.clearAll();
 
 		graph.setAnimationStatus(false);
-		graph.unhighlightAll();
+		graph.unhighlightAll(toggledEdgesHistory);
 	}
 
 	private Map.Entry<String[], String[]> getDataRow()
@@ -153,8 +161,27 @@ public class Animation
 
 	private String findNextNodeId(Map.Entry<String[], String[]> dataRow)
 	{
-		Set<String> newNodes = new HashSet<>(Arrays.asList(dataRow.getKey()));
+		// Checks if next node id data has been cached
+		if (frame <= lastHighlightedNodeIds.size())
+		{
+			return String.valueOf(lastHighlightedNodeIds.get(frame - 1));
+		}
 
-		return Collections.min(newNodes);
+		Set<String> currentNodes = new HashSet<>(Arrays.asList(dataRow.getKey()));
+
+		// Find the set of nodes that were added since the last frame
+		Set<String> newNodes = new HashSet<>(currentNodes);
+		newNodes.removeAll(previousNodes);
+
+		// Return the ID of the first node in the set of new nodes
+		String nextNodeId = newNodes.iterator().next();
+
+		// Update the set of previous nodes for the next frame
+		previousNodes = currentNodes;
+
+		// Store the ID of the next node for the next frame
+		lastHighlightedNodeIds.add(Integer.parseInt(nextNodeId));
+
+		return nextNodeId;
 	}
 }

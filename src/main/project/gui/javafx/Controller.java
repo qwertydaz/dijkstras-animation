@@ -153,14 +153,14 @@ public class Controller
 		return db.getNodeId(node);
 	}
 
-	public boolean isNodeActive(Circle node)
+	public boolean isActive(Circle node)
 	{
-		return db.isNodeActive(node);
+		return db.isActive(node);
 	}
 
-	public boolean isEdgeActive(Line edge)
+	public boolean isActive(Line edge)
 	{
-		return db.isEdgeActive(edge);
+		return db.isActive(edge);
 	}
 
 	public String getNodeName(int nodeId)
@@ -183,13 +183,13 @@ public class Controller
 		db.disconnect();
 	}
 
-	public String getNodeDetails(Circle node)
+	public String getDetails(Circle node)
 	{
-		return db.getNodeDetails(node);
+		return db.getDetails(node);
 	}
 
-	public String getEdgeDetails(Line edge)
+	public String getDetails(Line edge)
 	{
-		return db.getEdgeDetails(edge);
+		return db.getDetails(edge);
 	}
 }

@@ -663,7 +663,7 @@ public class Database
 		}
 	}
 
-	public boolean isNodeActive(Circle nodeShape)
+	public boolean isActive(Circle nodeShape)
 	{
 		try
 		{
@@ -677,7 +677,7 @@ public class Database
 		}
 	}
 
-	public boolean isEdgeActive(Line edgeShape)
+	public boolean isActive(Line edgeShape)
 	{
 		try
 		{
@@ -691,7 +691,7 @@ public class Database
 		}
 	}
 
-	public String getNodeDetails(Circle nodeShape)
+	public String getDetails(Circle nodeShape)
 	{
 		try
 		{
@@ -705,7 +705,7 @@ public class Database
 		}
 	}
 
-	public String getEdgeDetails(Line edgeShape)
+	public String getDetails(Line edgeShape)
 	{
 		try
 		{

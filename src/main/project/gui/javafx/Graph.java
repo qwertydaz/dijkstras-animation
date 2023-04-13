@@ -21,6 +21,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
@@ -46,10 +47,10 @@ public class Graph
 	private Line selectedEdge;
 	private Circle selectedStartNode;
 
-	private final List<Circle> previousNodes = new ArrayList<>();
-	private final List<Line> previousEdges = new ArrayList<>();
-	private final List<Circle> currentNodes = new ArrayList<>();
-	private final List<Line> currentEdges = new ArrayList<>();
+//	private final List<Circle> previousNodes = new ArrayList<>();
+//	private final List<Line> previousEdges = new ArrayList<>();
+//	private final List<Circle> currentNodes = new ArrayList<>();
+//	private final List<Line> currentEdges = new ArrayList<>();
 	private boolean isAnimationActive = false;
 
 	private static final Color selectedNodeColour = Color.RED;
@@ -462,7 +463,7 @@ public class Graph
 	// Selects a node by changing colour and adding to list
 	private void selectNode(Circle node)
 	{
-		if (!controller.isNodeActive(node))
+		if (!controller.isActive(node))
 		{
 			// Unselects first node selected. Only 2 nodes can be selected at once
 			if (selectedNodes.size() == 2)
@@ -476,96 +477,61 @@ public class Graph
 		}
 	}
 
-	public void highlight(Circle node, Map<Circle, Line> adjacentNodesAndEdges)
+	public Map<Circle, Line> highlight(Circle node, Map<Circle, Line> adjacentNodesAndEdges)
 	{
-		updatePreviousNodesAndEdges(adjacentNodesAndEdges);
+		Map<Circle, Line> toggledEdges = new HashMap<>();
+
 		setActive(node);
 
 		for (Map.Entry<Circle, Line> entry : adjacentNodesAndEdges.entrySet())
 		{
-			if (!controller.isNodeActive(entry.getKey()))
+			Circle adjacentNode = entry.getKey();
+			Line edge = entry.getValue();
+
+			if (!controller.isActive(edge))
 			{
-				currentNodes.remove(entry.getKey());
+				setActive(edge);
+				toggledEdges.put(adjacentNode, edge);
 			}
-
-			setActive(entry.getValue());
 		}
 
-		currentNodes.add(node);
-
-		System.out.println("Current nodes: " + currentNodes.size());
-		for (Circle nodeShape : currentNodes)
-		{
-			String nodeDetails = controller.getNodeDetails(nodeShape);
-			System.out.println(nodeDetails);
-		}
-
-		System.out.println("Current edges: " + currentEdges.size());
-		for (Line edge : currentEdges)
-		{
-			String edgeDetails = controller.getEdgeDetails(edge);
-			System.out.println(edgeDetails);
-		}
-		System.out.println("\n");
+		return toggledEdges;
 	}
 
-	public void unhighlightAll()
+	public void unhighlight(Map<Circle, Line> toggledEdges)
 	{
-		unhighlight(previousNodes, previousEdges);
-		unhighlight(currentNodes, currentEdges);
-	}
-
-	public void unhighlightCurrent()
-	{
-		unhighlight(currentNodes, currentEdges);
-	}
-
-	private void unhighlight(List<Circle> nodes, List<Line> edges)
-	{
-		for (Circle node : nodes)
-		{
-			setInactive(node);
-		}
-
-		for (Line edge : edges)
-		{
-			setInactive(edge);
-		}
-	}
-
-	public void updatePreviousNodesAndEdges(Map<Circle, Line> adjacentNodesAndEdges)
-	{
-		// Copy previous to temp
-		List<Circle> tempNodes = new ArrayList<>(previousNodes);
-		List<Line> tempEdges = new ArrayList<>(previousEdges);
-
-		// Copy current to previous
-		previousNodes.clear();
-		previousEdges.clear();
-		previousNodes.addAll(currentNodes);
-		previousEdges.addAll(currentEdges);
-
-		// Set current to adjacent - temp
-		currentNodes.clear();
-		currentEdges.clear();
-
-		for (Map.Entry<Circle, Line> entry : adjacentNodesAndEdges.entrySet())
+		for (Map.Entry<Circle, Line> entry : toggledEdges.entrySet())
 		{
 			Circle node = entry.getKey();
 			Line edge = entry.getValue();
 
-			if (!tempNodes.contains(node))
-			{
-				currentNodes.add(node);
-			}
-			if (!tempEdges.contains(edge))
-			{
-				currentEdges.add(edge);
-			}
+			setInactive(node);
+			setInactive(edge);
 		}
 	}
 
-	private void setActive(Circle node)
+	public void unhighlightAll(List<Map<Circle, Line>> nodesAndEdges)
+	{
+		for (Map<Circle, Line> nodeAndEdges : nodesAndEdges)
+		{
+			for (Circle node : nodeAndEdges.keySet())
+			{
+				setInactive(node);
+			}
+
+			for (Line edge : nodeAndEdges.values())
+			{
+				setInactive(edge);
+			}
+		}
+
+		for (int i = 0; i < 100; i++)
+		{
+			System.out.println();
+		}
+	}
+
+	public void setActive(Circle node)
 	{
 		controller.setActive(node);
 		node.setFill(activeColour);
@@ -585,6 +551,11 @@ public class Graph
 
 	private void setInactive(Line edge)
 	{
+		if (edge == null)
+		{
+			return;
+		}
+
 		controller.setInactive(edge);
 		edge.setStroke(unselectedEdgeColour);
 	}
