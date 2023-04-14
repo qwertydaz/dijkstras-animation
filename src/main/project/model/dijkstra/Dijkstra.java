@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 
 public class Dijkstra extends Graph
 {
-	private int comparsions = 0;
+	private int comparisons = 0;
 	private final NodeMap unvisitedNodes;
 	private final NodeMap visitedNodes;
 	private final Map<String[], String[]> steps = new LinkedHashMap<>();
@@ -40,7 +40,7 @@ public class Dijkstra extends Graph
 	// Dijkstra's Algorithm
 	public Map<String[], String[]> run(Node startingNode)
 	{
-		comparsions = 0;
+		comparisons = 0;
 
 		if (!steps.isEmpty())
 		{
@@ -125,12 +125,12 @@ public class Dijkstra extends Graph
 			if (node.equals(startingNode))
 			{
 				unvisitedNodes.setLValueByNodeId(node.getId(), 0);
-				comparsions++;
+				comparisons++;
 			}
 			else if (edge != null)
 			{
 				unvisitedNodes.setLValueByNodeId(node.getId(), edge.getWeight());
-				comparsions++;
+				comparisons++;
 			}
 			else
 			{
@@ -150,13 +150,14 @@ public class Dijkstra extends Graph
 
 			if (edge != null)
 			{
+				comparisons++;
 				int oldLValue = unvisitedNodes.getLValueByNodeId(node.getId());
 				int newLValue = unvisitedNodes.getLValueByNodeId(nextNode.getId()) + edge.getWeight();
 
 				// if the edge exists and the weight of its path is smaller
 				if (oldLValue > newLValue || oldLValue == -1)
 				{
-					comparsions++;
+					comparisons += 2;
 					// L value is updated to be the smaller path
 					unvisitedNodes.setLValueByNodeId(node.getId(), newLValue);
 				}
@@ -185,6 +186,7 @@ public class Dijkstra extends Graph
 		{
 			if (visitedNodes.contains(currentNode))
 			{
+				comparisons++;
 				continue; // skip nodes that have already been visited
 			}
 
@@ -192,6 +194,7 @@ public class Dijkstra extends Graph
 
 			if (lValue > 0 && lValue < smallestLValue)
 			{
+				comparisons += 2;
 				smallestLValue = lValue;
 				node = currentNode;
 			}
@@ -202,7 +205,7 @@ public class Dijkstra extends Graph
 
 	public int getComparisons()
 	{
-		return comparsions;
+		return comparisons;
 	}
 
 	public static void main(String[] args)

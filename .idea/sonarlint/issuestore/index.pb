@@ -46,8 +46,6 @@ Z
 *src/main/project/gui/swing/GraphPanel.java,7\b\7b756d01eeb5be6d44610469d90e5d3f14a1bdc2
 e
 5src/main/project/exception/EdgeNotFoundException.java,0\c\0ca6d23e4399f40c3440065a28236b810a6bbcc3
-Y
-)src/main/project/gui/swing/MainFrame.java,f\2\f209aaddb1c243eb38b896850fbb973cfc0a8174
 U
 %src/main/project/gui/javafx/Util.java,0\d\0de584c2f2f3e2556a27c719c828369417a10f23
 Z

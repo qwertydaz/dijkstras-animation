@@ -1,5 +1,6 @@
 package project.gui.javafx.data;
 
+import project.gui.javafx.util.Util;
 import project.model.dijkstra.Dijkstra;
 import project.model.dijkstra.Edge;
 import project.model.dijkstra.Node;
@@ -32,16 +33,6 @@ public class ComparisonChartData
 	}
 
 	// Takes a total number of nodes and calculates an even distribution of nodes between a number of graphs
-	private void calculateGraphSizes(int totalNodes, int numberOfGraphs)
-	{
-		graphSizes = new int[numberOfGraphs];
-		int stepSize = totalNodes / numberOfGraphs;
-
-		for (int i = 0; i < numberOfGraphs; i++)
-		{
-			graphSizes[i] = (i + 1) * stepSize;
-		}
-	}
 
 	// Creates a graph with the maximum number of edges between a specified number of nodes
 	private void generateGraph(int numberOfNodes)
@@ -76,7 +67,7 @@ public class ComparisonChartData
 	{
 		Map<Integer, Integer> results = new LinkedHashMap<>();
 		results.put(0,0);
-		calculateGraphSizes(totalNumberOfNodes, numberOfSteps);
+		graphSizes = Util.calculateGraphSizes(totalNumberOfNodes, numberOfSteps);
 
 		for (int graphSize : graphSizes)
 		{

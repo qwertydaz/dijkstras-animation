@@ -1,5 +1,6 @@
 package project.gui.javafx.buttons;
 
+import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -61,6 +62,7 @@ public class Buttons
 	{
 		setupButtonsPane();
 
+		separator.setOrientation(Orientation.VERTICAL);
 		animation = new Animation(controller, graph, table);
 
 		this.mainPane = mainPane;

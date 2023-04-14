@@ -13,10 +13,9 @@ import javafx.scene.paint.Color;
 import project.gui.javafx.controller.Controller;
 import project.gui.javafx.util.Charts;
 
-import java.util.Map;
-
 public class ComparisonChart
 {
+	private LineChart<Number, Number> lineChart;
 	private final Charts charts;
 	private Pane comparisonLineChartPane;
 
@@ -43,8 +42,6 @@ public class ComparisonChart
 	//  - Add a warning about the time it takes to calculate the results
 	private void createGraph()
 	{
-        LineChart<Number, Number> lineChart;
-
 		// Create the x-axis and y-axis
 		final NumberAxis xAxis = new NumberAxis();
 		final NumberAxis yAxis = new NumberAxis();
@@ -56,13 +53,28 @@ public class ComparisonChart
 		lineChart.setTitle("Run Large Scale Test");
 
 		// Add control data to the graph
-		lineChart.getData().add(charts.calculateMaxEdgeGradient());
 
 		// Add the line chart to the pane
 		comparisonLineChartPane.getChildren().add(lineChart);
 
 		lineChart.prefWidthProperty().bind(comparisonLineChartPane.widthProperty());
 		lineChart.prefHeightProperty().bind(comparisonLineChartPane.heightProperty());
+	}
+
+	public void fillGraph(int totalNodes, int numOfSteps)
+	{
+		if (!lineChart.getData().isEmpty())
+		{
+			lineChart.getData().clear();
+		}
+
+		XYChart.Series<Number, Number> userInputGradient = charts.calculateUserInputGradient(totalNodes, numOfSteps);
+		XYChart.Series<Number, Number> maxEdgeGradient = charts.calculateMaxEdgeGradient(totalNodes, numOfSteps);
+		XYChart.Series<Number, Number> polynomialGradient = charts.calculatePolynomialGradient(totalNodes, numOfSteps);
+
+		lineChart.getData().add(userInputGradient);
+		lineChart.getData().add(maxEdgeGradient);
+		lineChart.getData().add(polynomialGradient);
 	}
 
 	public Pane getPane()

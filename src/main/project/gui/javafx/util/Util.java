@@ -46,4 +46,17 @@ public class Util
 		Optional<ButtonType> result = yesNoDialog.showAndWait();
 		return result.orElse(buttonNo) == buttonYes;
 	}
+
+	public static int[] calculateGraphSizes(int totalNodes, int numberOfGraphs)
+	{
+		int[] graphSizes = new int[numberOfGraphs];
+		int stepSize = totalNodes / numberOfGraphs;
+
+		for (int i = 0; i < numberOfGraphs; i++)
+		{
+			graphSizes[i] = (i + 1) * stepSize;
+		}
+
+		return graphSizes;
+	}
 }

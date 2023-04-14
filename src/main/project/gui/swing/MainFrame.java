@@ -85,16 +85,6 @@ public class MainFrame extends JFrame
 			}
 		});
 
-
-		// TODO:
-		//  - Ensure 2 nodes can only have a single edge
-		//  - Add the ability to edit existing nodes and edges
-		//  - Flesh out GraphPanel:
-		//      - Finish and incorporate GraphCreator using database node and edge data
-		//  - Add more validation
-		//  - Update NodeName ComboBoxes when adding a node
-		//  - Create unit tests / GitLab CI Pipeline (?)
-		//  - Ensure max num of nodes is 10
 		edgeFormPanel.setEdgeFormListener(event ->
 		{
 			if (!event.getNode1Name().equals(event.getNode2Name()))
