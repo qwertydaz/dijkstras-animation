@@ -2,6 +2,7 @@ package project.gui.javafx;
 
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import project.gui.javafx.controller.Controller;
 
 import java.util.ArrayList;
 import java.util.Arrays;

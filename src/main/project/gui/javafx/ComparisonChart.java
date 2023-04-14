@@ -10,20 +10,19 @@ import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import project.gui.javafx.controller.Controller;
+import project.gui.javafx.util.Charts;
 
 import java.util.Map;
 
-public class ComparisonLineChart
+public class ComparisonChart
 {
-	private final Controller controller;
-	Pane comparisonLineChartPane;
-	LineChart<Number, Number> lineChart;
-	Map<Integer, Integer> results;
-	XYChart.Series<Number, Number> series;
+	private final Charts charts;
+	private Pane comparisonLineChartPane;
 
-	public ComparisonLineChart(Controller controller)
+	public ComparisonChart(Controller controller)
 	{
-		this.controller = controller;
+		this.charts = new Charts(controller);
 
 		setupPane();
 	}
@@ -38,24 +37,14 @@ public class ComparisonLineChart
 
 		createGraph();
 	}
-	
-	private void calculateResults(int numOfNodes, int numOfSteps)
-	{
-		results = controller.calculateResults(numOfNodes, numOfSteps);
-	}
 
 	// TODO:
-	//  - Do not call this from the constructor
-	//      - Add a button to calculate the results
-	//  - Allow the user to select the number of nodes and steps
-	//      - Add a text field for the number of nodes
-	//      - Add a dropdown for the number of steps
-	//      - Add a button to update the graph
-	//  - Overlap the graphs (check if possible)
 	//  - Add a loading wheel
 	//  - Add a warning about the time it takes to calculate the results
 	private void createGraph()
 	{
+        LineChart<Number, Number> lineChart;
+
 		// Create the x-axis and y-axis
 		final NumberAxis xAxis = new NumberAxis();
 		final NumberAxis yAxis = new NumberAxis();
@@ -64,34 +53,16 @@ public class ComparisonLineChart
 
 		// Create the line chart
 		lineChart = new LineChart<>(xAxis, yAxis);
-		lineChart.setTitle("Your Results");
+		lineChart.setTitle("Run Large Scale Test");
 
-		// Create the data series
-		series = new XYChart.Series<>();
-		series.setName("Gradient");
+		// Add control data to the graph
+		lineChart.getData().add(charts.calculateMaxEdgeGradient());
 
 		// Add the line chart to the pane
 		comparisonLineChartPane.getChildren().add(lineChart);
 
 		lineChart.prefWidthProperty().bind(comparisonLineChartPane.widthProperty());
 		lineChart.prefHeightProperty().bind(comparisonLineChartPane.heightProperty());
-	}
-
-	public void fillGraph()
-	{
-		// Calculate the results
-		int numOfNodes = 100;
-		int numOfSteps = 10;
-		calculateResults(numOfNodes, numOfSteps);
-
-		// Add data to the series
-		for (Map.Entry<Integer, Integer> entry : results.entrySet())
-		{
-			series.getData().add(new XYChart.Data<>(entry.getKey(), entry.getValue()));
-		}
-
-		// Add the data series to the line chart
-		lineChart.getData().add(series);
 	}
 
 	public Pane getPane()

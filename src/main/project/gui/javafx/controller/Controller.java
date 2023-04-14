@@ -1,8 +1,10 @@
-package project.gui.javafx;
+package project.gui.javafx.controller;
 
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
+import project.gui.javafx.data.ComparisonChartData;
+import project.gui.javafx.data.Database;
 import project.model.dijkstra.Node;
 
 import java.security.NoSuchAlgorithmException;
@@ -13,7 +15,7 @@ import java.util.Map;
 public class Controller
 {
 	private final Database db = new Database();
-	private final ComparisonData cd = new ComparisonData();
+	private final ComparisonChartData cd = new ComparisonChartData();
 
 	public Controller() throws NoSuchAlgorithmException
 	{

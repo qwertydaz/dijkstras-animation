@@ -19,6 +19,8 @@ import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import project.gui.javafx.controller.Controller;
+import project.gui.javafx.util.Util;
 
 import java.util.ArrayList;
 import java.util.HashMap;

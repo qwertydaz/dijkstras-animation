@@ -1,6 +1,7 @@
-package project.gui.javafx;
+package project.gui.javafx.buttons;
 
 import javafx.scene.control.Button;
+import project.gui.javafx.Animation;
 
 public class AnimationButtons
 {
@@ -22,25 +23,25 @@ public class AnimationButtons
 
 	private void setupButtons()
 	{
-		// Button 6
+		// Button 1
 		forwardButton = new Button("→");
 
-		// Button 7
+		// Button 2
 		backButton = new Button("←");
 
-		// Button 8
+		// Button 3
 		stopButton = new Button("Stop");
 	}
 
 	private void setupButtonActions()
 	{
-		// Button 6
+		// Button 1
 		forwardButton.setOnAction(actionEvent -> forward());
 
-		// Button 7
+		// Button 2
 		backButton.setOnAction(actionEvent -> backward());
 
-		// Button 8
+		// Button 3
 		stopButton.setOnAction(actionEvent -> stopAnimation());
 	}
 

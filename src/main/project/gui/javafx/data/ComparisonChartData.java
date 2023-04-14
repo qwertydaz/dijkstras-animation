@@ -1,4 +1,4 @@
-package project.gui.javafx;
+package project.gui.javafx.data;
 
 import project.model.dijkstra.Dijkstra;
 import project.model.dijkstra.Edge;
@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.logging.Logger;
 
-public class ComparisonData
+public class ComparisonChartData
 {
 	private final Dijkstra dijkstra;
 	private final LinkedList<Node> nodes;
@@ -21,9 +21,9 @@ public class ComparisonData
 	private int[] graphSizes;
 
 	private final Random rand = SecureRandom.getInstanceStrong();
-	private static final Logger logger = Logger.getLogger(ComparisonData.class.getName());
+	private static final Logger logger = Logger.getLogger(ComparisonChartData.class.getName());
 
-	public ComparisonData() throws NoSuchAlgorithmException
+	public ComparisonChartData() throws NoSuchAlgorithmException
 	{
 		nodes = new LinkedList<>();
 		edges = new LinkedList<>();
@@ -95,7 +95,7 @@ public class ComparisonData
 
 	public static void main(String[] args) throws NoSuchAlgorithmException
 	{
-		ComparisonData cd = new ComparisonData();
+		ComparisonChartData cd = new ComparisonChartData();
 
 		Map<Integer, Integer> results = cd.calculateResults(100, 10);
 

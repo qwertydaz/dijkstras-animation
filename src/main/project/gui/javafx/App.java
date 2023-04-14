@@ -9,6 +9,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import project.gui.javafx.buttons.Buttons;
+import project.gui.javafx.controller.Controller;
 
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
@@ -18,8 +20,7 @@ public class App extends Application
 {
 	private final Graph graph;
 	private final Table table;
-	private final ControlLineChart controlChart;
-	private final ComparisonLineChart comparisonChart;
+	private final ComparisonChart comparisonChart;
 	private Controller controller;
 	private Scene scene;
 
@@ -36,8 +37,7 @@ public class App extends Application
 
 		graph = new Graph(controller);
 		table = new Table();
-		controlChart = new ControlLineChart();
-		comparisonChart = new ComparisonLineChart(controller);
+		comparisonChart = new ComparisonChart(controller);
 
 		setupPanes();
 	}
@@ -52,31 +52,30 @@ public class App extends Application
 		ScrollPane tablePane = table.getPane();
 		tablePane.setPrefSize(600, 600);
 
-		// Control Chart
-		Pane controlChartPane = controlChart.getPane();
-		controlChartPane.setPrefSize(600, 600);
-
-		// Comparison Chart
-		Pane comparisonChartPane = comparisonChart.getPane();
-		comparisonChartPane.setPrefSize(600, 600);
+		// Main Pane
+		Pane mainPane = new Pane();
 
 		// Animation Box
 		HBox animationBox = new HBox(graphPane, tablePane);
 		HBox.setHgrow(graphPane, Priority.ALWAYS);
 		HBox.setHgrow(tablePane, Priority.ALWAYS);
+		animationBox.prefHeightProperty().bind(mainPane.heightProperty());
+		animationBox.prefWidthProperty().bind(mainPane.widthProperty());
 
-		// Chart Box
-		HBox chartBox = new HBox(controlChartPane, comparisonChartPane);
-		HBox.setHgrow(controlChartPane, Priority.ALWAYS);
-		HBox.setHgrow(comparisonChartPane, Priority.ALWAYS);
+		// Chart
+		Pane chartPane = comparisonChart.getPane();
+		chartPane.prefHeightProperty().bind(mainPane.heightProperty());
+		chartPane.prefWidthProperty().bind(mainPane.widthProperty());
 
-		// Main Pane
-		Pane mainPane = new Pane(animationBox);
+		mainPane.getChildren().addAll(animationBox);
+		mainPane.setPrefSize(1200, 600);
 
 		// Buttons
-		Buttons buttons = new Buttons(controller, graph, table, mainPane, animationBox, chartBox);
+		Buttons buttons = new Buttons(controller, graph, table, comparisonChart, mainPane, animationBox);
 		Pane buttonsPane = buttons.getPane();
 		buttonsPane.setPrefSize(1200, 100);
+		buttonsPane.setMaxHeight(100);
+		buttonsPane.setMinHeight(100);
 
 		// Full Pane
 		VBox fullPane = new VBox(mainPane, buttonsPane);
