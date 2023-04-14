@@ -242,6 +242,6 @@ public class Dijkstra extends Graph
 
 		String output = sb.toString();
 		Logger logger = Logger.getLogger(Dijkstra.class.getName());
-		logger.log(Level.INFO, output);
+		logger.info(output);
 	}
 }

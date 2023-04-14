@@ -200,8 +200,8 @@ public class Controller
 		return db.getDetails(edge);
 	}
 
-	public int getComparisons(int numNodes)
+	public Map<Integer, Integer> calculate()
 	{
-		return cd.getComparisons(numNodes);
+		return cd.calculate(100, 10);
 	}
 }
