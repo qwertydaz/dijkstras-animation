@@ -41,9 +41,12 @@ public class Node implements Comparable<Node>
 		count++;
 	}
 
-	public Node()
+	public Node(int name)
 	{
-		// Empty Constructor
+		this.name = String.valueOf(name);
+
+		this.id = count;
+		count++;
 	}
 
 	public Node(int id, String name)

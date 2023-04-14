@@ -47,10 +47,6 @@ public class Graph
 	private Line selectedEdge;
 	private Circle selectedStartNode;
 
-//	private final List<Circle> previousNodes = new ArrayList<>();
-//	private final List<Line> previousEdges = new ArrayList<>();
-//	private final List<Circle> currentNodes = new ArrayList<>();
-//	private final List<Line> currentEdges = new ArrayList<>();
 	private boolean isAnimationActive = false;
 
 	private static final Color selectedNodeColour = Color.RED;
@@ -523,11 +519,6 @@ public class Graph
 			{
 				setInactive(edge);
 			}
-		}
-
-		for (int i = 0; i < 100; i++)
-		{
-			System.out.println();
 		}
 	}
 

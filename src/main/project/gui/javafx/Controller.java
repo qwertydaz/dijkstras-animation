@@ -5,6 +5,7 @@ import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import project.model.dijkstra.Node;
 
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +13,12 @@ import java.util.Map;
 public class Controller
 {
 	private final Database db = new Database();
+	private final ComparisonData cd = new ComparisonData();
+
+	public Controller() throws NoSuchAlgorithmException
+	{
+		// Empty Constructor
+	}
 
 	public List<Circle> getNodes()
 	{
@@ -191,5 +198,10 @@ public class Controller
 	public String getDetails(Line edge)
 	{
 		return db.getDetails(edge);
+	}
+
+	public int getComparisons(int numNodes)
+	{
+		return cd.getComparisons(numNodes);
 	}
 }

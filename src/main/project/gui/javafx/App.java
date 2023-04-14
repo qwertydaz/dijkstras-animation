@@ -10,6 +10,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.Objects;
 
@@ -18,11 +19,18 @@ public class App extends Application
 	private final Graph graph;
 	private final Table table;
 	private final Buttons buttons;
-	private final Controller controller;
+	private Controller controller;
 
 	public App()
 	{
-		controller = new Controller();
+		try
+		{
+			controller = new Controller();
+		}
+		catch (NoSuchAlgorithmException e)
+		{
+			e.printStackTrace();
+		}
 		graph = new Graph(controller);
 		table = new Table();
 

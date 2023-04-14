@@ -1,6 +1,4 @@
 
-9
-	README.md,8\e\8ec9a00bfd09b3190ac6b22251dbb1aa95a0579d
 :
 
 .gitignore,a\5\a5cc2925ca8258af241be7e5b0381edf30266302
@@ -38,14 +36,10 @@ c
 3src/main/project/gui/swing/node/NodeTableModel.java,0\8\089826620af7fa70e2fd93ff9e947b2426f1e59d
 c
 3src/main/project/gui/swing/edge/EdgeTablePanel.java,9\6\96ea4fccac6ab44b3f371a24bb561ba9b44660a1
-M
-src/main/project/MainApp.java,0\b\0b5e1d8bd6269b51ac5844244c436472643ae6c6
 c
 3src/main/project/gui/swing/edge/EdgeTableModel.java,e\8\e89b1c417d09beb6901a794a81bf1815aed6e394
 b
 2src/main/project/gui/swing/edge/EdgeFormPanel.java,4\e\4e804fe6acc153d79d16be25a6aa90c932a70961
-T
-$src/main/project/model/Database.java,6\2\62dbb34f1d8075ece0a2541a4123c2ffa96fae1a
 [
 +src/main/project/controller/Controller.java,f\5\f55c5f0ffb35bedd533b052da83b9a505a5d1bba
 Z

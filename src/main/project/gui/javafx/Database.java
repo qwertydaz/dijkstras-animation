@@ -74,16 +74,6 @@ public class Database
 		return edgeShapes;
 	}
 
-	public int numNodes()
-	{
-		return nodes.size();
-	}
-
-	public int numEdges()
-	{
-		return edges.size();
-	}
-
 	public Node getStartNode()
 	{
 		return startNode;

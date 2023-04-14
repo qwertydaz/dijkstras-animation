@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 
 public class Dijkstra extends Graph
 {
+	private int comparsions = 0;
 	private final NodeMap unvisitedNodes;
 	private final NodeMap visitedNodes;
 	private final Map<String[], String[]> steps = new LinkedHashMap<>();
@@ -40,6 +41,8 @@ public class Dijkstra extends Graph
 	// Dijkstra's Algorithm
 	public Map<String[], String[]> run(Node startingNode)
 	{
+		comparsions = 0;
+
 		if (!steps.isEmpty())
 		{
 			steps.clear();
@@ -123,10 +126,12 @@ public class Dijkstra extends Graph
 			if (node.equals(startingNode))
 			{
 				unvisitedNodes.setLValueByNodeId(node.getId(), 0);
+				comparsions++;
 			}
 			else if (edge != null)
 			{
 				unvisitedNodes.setLValueByNodeId(node.getId(), edge.getWeight());
+				comparsions++;
 			}
 			else
 			{
@@ -152,6 +157,7 @@ public class Dijkstra extends Graph
 				// if the edge exists and the weight of its path is smaller
 				if (oldLValue > newLValue || oldLValue == -1)
 				{
+					comparsions++;
 					// L value is updated to be the smaller path
 					unvisitedNodes.setLValueByNodeId(node.getId(), newLValue);
 				}
@@ -193,6 +199,11 @@ public class Dijkstra extends Graph
 		}
 
 		return node;
+	}
+
+	public int getComparisons()
+	{
+		return comparsions;
 	}
 
 	public static void main(String[] args)
