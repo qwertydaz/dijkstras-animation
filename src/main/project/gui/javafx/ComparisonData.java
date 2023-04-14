@@ -72,11 +72,11 @@ public class ComparisonData
 	}
 
 	// Repeatedly runs Dijkstra's algorithm on different sized graphs
-	public Map<Integer, Integer> calculate(int totalNumberOfNodes, int numberOfSteps)
+	public Map<Integer, Integer> calculateResults(int totalNumberOfNodes, int numberOfSteps)
 	{
 		Map<Integer, Integer> results = new LinkedHashMap<>();
+		results.put(0,0);
 		calculateGraphSizes(totalNumberOfNodes, numberOfSteps);
-
 
 		for (int graphSize : graphSizes)
 		{
@@ -97,7 +97,7 @@ public class ComparisonData
 	{
 		ComparisonData cd = new ComparisonData();
 
-		Map<Integer, Integer> results = cd.calculate(1000, 10);
+		Map<Integer, Integer> results = cd.calculateResults(100, 10);
 
 		StringBuilder sb = new StringBuilder();
 		sb.append("Number of nodes / Number of comparisons\n\n");

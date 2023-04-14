@@ -18,8 +18,10 @@ public class App extends Application
 {
 	private final Graph graph;
 	private final Table table;
-	private final Buttons buttons;
+	private final ControlLineChart controlChart;
+	private final ComparisonLineChart comparisonChart;
 	private Controller controller;
+	private Scene scene;
 
 	public App()
 	{
@@ -31,49 +33,70 @@ public class App extends Application
 		{
 			e.printStackTrace();
 		}
+
 		graph = new Graph(controller);
 		table = new Table();
+		controlChart = new ControlLineChart();
+		comparisonChart = new ComparisonLineChart(controller);
 
-		Animation animation = new Animation(controller, graph, table);
-		buttons = new Buttons(controller, graph, table, animation);
+		setupPanes();
 	}
 
-	public static void main(String[] args)
+	private void setupPanes()
 	{
-		launch(args);
+		// Graph
+		Pane graphPane = graph.getPane();
+		graphPane.setPrefSize(600, 600);
+
+		// Table
+		ScrollPane tablePane = table.getPane();
+		tablePane.setPrefSize(600, 600);
+
+		// Control Chart
+		Pane controlChartPane = controlChart.getPane();
+		controlChartPane.setPrefSize(600, 600);
+
+		// Comparison Chart
+		Pane comparisonChartPane = comparisonChart.getPane();
+		comparisonChartPane.setPrefSize(600, 600);
+
+		// Animation Box
+		HBox animationBox = new HBox(graphPane, tablePane);
+		HBox.setHgrow(graphPane, Priority.ALWAYS);
+		HBox.setHgrow(tablePane, Priority.ALWAYS);
+
+		// Chart Box
+		HBox chartBox = new HBox(controlChartPane, comparisonChartPane);
+		HBox.setHgrow(controlChartPane, Priority.ALWAYS);
+		HBox.setHgrow(comparisonChartPane, Priority.ALWAYS);
+
+		// Main Pane
+		Pane mainPane = new Pane(animationBox);
+
+		// Buttons
+		Animation animation = new Animation(controller, graph, table);
+		Buttons buttons = new Buttons(controller, graph, table, animation, mainPane, animationBox, chartBox);
+		Pane buttonsPane = buttons.getPane();
+		buttonsPane.setPrefSize(1200, 100);
+
+		// Full Pane
+		VBox fullPane = new VBox(mainPane, buttonsPane);
+		VBox.setVgrow(mainPane, Priority.ALWAYS);
+		VBox.setVgrow(buttonsPane, Priority.ALWAYS);
+
+		// Scene & CSS
+		scene = new Scene(fullPane, 1200, 700);
+		String cssPath = Objects.requireNonNull(getClass().getResource("/style.css")).toExternalForm();
+		scene.getStylesheets().add(cssPath);
 	}
 
 	@Override
 	public void start(Stage mainStage)
 	{
-		// Graph
-		Pane graphPane = graph.getGraphPane();
-		graphPane.setPrefSize(600, 600);
-
-		// Table
-		ScrollPane tablePane = table.getTablePane();
-		tablePane.setPrefSize(600, 600);
-
-		// Buttons
-		Pane buttonsPane = buttons.getButtonsPane();
-		buttonsPane.setPrefSize(1200, 100);
-
-		// Full Pane
-		HBox graphAndTablePane = new HBox(graphPane, tablePane);
-		HBox.setHgrow(graphPane, Priority.ALWAYS);
-		HBox.setHgrow(tablePane, Priority.ALWAYS);
-
-		VBox fullPane = new VBox(graphAndTablePane, buttonsPane);
-		VBox.setVgrow(graphAndTablePane, Priority.ALWAYS);
-		VBox.setVgrow(buttonsPane, Priority.ALWAYS);
-
-		Scene scene = new Scene(fullPane, 1200, 700);
-		String cssPath = Objects.requireNonNull(getClass().getResource("/style.css")).toExternalForm();
-		scene.getStylesheets().add(cssPath);
-
 		// Main Stage
 		mainStage.setTitle("Dijkstra's Animation");
 		mainStage.setScene(scene);
+
 		mainStage.show();
 		mainStage.setOnCloseRequest(event ->
 		{
@@ -87,5 +110,10 @@ public class App extends Application
 			}
 			System.exit(0);
 		});
+	}
+
+	public static void main(String[] args)
+	{
+		launch(args);
 	}
 }

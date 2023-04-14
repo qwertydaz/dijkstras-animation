@@ -47,7 +47,7 @@ public class Table
 		tableScrollPane.setContent(lTable);
 	}
 
-	public ScrollPane getTablePane()
+	public ScrollPane getPane()
 	{
 		return tableScrollPane;
 	}

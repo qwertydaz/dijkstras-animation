@@ -200,8 +200,8 @@ public class Controller
 		return db.getDetails(edge);
 	}
 
-	public Map<Integer, Integer> calculate()
+	public Map<Integer, Integer> calculateResults(int numOfNodes, int numOfSteps)
 	{
-		return cd.calculate(100, 10);
+		return cd.calculateResults(numOfNodes, numOfSteps);
 	}
 }

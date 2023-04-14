@@ -607,7 +607,7 @@ public class Graph
 		}
 	}
 
-	public Pane getGraphPane()
+	public Pane getPane()
 	{
 		return graphPane;
 	}
