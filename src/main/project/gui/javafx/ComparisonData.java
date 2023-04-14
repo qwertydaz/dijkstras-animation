@@ -34,10 +34,11 @@ public class ComparisonData
 	private void calculateGraphSizes(int totalNodes, int numberOfGraphs)
 	{
 		graphSizes = new int[numberOfGraphs];
+		int stepSize = totalNodes / numberOfGraphs;
 
-		for (int i = 1; i <= 5; i++)
+		for (int i = 0; i < numberOfGraphs; i++)
 		{
-			graphSizes[i - 1] = totalNodes - i * numberOfGraphs;
+			graphSizes[i] = (i + 1) * stepSize;
 		}
 	}
 
@@ -64,16 +65,9 @@ public class ComparisonData
 	// Runs Dijkstra's algorithm on a specified number of nodes and returns the total number of comparisons
 	private int getComparisons(int numberOfNodes)
 	{
-		int comparisons = 0;
-
-		for (int i = 1; i <= numberOfNodes; i++)
-		{
-			dijkstra.updateNodes(nodes);
-			dijkstra.run(nodes.get(rand.nextInt(numberOfNodes - 1)));
-			comparisons += dijkstra.getComparisons();
-		}
-
-		return comparisons;
+		dijkstra.updateNodes(nodes);
+		dijkstra.run(nodes.get(rand.nextInt(numberOfNodes)));
+		return dijkstra.getComparisons();
 	}
 
 	// Repeatedly runs Dijkstra's algorithm on different sized graphs
@@ -81,6 +75,7 @@ public class ComparisonData
 	{
 		Map<Integer, Integer> results = new LinkedHashMap<>();
 		calculateGraphSizes(totalNumberOfNodes, numberOfSteps);
+
 
 		for (int graphSize : graphSizes)
 		{
@@ -95,10 +90,10 @@ public class ComparisonData
 	{
 		ComparisonData cd = new ComparisonData();
 
-		Map<Integer, Integer> results = cd.calculate(100, 10);
+		Map<Integer, Integer> results = cd.calculate(1000, 10);
 
 		StringBuilder sb = new StringBuilder();
-		sb.append("Number of Nodes / Number of Comparisons\n\n");
+		sb.append("Number of nodes / Number of comparisons\n\n");
 
 		for (Map.Entry<Integer, Integer> entry : results.entrySet())
 		{
