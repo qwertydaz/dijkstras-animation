@@ -21,6 +21,7 @@ public class ComparisonData
 	private int[] graphSizes;
 
 	private final Random rand = SecureRandom.getInstanceStrong();
+	private static final Logger logger = Logger.getLogger(ComparisonData.class.getName());
 
 	public ComparisonData() throws NoSuchAlgorithmException
 	{
@@ -79,8 +80,14 @@ public class ComparisonData
 
 		for (int graphSize : graphSizes)
 		{
+			long startTime = System.nanoTime();
+
 			generateGraph(graphSize);
 			results.put(graphSize, getComparisons(graphSize));
+
+			long timeTaken = (System.nanoTime() - startTime) / 1000000;
+			String message = "Graph size: " + graphSize + ", Time: " + timeTaken + "ms";
+			logger.info(message);
 		}
 
 		return results;
@@ -104,7 +111,6 @@ public class ComparisonData
 		}
 
 		String output = sb.toString();
-		Logger logger = Logger.getLogger(ComparisonData.class.getName());
 		logger.info(output);
 	}
 }
