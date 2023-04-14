@@ -50,3 +50,15 @@ Y
 )src/main/project/gui/swing/MainFrame.java,f\2\f209aaddb1c243eb38b896850fbb973cfc0a8174
 U
 %src/main/project/gui/javafx/Util.java,0\d\0de584c2f2f3e2556a27c719c828369417a10f23
+Z
+*src/main/project/gui/javafx/Animation.java,8\6\869f92d6c06a9f0badb9fd54b6b56be97b4f8c91
+\
+,src/main/project/model/dijkstra/NodeMap.java,3\7\37098548e952a67ce423b563f18032ed1d5289f0
+V
+&src/main/project/gui/javafx/Table.java,e\8\e8fe0b8e27666b51210881537b3d493ae2802aaa
+T
+$src/main/project/model/Database.java,6\2\62dbb34f1d8075ece0a2541a4123c2ffa96fae1a
+M
+src/main/project/MainApp.java,0\b\0b5e1d8bd6269b51ac5844244c436472643ae6c6
+9
+	README.md,8\e\8ec9a00bfd09b3190ac6b22251dbb1aa95a0579d

@@ -19,6 +19,7 @@ public class ComparisonLineChart
 	Pane comparisonLineChartPane;
 	LineChart<Number, Number> lineChart;
 	Map<Integer, Integer> results;
+	XYChart.Series<Number, Number> series;
 
 	public ComparisonLineChart(Controller controller)
 	{
@@ -66,11 +67,20 @@ public class ComparisonLineChart
 		lineChart.setTitle("Your Results");
 
 		// Create the data series
-		final XYChart.Series<Number, Number> series = new XYChart.Series<>();
+		series = new XYChart.Series<>();
 		series.setName("Gradient");
 
+		// Add the line chart to the pane
+		comparisonLineChartPane.getChildren().add(lineChart);
+
+		lineChart.prefWidthProperty().bind(comparisonLineChartPane.widthProperty());
+		lineChart.prefHeightProperty().bind(comparisonLineChartPane.heightProperty());
+	}
+
+	public void fillGraph()
+	{
 		// Calculate the results
-		int numOfNodes = 1000;
+		int numOfNodes = 100;
 		int numOfSteps = 10;
 		calculateResults(numOfNodes, numOfSteps);
 
@@ -82,12 +92,6 @@ public class ComparisonLineChart
 
 		// Add the data series to the line chart
 		lineChart.getData().add(series);
-
-		// Add the line chart to the pane
-		comparisonLineChartPane.getChildren().add(lineChart);
-
-		lineChart.prefWidthProperty().bind(comparisonLineChartPane.widthProperty());
-		lineChart.prefHeightProperty().bind(comparisonLineChartPane.heightProperty());
 	}
 
 	public Pane getPane()

@@ -74,8 +74,7 @@ public class App extends Application
 		Pane mainPane = new Pane(animationBox);
 
 		// Buttons
-		Animation animation = new Animation(controller, graph, table);
-		Buttons buttons = new Buttons(controller, graph, table, animation, mainPane, animationBox, chartBox);
+		Buttons buttons = new Buttons(controller, graph, table, mainPane, animationBox, chartBox);
 		Pane buttonsPane = buttons.getPane();
 		buttonsPane.setPrefSize(1200, 100);
 
