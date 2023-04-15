@@ -5,7 +5,6 @@ import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import project.gui.javafx.data.ComparisonChartData;
 import project.gui.javafx.data.Database;
-import project.model.dijkstra.Node;
 
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
@@ -32,9 +31,9 @@ public class Controller
 		return db.getEdges();
 	}
 
-	public Node getStartNode()
+	public boolean isReady()
 	{
-		return db.getStartNode();
+		return db.isReady();
 	}
 
 	public Map<Circle, Line> getAdjacentNodesAndEdges(Circle node)
@@ -202,8 +201,13 @@ public class Controller
 		return db.getDetails(edge);
 	}
 
-	public Map<Integer, Integer> calculateResults(int numOfNodes, int numOfSteps)
+	public void generateGraphData(int numberOfNodes)
 	{
-		return cd.calculateResults(numOfNodes, numOfSteps);
+		cd.generateGraph(numberOfNodes);
+	}
+
+	public int getComparisons(int numberOfNodes)
+	{
+		return cd.getComparisons(numberOfNodes);
 	}
 }

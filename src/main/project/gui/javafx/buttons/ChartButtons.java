@@ -12,7 +12,6 @@ import project.gui.javafx.ComparisonChart;
 
 public class ChartButtons
 {
-	private final Buttons buttons;
 	private final ComparisonChart comparisonChart;
 
 	private Spinner<Integer> totalNodesSpinner;
@@ -25,9 +24,8 @@ public class ChartButtons
 
 	private final Font font = new Font(15);
 
-	public ChartButtons(Buttons buttons, ComparisonChart comparisonChart)
+	public ChartButtons(ComparisonChart comparisonChart)
 	{
-		this.buttons = buttons;
 		this.comparisonChart = comparisonChart;
 
 		setup();
@@ -76,7 +74,8 @@ public class ChartButtons
 		int totalNodes = totalNodesSpinner.getValue();
 		int stepSize = stepSizeComboBox.getValue();
 
-		comparisonChart.fillGraph(totalNodes, stepSize);
+		comparisonChart.clearChart();
+		comparisonChart.startAlgorithm(totalNodes, stepSize);
 	}
 
 	public VBox getTotalNodesBox()

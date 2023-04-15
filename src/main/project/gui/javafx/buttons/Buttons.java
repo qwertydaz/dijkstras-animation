@@ -3,10 +3,7 @@ package project.gui.javafx.buttons;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Border;
@@ -49,9 +46,9 @@ public class Buttons
 
 	private Button swapButton;
 
-	private VBox totalNodesBox;
-	private VBox stepSizeBox;
-	private Button createChartButton;
+	private final VBox totalNodesBox;
+	private final VBox stepSizeBox;
+	private final Button createChartButton;
 
 	private final Animation animation;
 
@@ -71,7 +68,7 @@ public class Buttons
 
 		AnimationButtons animationButtons = new AnimationButtons(this, animation);
 		MainButtons mainButtons = new MainButtons(this, controller, graph, table);
-		ChartButtons chartButtons = new ChartButtons(this, comparisonChart);
+		ChartButtons chartButtons = new ChartButtons(comparisonChart);
 
 		// Main Buttons
 		this.runButton = mainButtons.getRunButton();

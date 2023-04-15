@@ -1,18 +1,18 @@
 package project.gui.javafx.util;
 
 import javafx.scene.chart.XYChart;
-import project.gui.javafx.controller.Controller;
+import project.gui.javafx.ComparisonChart;
 
 import java.util.Map;
 import java.util.function.IntUnaryOperator;
 
 public class Charts
 {
-	private final Controller controller;
+	private final ComparisonChart comparisonChart;
 
-	public Charts(Controller controller)
+	public Charts(ComparisonChart comparisonChart)
 	{
-		this.controller = controller;
+		this.comparisonChart = comparisonChart;
 	}
 
 	// Generic method to use any gradient function
@@ -50,14 +50,11 @@ public class Charts
 	}
 
 	// Calculate using data from Dijkstra.java
-	public XYChart.Series<Number, Number> calculateUserInputGradient(int totalNodes, int numOfSteps)
+	public XYChart.Series<Number, Number> calculateUserInputGradient(Map<Integer, Integer> results)
 	{
 		// Create the data series
 		XYChart.Series<Number, Number> series = new XYChart.Series<>();
 		series.setName("Your Results");
-
-		// Calculate the results
-		Map<Integer, Integer> results = controller.calculateResults(totalNodes, numOfSteps);
 
 		// Add data to the series
 		for (Map.Entry<Integer, Integer> entry : results.entrySet())

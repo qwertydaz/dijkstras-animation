@@ -74,9 +74,9 @@ public class Database
 		return edgeShapes;
 	}
 
-	public Node getStartNode()
+	public boolean isReady()
 	{
-		return startNode;
+		return startNode != null;
 	}
 
 	public void setStartNode(Circle nodeShape)

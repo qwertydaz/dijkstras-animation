@@ -63,7 +63,7 @@ public class MainButtons
 
 	private void run()
 	{
-		if (controller.getStartNode() != null)
+		if (controller.isReady())
 		{
 			startAnimation();
 		}
