@@ -26,11 +26,6 @@ public class Controller
 		return db.getNodes();
 	}
 
-	public List<Line> getEdges()
-	{
-		return db.getEdges();
-	}
-
 	public boolean isReady()
 	{
 		return db.isReady();
@@ -141,11 +136,6 @@ public class Controller
 		db.loadNodes();
 	}
 
-	public double[] getCoords(Circle node)
-	{
-		return db.getCoords(node);
-	}
-
 	public Map<Circle, Text> getNodesAndLabels()
 	{
 		return db.getNodesAndLabels();
@@ -154,11 +144,6 @@ public class Controller
 	public Map<Line, Text> getEdgesAndLabels()
 	{
 		return db.getEdgesAndLabels();
-	}
-
-	public int getNodeId(Circle node)
-	{
-		return db.getNodeId(node);
 	}
 
 	public boolean isActive(Circle node)
@@ -189,16 +174,6 @@ public class Controller
 	public void disconnect() throws SQLException
 	{
 		db.disconnect();
-	}
-
-	public String getDetails(Circle node)
-	{
-		return db.getDetails(node);
-	}
-
-	public String getDetails(Line edge)
-	{
-		return db.getDetails(edge);
 	}
 
 	public void generateGraphData(int numberOfNodes)

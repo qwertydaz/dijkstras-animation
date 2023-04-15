@@ -48,7 +48,6 @@ public class Database
 
 	// Edge data
 	private final LinkedList<Edge> edges;
-	private final LinkedList<Line> edgeShapes;
 	private int edgeId;
 	private Node edgeNode1;
 	private Node edgeNode2;
@@ -59,7 +58,6 @@ public class Database
 		nodes = new LinkedList<>();
 		edges = new LinkedList<>();
 		nodeShapes = new LinkedList<>();
-		edgeShapes = new LinkedList<>();
 		adjacencyMap = new HashMap<>();
 		dijkstra = new Dijkstra(nodes, edges);
 	}
@@ -67,11 +65,6 @@ public class Database
 	public List<Circle> getNodes()
 	{
 		return nodeShapes;
-	}
-
-	public List<Line> getEdges()
-	{
-		return edgeShapes;
 	}
 
 	public boolean isReady()
@@ -398,7 +391,6 @@ public class Database
 		nodes.clear();
 		edges.clear();
 		nodeShapes.clear();
-		edgeShapes.clear();
 		startNode = null;
 	}
 
@@ -576,20 +568,6 @@ public class Database
 		}
 	}
 
-	public double[] getCoords(Circle nodeShape)
-	{
-		try
-		{
-			Node node = findNode(nodeShape);
-			return new double[] { node.getXCoord(), node.getYCoord() };
-		}
-		catch (NodeNotFoundException e)
-		{
-			e.printStackTrace();
-			return new double[0];
-		}
-	}
-
 	private void getNodeResults(ResultSet results) throws SQLException
 	{
 		nodeId = results.getInt("nodeId");
@@ -639,20 +617,6 @@ public class Database
 		return edgesAndLabels;
 	}
 
-	public int getNodeId(Circle nodeShape)
-	{
-		try
-		{
-			Node node = findNode(nodeShape);
-			return node.getId();
-		}
-		catch (NodeNotFoundException e)
-		{
-			e.printStackTrace();
-			return -1;
-		}
-	}
-
 	public boolean isActive(Circle nodeShape)
 	{
 		try
@@ -678,34 +642,6 @@ public class Database
 		{
 			e.printStackTrace();
 			return false;
-		}
-	}
-
-	public String getDetails(Circle nodeShape)
-	{
-		try
-		{
-			Node node = findNode(nodeShape);
-			return node.toString();
-		}
-		catch (NodeNotFoundException e)
-		{
-			e.printStackTrace();
-			return "";
-		}
-	}
-
-	public String getDetails(Line edgeShape)
-	{
-		try
-		{
-			Edge edge = findEdge(edgeShape);
-			return edge.toString();
-		}
-		catch (EdgeNotFoundException e)
-		{
-			e.printStackTrace();
-			return "";
 		}
 	}
 }

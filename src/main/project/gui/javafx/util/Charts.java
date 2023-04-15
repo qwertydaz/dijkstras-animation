@@ -1,20 +1,12 @@
 package project.gui.javafx.util;
 
 import javafx.scene.chart.XYChart;
-import project.gui.javafx.ComparisonChart;
 
 import java.util.Map;
 import java.util.function.IntUnaryOperator;
 
 public class Charts
 {
-	private final ComparisonChart comparisonChart;
-
-	public Charts(ComparisonChart comparisonChart)
-	{
-		this.comparisonChart = comparisonChart;
-	}
-
 	// Generic method to use any gradient function
 	public XYChart.Series<Number, Number> calculateGradient(IntUnaryOperator gradientFunction,
 	                                                        String equationName, int xLimit, int numOfSteps)

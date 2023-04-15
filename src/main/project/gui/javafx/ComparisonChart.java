@@ -29,7 +29,7 @@ public class ComparisonChart
 	private LineChart<Number, Number> lineChart;
 	private final Charts charts;
 	private Pane comparisonLineChartPane;
-	private ProgressBar progressBar;
+	private final ProgressBar progressBar;
 
 	private int totalNodes;
 	private int numberOfSteps;
@@ -39,7 +39,7 @@ public class ComparisonChart
 	public ComparisonChart(Controller controller)
 	{
 		this.controller = controller;
-		this.charts = new Charts(this);
+		this.charts = new Charts();
 		this.progressBar = new ProgressBar(0);
 
 		setupPane();
@@ -52,13 +52,14 @@ public class ComparisonChart
 		comparisonLineChartPane.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY,
 				BorderWidths.DEFAULT)));
 
+		progressBar.setPrefSize(100, 30);
+
 		comparisonLineChartPane.getChildren().add(progressBar);
 
 		createChart();
 	}
 
 	// TODO:
-	//  - Add a loading wheel
 	//  - Add a warning about the time it takes to calculate the results
 	private void createChart()
 	{

@@ -9,6 +9,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import project.gui.javafx.ComparisonChart;
+import project.gui.javafx.util.Util;
 
 public class ChartButtons
 {
@@ -74,6 +75,22 @@ public class ChartButtons
 		int totalNodes = totalNodesSpinner.getValue();
 		int stepSize = stepSizeComboBox.getValue();
 
+		if (totalNodes > 200)
+		{
+			if (Util.displayWarningDialog("Warning", "Creating a chart with more than 200 nodes may take a long time. " +
+					"Are you sure you want to continue?"))
+			{
+				createChart(totalNodes, stepSize);
+			}
+		}
+		else
+		{
+			createChart(totalNodes, stepSize);
+		}
+	}
+
+	private void createChart(int totalNodes, int stepSize)
+	{
 		comparisonChart.clearChart();
 		comparisonChart.startAlgorithm(totalNodes, stepSize);
 	}

@@ -14,7 +14,6 @@ public class Util
 
 	private static final Alert errorDialog = new Alert(Alert.AlertType.ERROR);
 	private static final Alert infoDialog = new Alert(Alert.AlertType.INFORMATION);
-	private static final Alert yesNoDialog = new Alert(Alert.AlertType.CONFIRMATION);
 
 	public static void displayErrorMessage(String header, String message)
 	{
@@ -34,16 +33,28 @@ public class Util
 
 	public static boolean displayOptionDialog(String header, String message)
 	{
-		yesNoDialog.setTitle("Confirmation");
-		yesNoDialog.setHeaderText(header);
-		yesNoDialog.setContentText(message);
+		return displayDialog(Alert.AlertType.CONFIRMATION, "Confirmation", header, message);
+	}
+
+	public static boolean displayWarningDialog(String header, String message)
+	{
+		return displayDialog(Alert.AlertType.WARNING, "Warning", header, message);
+	}
+
+	private static boolean displayDialog(Alert.AlertType alertType, String title, String header, String message)
+	{
+		Alert dialog = new Alert(alertType);
+
+		dialog.setTitle(title);
+		dialog.setHeaderText(header);
+		dialog.setContentText(message);
 
 		ButtonType buttonYes = new ButtonType("Yes");
 		ButtonType buttonNo = new ButtonType("No");
 
-		yesNoDialog.getButtonTypes().setAll(buttonYes, buttonNo);
+		dialog.getButtonTypes().setAll(buttonYes, buttonNo);
 
-		Optional<ButtonType> result = yesNoDialog.showAndWait();
+		Optional<ButtonType> result = dialog.showAndWait();
 		return result.orElse(buttonNo) == buttonYes;
 	}
 
