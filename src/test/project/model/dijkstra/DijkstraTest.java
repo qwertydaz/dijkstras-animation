@@ -116,16 +116,18 @@ class DijkstraTest
 	{
 		Map<String[], String[]> expected = Map.of(
 				new String[]{"Tv"}, new String[]{"A", "B", "C", "D", "E"},
-				new String[]{"A"}, new String[]{"0", "-1", "-1", "-1", "2"},
-				new String[]{"A", "E"}, new String[]{"0", "-1", "5", "9", "2"},
-				new String[]{"A", "C", "E"}, new String[]{"0", "9", "5", "8", "2"},
-				new String[]{"A", "C", "D", "E"}, new String[]{"0", "9", "5", "8", "2"},
-				new String[]{"A", "B", "C", "D", "E"}, new String[]{"0", "9", "5", "8", "2"}
+				new String[]{"1"}, new String[]{"0", "-1", "-1", "-1", "2"},
+				new String[]{"1", "5"}, new String[]{"0", "-1", "5", "9", "2"},
+				new String[]{"1", "3", "5"}, new String[]{"0", "9", "5", "8", "2"},
+				new String[]{"1", "3", "4", "5"}, new String[]{"0", "9", "5", "8", "2"},
+				new String[]{"1", "2", "3", "4", "5"}, new String[]{"0", "9", "5", "8", "2"}
 		);
 
 		d = new Dijkstra(normalNodes, normalEdges);
 
-		assertTrue(deepEquals(expected, d.run(startingNode)),
+		Map<String[], String[]> actual = d.run(startingNode);
+
+		assertTrue(deepEquals(expected, actual),
 				"run: Did not return the expected output");
 	}
 }

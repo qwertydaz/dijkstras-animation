@@ -16,8 +16,6 @@ e
 5src/main/project/gui/swing/node/NodeFormListener.java,0\a\0a655c8e713cbb5167c1cf05c087197a0b7d40a5
 b
 2src/main/project/gui/swing/node/NodeFormEvent.java,7\d\7d4451fc418266cf919a51bc5b374022482a73e2
-a
-1src/test/project/model/dijkstra/DijkstraTest.java,c\9\c9089d01e8da2da625f1b641f33c80fc92c54891
 ]
 -src/main/project/gui/swing/TableListener.java,6\1\61f8d1edbc01a9d8ae3dc6fe5708978759c189b4
 f
