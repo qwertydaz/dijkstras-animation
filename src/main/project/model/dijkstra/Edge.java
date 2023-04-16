@@ -10,7 +10,7 @@ import java.util.Set;
 public class Edge
 {
 	private static int count = 1;
-	private int id;
+	private final int id;
 
 	private final Node node1;
 	private final Node node2;
@@ -35,13 +35,6 @@ public class Edge
 	{
 		this(node1, node2);
 		this.weight = weight;
-	}
-
-	public Edge(int id, Node node1, Node node2, int weight)
-	{
-		this(node1, node2, weight);
-
-		this.id = id;
 	}
 
 	public Edge(int id, Node node1, Node node2, Text label, Line shape)

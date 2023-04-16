@@ -527,7 +527,7 @@ public class Database
 				label.xProperty().bind(nodeShape.centerXProperty().subtract(nodeShape.getRadius()/2));
 				label.yProperty().bind(nodeShape.centerYProperty().add(nodeShape.getRadius()/8));
 
-				Node node = new Node(nodeId, xCoord, yCoord, label, nodeShape);
+				Node node = new Node(nodeId, label, nodeShape);
 				nodes.add(node);
 			}
 		}

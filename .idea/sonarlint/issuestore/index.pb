@@ -1,11 +1,4 @@
 
-:
-
-.gitignore,a\5\a5cc2925ca8258af241be7e5b0381edf30266302
-Q
-!src/main/project/model/Graph.java,d\a\da7096c2a3930adbf003fee5760688b27a92057d
-e
-5src/main/project/exception/NodeNotFoundException.java,1\c\1ceabc87466f6efb736d8372c3bf69a55b6a64b8
 b
 2src/main/project/gui/swing/edge/EdgeFormEvent.java,0\9\098549225ecfc100fdced48561d97f1c0ce579ad
 e
@@ -36,16 +29,10 @@ c
 3src/main/project/gui/swing/edge/EdgeTablePanel.java,9\6\96ea4fccac6ab44b3f371a24bb561ba9b44660a1
 c
 3src/main/project/gui/swing/edge/EdgeTableModel.java,e\8\e89b1c417d09beb6901a794a81bf1815aed6e394
-Y
-)src/main/project/model/dijkstra/Node.java,5\d\5d4c8c937954e41a48ef77d650762bb4c1320221
-Y
-)src/main/project/model/dijkstra/Edge.java,9\2\920dc7e3ee2e6301906a50396790a62bcf577528
 b
 2src/main/project/gui/swing/edge/EdgeFormPanel.java,4\e\4e804fe6acc153d79d16be25a6aa90c932a70961
 Z
 *src/main/project/gui/swing/GraphPanel.java,7\b\7b756d01eeb5be6d44610469d90e5d3f14a1bdc2
-e
-5src/main/project/exception/EdgeNotFoundException.java,0\c\0ca6d23e4399f40c3440065a28236b810a6bbcc3
 Y
 )src/main/project/gui/swing/MainFrame.java,f\2\f209aaddb1c243eb38b896850fbb973cfc0a8174
 V
@@ -54,8 +41,6 @@ Z
 *src/main/project/gui/javafx/util/Util.java,c\3\c36e23775f4d8ccad6f7b8c93830413c54989dfa
 f
 6src/main/project/gui/javafx/controller/Controller.java,0\7\077b6a8512f12be41d79689849974b27b6468b64
-]
--src/main/project/model/dijkstra/Dijkstra.java,f\1\f1da6761fb85af96affc2683436285a841b5a377
 \
 ,src/main/project/gui/javafx/util/Charts.java,9\7\97c03514c046e3d87681035f9d1976988acbc8cc
 Z

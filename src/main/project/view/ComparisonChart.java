@@ -59,8 +59,6 @@ public class ComparisonChart
 		createChart();
 	}
 
-	// TODO:
-	//  - Add a warning about the time it takes to calculate the results
 	private void createChart()
 	{
 		// Create the x-axis and y-axis

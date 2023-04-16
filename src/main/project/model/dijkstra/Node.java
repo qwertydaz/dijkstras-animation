@@ -13,17 +13,13 @@ public class Node implements Comparable<Node>
 
 	private Text label;
 	private Circle shape;
-	private double xCoord;
-	private double yCoord;
 	private boolean isActive = false;
 
-	public Node(int id, double xCoord, double yCoord, Text label, Circle shape)
+	public Node(int id, Text label, Circle shape)
 	{
 		this(label, shape);
 
 		this.id = id;
-		this.xCoord = xCoord;
-		this.yCoord = yCoord;
 	}
 
 	public Node(Text label, Circle shape)
@@ -47,13 +43,6 @@ public class Node implements Comparable<Node>
 
 		this.id = count;
 		count++;
-	}
-
-	public Node(int id, String name)
-	{
-		this(name);
-
-		this.id = id;
 	}
 
 	public int getId()
@@ -80,16 +69,6 @@ public class Node implements Comparable<Node>
 	public Circle getShape()
 	{
 		return shape;
-	}
-
-	public double getXCoord()
-	{
-		return xCoord;
-	}
-
-	public double getYCoord()
-	{
-		return yCoord;
 	}
 
 	public void setActive()
