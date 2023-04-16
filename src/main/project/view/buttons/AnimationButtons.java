@@ -1,7 +1,7 @@
-package project.gui.javafx.buttons;
+package project.view.buttons;
 
 import javafx.scene.control.Button;
-import project.gui.javafx.Animation;
+import project.view.Animation;
 
 public class AnimationButtons
 {

@@ -1,4 +1,4 @@
-package project.gui.javafx.buttons;
+package project.view.buttons;
 
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -8,8 +8,8 @@ import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-import project.gui.javafx.ComparisonChart;
-import project.gui.javafx.util.Util;
+import project.view.ComparisonChart;
+import project.view.util.Util;
 
 public class ChartButtons
 {

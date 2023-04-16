@@ -1,4 +1,4 @@
-package project.gui.javafx;
+package project;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -9,8 +9,11 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import project.gui.javafx.buttons.Buttons;
-import project.gui.javafx.controller.Controller;
+import project.view.ComparisonChart;
+import project.view.Graph;
+import project.view.Table;
+import project.view.buttons.Buttons;
+import project.controller.Controller;
 
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;

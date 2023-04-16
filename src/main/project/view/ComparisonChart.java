@@ -1,4 +1,4 @@
-package project.gui.javafx;
+package project.view;
 
 import javafx.application.Platform;
 import javafx.scene.chart.LineChart;
@@ -13,9 +13,9 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
-import project.gui.javafx.controller.Controller;
-import project.gui.javafx.util.Charts;
-import project.gui.javafx.util.Util;
+import project.controller.Controller;
+import project.view.util.Charts;
+import project.view.util.Util;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

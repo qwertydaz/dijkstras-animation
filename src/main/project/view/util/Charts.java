@@ -1,4 +1,4 @@
-package project.gui.javafx.util;
+package project.view.util;
 
 import javafx.scene.chart.XYChart;
 

@@ -1,74 +1,119 @@
 package project.controller;
 
-import project.exception.NodeNotFoundException;
-import project.gui.swing.edge.EdgeFormEvent;
-import project.gui.swing.node.NodeFormEvent;
-import project.model.Database;
-import project.model.dijkstra.Edge;
-import project.model.dijkstra.Node;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
+import javafx.scene.text.Text;
+import project.database.ComparisonChartData;
+import project.database.Database;
 
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 public class Controller
 {
-	Database db = new Database();
+	private final Database db = new Database();
+	private final ComparisonChartData cd = new ComparisonChartData();
 
-	public List<Node> getNodes()
+	public Controller() throws NoSuchAlgorithmException
+	{
+		// Empty Constructor
+	}
+
+	public List<Circle> getNodes()
 	{
 		return db.getNodes();
 	}
 
-	public void addNode(NodeFormEvent event)
+	public boolean isReady()
 	{
-		String name = event.getName();
-
-		Node node = new Node(name);
-
-		db.addNode(node);
+		return db.isReady();
 	}
 
-	public void removeNode(int index)
+	public Map<Circle, Line> getAdjacentNodesAndEdges(Circle node)
 	{
-		db.removeNode(index);
+		return db.getAdjacentNodesAndEdges(node);
 	}
 
-	public void saveNodes() throws SQLException
+	public void addNode(Text label, Circle node)
 	{
-		db.saveNodes();
+		db.addNode(label, node);
 	}
 
-	public void loadNodes() throws SQLException
+	public void addEdge(Circle node1, Circle node2, Text label, Line edge)
 	{
-		db.loadNodes();
+		db.addEdge(node1, node2, label, edge);
 	}
 
-	public List<Edge> getEdges()
+	public void removeNode(Circle node)
 	{
-		return db.getEdges();
+		db.removeNode(node);
 	}
 
-	public void addEdge(EdgeFormEvent event)
+	public List<Line> getAttachedEdges(Circle node)
 	{
-		try
-		{
-			Node node1 = findNode(event.getNode1Name());
-			Node node2 = findNode(event.getNode2Name());
-			int weight = event.getWeight();
-
-			Edge edge = new Edge(node1, node2, weight);
-
-			db.addEdge(edge);
-		}
-		catch (NodeNotFoundException e)
-		{
-			e.printStackTrace();
-		}
+		return db.getAttachedEdges(node);
 	}
 
-	public void removeEdge(int index)
+	public void removeEdge(Line edge)
 	{
-		db.removeEdge(index);
+		db.removeEdge(edge);
+	}
+
+	public boolean edgeExists(Circle node1, Circle node2)
+	{
+		return db.edgeExists(node1, node2);
+	}
+
+	public void updateLabel(Text label, String newText)
+	{
+		db.updateLabel(label, newText);
+	}
+
+	public Text findLabel(Circle node)
+	{
+		return db.findLabel(node);
+	}
+
+	public Text findLabel(Line edge)
+	{
+		return db.findLabel(edge);
+	}
+
+	public void setStartNode(Circle node)
+	{
+		db.setStartNode(node);
+	}
+
+	public void setActive(Circle node)
+	{
+		db.setActive(node);
+	}
+
+	public void setActive(Line edge)
+	{
+		db.setActive(edge);
+	}
+
+	public void setInactive(Circle node)
+	{
+		db.setInactive(node);
+	}
+
+	public void setInactive(Line edge)
+	{
+		db.setInactive(edge);
+	}
+
+	public Map<String[], String[]> runDijkstra()
+	{
+		return db.runDijkstra();
+	}
+
+	public void clear()
+	{
+		db.clear();
 	}
 
 	public void saveEdges() throws SQLException
@@ -81,14 +126,44 @@ public class Controller
 		db.loadEdges();
 	}
 
-	private Node findNode(String searchName) throws NodeNotFoundException
+	public void saveNodes() throws SQLException
 	{
-		return db.findNode(searchName);
+		db.saveNodes();
 	}
 
-	public boolean isNodePresent(String searchName)
+	public void loadNodes() throws SQLException
 	{
-		return db.isNodePresent(searchName);
+		db.loadNodes();
+	}
+
+	public Map<Circle, Text> getNodesAndLabels()
+	{
+		return db.getNodesAndLabels();
+	}
+
+	public Map<Line, Text> getEdgesAndLabels()
+	{
+		return db.getEdgesAndLabels();
+	}
+
+	public boolean isActive(Circle node)
+	{
+		return db.isActive(node);
+	}
+
+	public boolean isActive(Line edge)
+	{
+		return db.isActive(edge);
+	}
+
+	public String getNodeName(int nodeId)
+	{
+		return db.getNodeName(nodeId);
+	}
+
+	public Circle getNodeShape(int nodeId)
+	{
+		return db.getNodeShape(nodeId);
 	}
 
 	public void connect() throws SQLException
@@ -99,5 +174,15 @@ public class Controller
 	public void disconnect() throws SQLException
 	{
 		db.disconnect();
+	}
+
+	public void generateGraphData(int numberOfNodes)
+	{
+		cd.generateGraph(numberOfNodes);
+	}
+
+	public int getComparisons(int numberOfNodes)
+	{
+		return cd.getComparisons(numberOfNodes);
 	}
 }

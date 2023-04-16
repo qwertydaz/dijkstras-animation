@@ -1,10 +1,10 @@
-package project.gui.javafx.buttons;
+package project.view.buttons;
 
 import javafx.scene.control.Button;
-import project.gui.javafx.controller.Controller;
-import project.gui.javafx.Graph;
-import project.gui.javafx.Table;
-import project.gui.javafx.util.Util;
+import project.controller.Controller;
+import project.view.Graph;
+import project.view.Table;
+import project.view.util.Util;
 
 import java.sql.SQLException;
 

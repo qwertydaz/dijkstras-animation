@@ -1,8 +1,8 @@
-package project.gui.javafx;
+package project.view;
 
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
-import project.gui.javafx.controller.Controller;
+import project.controller.Controller;
 
 import java.util.ArrayList;
 import java.util.Arrays;

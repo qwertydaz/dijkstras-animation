@@ -1,4 +1,4 @@
-package project.gui.javafx.data;
+package project.database;
 
 import project.model.dijkstra.Dijkstra;
 import project.model.dijkstra.Edge;

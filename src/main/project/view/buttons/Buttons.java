@@ -1,4 +1,4 @@
-package project.gui.javafx.buttons;
+package project.view.buttons;
 
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
@@ -15,12 +15,12 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import project.gui.javafx.Animation;
-import project.gui.javafx.ComparisonChart;
-import project.gui.javafx.controller.Controller;
-import project.gui.javafx.Graph;
-import project.gui.javafx.Table;
-import project.gui.javafx.util.Util;
+import project.view.Animation;
+import project.view.ComparisonChart;
+import project.controller.Controller;
+import project.view.Graph;
+import project.view.Table;
+import project.view.util.Util;
 
 import java.util.Objects;
 

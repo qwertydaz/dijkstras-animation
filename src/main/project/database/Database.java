@@ -1,4 +1,4 @@
-package project.gui.javafx.data;
+package project.database;
 
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;

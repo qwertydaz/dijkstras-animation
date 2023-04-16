@@ -1,4 +1,4 @@
-package project.gui.javafx;
+package project.view;
 
 import javafx.geometry.Point2D;
 import javafx.scene.Scene;
@@ -19,8 +19,8 @@ import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import project.gui.javafx.controller.Controller;
-import project.gui.javafx.util.Util;
+import project.controller.Controller;
+import project.view.util.Util;
 
 import java.util.ArrayList;
 import java.util.HashMap;

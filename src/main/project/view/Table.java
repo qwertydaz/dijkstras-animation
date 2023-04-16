@@ -1,4 +1,4 @@
-package project.gui.javafx;
+package project.view;
 
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
