@@ -48,6 +48,7 @@ public class Database
 
 	// Edge data
 	private final LinkedList<Edge> edges;
+	private final LinkedList<Line> edgeShapes;
 	private int edgeId;
 	private Node edgeNode1;
 	private Node edgeNode2;
@@ -58,6 +59,7 @@ public class Database
 		nodes = new LinkedList<>();
 		edges = new LinkedList<>();
 		nodeShapes = new LinkedList<>();
+		edgeShapes = new LinkedList<>();
 		adjacencyMap = new HashMap<>();
 		dijkstra = new Dijkstra(nodes, edges);
 	}
@@ -65,6 +67,11 @@ public class Database
 	public List<Circle> getNodes()
 	{
 		return nodeShapes;
+	}
+
+	public List<Line> getEdges()
+	{
+		return edgeShapes;
 	}
 
 	public boolean isReady()
@@ -166,6 +173,11 @@ public class Database
 
 	public void addNode(Text label, Circle node)
 	{
+		if (label == null)
+		{
+			label = new Text("Node");
+		}
+
 		nodeShapes.add(node);
 		nodes.add(new Node(label, node));
 	}
@@ -177,6 +189,7 @@ public class Database
 			Node node1 = findNode(nodeShape1);
 			Node node2 = findNode(nodeShape2);
 
+			edgeShapes.add(edge);
 			edges.add(new Edge(node1, node2, label, edge));
 
 			adjacencyMap.computeIfAbsent(node1.getId(), k -> new HashSet<>()).add(node2.getId());
@@ -350,6 +363,11 @@ public class Database
 
 	public void updateLabel(Text label, String newText)
 	{
+		if (newText == null)
+		{
+			newText = "Node";
+		}
+
 		for (Edge edge : edges)
 		{
 			if (label == edge.getLabel())
@@ -391,6 +409,7 @@ public class Database
 		nodes.clear();
 		edges.clear();
 		nodeShapes.clear();
+		edgeShapes.clear();
 		startNode = null;
 	}
 

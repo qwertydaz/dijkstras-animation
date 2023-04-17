@@ -57,6 +57,11 @@ public class Node implements Comparable<Node>
 
 	public void setName(String name)
 	{
+		if (name == null)
+		{
+			name = "";
+		}
+
 		this.name = name;
 		label.setText(name);
 	}
@@ -84,6 +89,11 @@ public class Node implements Comparable<Node>
 	public boolean isActive()
 	{
 		return isActive;
+	}
+
+	public static void resetId()
+	{
+		count = 1;
 	}
 
 	@Override

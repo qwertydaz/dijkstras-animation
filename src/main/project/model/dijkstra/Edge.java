@@ -81,8 +81,28 @@ public class Edge
 
 	public void setWeight(String weight)
 	{
-		this.weight = Integer.parseInt(weight);
-		label.setText(weight);
+		try
+		{
+			int weightInt = Integer.parseInt(weight);
+
+			if (weightInt <= 0)
+			{
+				weightInt = 1;
+			}
+
+			this.weight = weightInt;
+
+			if (label == null)
+			{
+				label = new Text();
+			}
+
+			label.setText(String.valueOf(weightInt));
+		}
+		catch (NumberFormatException e)
+		{
+			throw new IllegalArgumentException("Weight must be a positive integer.");
+		}
 	}
 
 	public Set<Node> getNodes()
@@ -113,6 +133,11 @@ public class Edge
 	public boolean isActive()
 	{
 		return isActive;
+	}
+
+	public static void resetId()
+	{
+		count = 1;
 	}
 
 	public String toString()

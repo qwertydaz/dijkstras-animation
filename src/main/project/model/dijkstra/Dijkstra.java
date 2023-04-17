@@ -40,6 +40,16 @@ public class Dijkstra extends Graph
 	// Dijkstra's Algorithm
 	public Map<String[], String[]> run(Node startingNode)
 	{
+		if (startingNode == null)
+		{
+			throw new IllegalArgumentException("Starting node cannot be null.");
+		}
+
+		if (!unvisitedNodes.contains(startingNode))
+		{
+			throw new IllegalArgumentException("Starting node is not in the graph.");
+		}
+
 		comparisons = 0;
 
 		if (!steps.isEmpty())

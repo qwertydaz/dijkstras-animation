@@ -29,6 +29,11 @@ public class ComparisonChartData
 	// Creates a graph with the maximum number of edges between a specified number of nodes
 	public void generateGraph(int numberOfNodes)
 	{
+		if (numberOfNodes < 2)
+		{
+			throw new IllegalArgumentException("generateGraph: Number of nodes must be greater than 1");
+		}
+
 		nodes.clear();
 		edges.clear();
 
@@ -52,5 +57,10 @@ public class ComparisonChartData
 		dijkstra.updateNodes(nodes);
 		dijkstra.run(nodes.get(rand.nextInt(numberOfNodes)));
 		return dijkstra.getComparisons();
+	}
+
+	public List<Node> getNodes()
+	{
+		return nodes;
 	}
 }
